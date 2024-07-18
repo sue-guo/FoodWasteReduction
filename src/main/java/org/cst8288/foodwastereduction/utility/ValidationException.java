@@ -1,5 +1,5 @@
 
-package org.cst8288.foodwastereduction.common;
+package org.cst8288.foodwastereduction.utility;
 
 public class ValidationException extends Exception {
 
