@@ -18,7 +18,7 @@
     </header>
     <main class="login">
         <h2>Login</h2>
-        <form id="login-form" action="${pageContext.request.contextPath}/user" method="get">
+        <form id="login-form" action="${pageContext.request.contextPath}/login" method="post">
             <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required value="${param.email}">

@@ -19,7 +19,7 @@
     </header>
     <main class="login">
         <h2>Sign Up</h2>
-        <form id="signup-form" action="${pageContext.request.contextPath}/user" method="post">
+        <form id="signup-form" action="${pageContext.request.contextPath}/signup" method="post">
             <div>
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required value="${param.name}">
