@@ -2,18 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.cst8288.foodwastereduction.dataaccesslayer;
-
-import org.cst8288.foodwastereduction.model.User;
+package org.cst8288.foodwastereduction.model;
 
 /**
  *
  * @author Hongxiu Guo
  */
-public interface UserDao {
-
-    User getUserByEmail(String email);
-    
-    void addUser(User user);
-    
+public enum UserType {
+    RETAILER, CONSUMER, CHARITABLE_ORGANIZATION
 }

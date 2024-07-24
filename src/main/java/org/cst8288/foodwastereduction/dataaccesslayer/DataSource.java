@@ -3,8 +3,6 @@ package org.cst8288.foodwastereduction.dataaccesslayer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,28 +13,37 @@ import java.util.Properties;
  * @author Hongxiu Guo
  */
 public class DataSource {
-    private static Connection connection = null;
+     private static Connection connection = null;
     private DataSource() { }
+    
+     // static load jdbc driver
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
     
     /**
      * 
      * @return 
      */
     public static Connection getConnection() {
-    try {
+        try {
             if (connection == null) {
-                //get connection information
+                // get connection information 
                 String[] connectionInfo = openPropsFile();
-                
+                // connect to database
                 connection = DriverManager.getConnection(connectionInfo[0], connectionInfo[1], connectionInfo[2]);
             } else {
-                //System.out.println("Cannot create new connection, using existing one");
+        
+                // System.out.println("Cannot create new connection, using existing one");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return connection;
-    
     }
     
       /**
@@ -49,21 +56,19 @@ public class DataSource {
         // added use of Properties and try-with-resources
         Properties props = new Properties();
 
-        try (InputStream in = Files.newInputStream(Paths.get("./data/database.properties"));) {
+        try (InputStream in = DataSource.class.getClassLoader().getResourceAsStream("data/database.properties")) {
+            if (in == null) {
+                throw new IOException("Properties file not found");
+            }
             props.load(in);
         } catch (IOException e) {
             e.printStackTrace();
         }
         //get information from database.properties file: jdbc:mysql://localhost:3306/lab2 
-        String db = props.getProperty("db");//mysql
-        String name = props.getProperty("name");//database name: lab2
-        String host = props.getProperty("host"); // localhost
-        String port = props.getProperty("port"); // 3306
-        
-        //connection string
-        String connectionString = "jdbc:"+db+"://"+host+":"+port+"/"+name;
-        String username = props.getProperty("user");
-        String password = props.getProperty("pass");
+        String connectionString = props.getProperty("jdbc.url");//jdbc:mysql://localhost:3306/FWRP
+        String username = props.getProperty("jdbc.username");//CST8288Group
+        String password = props.getProperty("jdbc.password"); // 12345678
+       
 
         String[] info = new String[3];
         info[0] = connectionString;

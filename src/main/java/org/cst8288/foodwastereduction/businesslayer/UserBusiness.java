@@ -1,13 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package org.cst8288.foodwastereduction.businesslayer;
+
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
+import org.cst8288.foodwastereduction.model.User;
+import org.cst8288.foodwastereduction.utility.PasswordUtil;
 
 /**
  *
  * @author Hongxiu Guo
  */
 public class UserBusiness {
+    
+    private UserDao userDao = null;
+    
+    public UserBusiness() {
+        userDao = new UserDaoImpl();
+    }
+
+    public User getUserByEmail(String email) {
+        
+       User user =  userDao.getUserByEmail(email);
+       return user;
+        
+    }
+
+    public void addUser(User user) {
+        userDao.addUser(user);
+    }
+    
+    //This method to verify user credentials
+    public boolean authenticateUser(String email, String password) {
+        User user = getUserByEmail(email);
+        if (user != null) {
+            return PasswordUtil.checkPassword(password, user.getPassword());
+        }
+        return false;
+    }
     
 }
