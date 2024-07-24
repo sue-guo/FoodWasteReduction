@@ -5,7 +5,6 @@
 package org.cst8288.foodwastereduction.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,10 +31,11 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                UserBusiness userBusiness = new UserBusiness();
         
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        UserBusiness userBusiness = new UserBusiness();
+        
+        String email = request.getParameter("email").trim();
+        String password = request.getParameter("password").trim();
         User user = userBusiness.getUserByEmail(email);
         
         if (!userBusiness.authenticateUser(email, password)) {

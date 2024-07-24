@@ -56,13 +56,13 @@ public class SignupServlet extends HttpServlet {
     private void addUser(HttpServletRequest request, HttpServletResponse response) {
         
         User user = new User();
-        user.setName(request.getParameter("name"));
-        user.setEmail(request.getParameter("email"));
-        user.setPassword(PasswordUtil.hashPassword(request.getParameter("password")));
+        user.setName(request.getParameter("name").trim());
+        user.setEmail(request.getParameter("email").trim());
+        user.setPassword(PasswordUtil.hashPassword(request.getParameter("password").trim()));
         user.setUserType(UserType.valueOf(request.getParameter("userType")));
-        user.setPhoneNumber(request.getParameter("phoneNumber"));
-        user.setAddress(request.getParameter("address"));
-        user.setCity(request.getParameter("city"));
+        user.setPhoneNumber(request.getParameter("phoneNumber").trim());
+        user.setAddress(request.getParameter("address").trim());
+        user.setCity(request.getParameter("city").trim());
         
         UserBusiness userBusiness = new UserBusiness();
         
