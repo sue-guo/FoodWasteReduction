@@ -39,38 +39,39 @@
         </nav>
     </header>
     <main>
-
+        <h2>Welcome to the Food Inventory Management System</h2>
+        <p>Manage your food inventory efficiently and reduce waste.</p>
+        
         <% 
             if (user != null && user.getUserType() == UserType.RETAILER) {
         %>
-            <button onclick="loadInventory()">Inventory Management</button>
-            <button onclick="loadInventory()"> Food Item Management</button>
+            <button onclick="loadInventory(<%= user.getUserID() %>)">Inventory Management</button>
+            <button onclick="loadFoodItem(<%= user.getUserID() %>)"> Food Item Management</button>
         <%
             }
          %>
         <% 
             if (user != null && user.getUserType() == UserType.CONSUMER) {
         %>
-            <button onclick="loadInventory()">Inventory Management</button>
-            <button onclick="loadFoodItem()"> Food Item Management</button>
+            <button onclick="loadInventory(<%= user.getUserID() %>)">Inventory Management</button>
+            <button onclick="loadFoodItem(<%= user.getUserID() %>)"> Food Item Management</button>
         <%
             }
          %>
-        <h2>Welcome to the Food Inventory Management System</h2>
-        <p>Manage your food inventory efficiently and reduce waste.</p>
+
     </main>
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>
     </footer>
     <script>
-        function loadInventory() {
-            // Add your JavaScript logic to load the inventory management page
-            window.location.href = "${pageContext.request.contextPath}/views/inventory.jsp";
+        function loadInventory(userId) {
+            // load the inventory management page
+            window.location.href = "inventory?userId="+userId;
         }
 
-        function loadFoodItemManagement() {
-            // Add your JavaScript logic to load the food item management page
-            window.location.href = "${pageContext.request.contextPath}/views/foodItemManagement.jsp";
+        function loadFoodItem(userId) {
+            // load the food item management page
+            window.location.href = "foodItem?userId="+userId;
         }
     </script>
 </body>
