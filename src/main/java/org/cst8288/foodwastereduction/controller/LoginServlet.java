@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.cst8288.foodwastereduction.businesslayer.UserBusiness;
 import org.cst8288.foodwastereduction.model.User;
 
@@ -46,9 +47,12 @@ public class LoginServlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/login.jsp");
             dispatcher.forward(request, response);
         } else {
-            // Forward to user.jsp if user is found
+            // Forward to home.jsp if user is found, and set user in session
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            
             request.setAttribute("user", user);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("views/user.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/home.jsp");
             dispatcher.forward(request, response);
         }
     }
