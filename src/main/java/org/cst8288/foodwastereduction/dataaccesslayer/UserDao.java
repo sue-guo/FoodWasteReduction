@@ -4,10 +4,16 @@
  */
 package org.cst8288.foodwastereduction.dataaccesslayer;
 
+import org.cst8288.foodwastereduction.model.User;
+
 /**
  *
  * @author Hongxiu Guo
  */
 public interface UserDao {
+
+    User getUserByEmail(String email);
+    
+    void addUser(User user);
     
 }
