@@ -22,36 +22,35 @@
         <form id="signup-form" action="${pageContext.request.contextPath}/user" method="post">
             <div>
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" required value="${param.name}">
             </div>
             <div>
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required value="${param.email}">
             </div>
             <div>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" required value="${param.password}">
             </div>
             <div>
                 <label for="phonenumber">Phone Number:</label>
-                <input type="number" id="phoneNumber" name="phoneNumber">
+                <input type="number" id="phoneNumber" name="phoneNumber" value="${param.phoneNumber}">
             </div>
             <div>
                 <label for="user-type">User Type:</label>
                 <select id="user-type" name="userType" required>
-                    <option value="">select user type</option>
-                    <option value="RETAILER">Retailer</option>
-                    <option value="CONSUMER">Consumer</option>
-                    <option value="CHARITABLE_ORGANIZATION">Charitable Organization</option>
+                    <option value="RETAILER" ${param.userType == 'RETAILER' ? 'selected' : ''}>Retailer</option>
+                    <option value="CONSUMER" ${param.userType == 'CONSUMER' ? 'selected' : ''}>Consumer</option>
+                    <option value="CHARITABLE_ORGANIZATION" ${param.userType == 'CHARITABLE_ORGANIZATION' ? 'selected' : ''}>Charitable Organization</option>
                 </select>
             </div>
             <div>
                 <label for="address">Address:</label>
-                <input type="text" id="address" name="address">
+                <input type="text" id="address" name="address" value="${param.address}">
             </div>
             <div>
                 <label for="city">City:</label>
-                <input type="text" id="city" name="city">
+                <input type="text" id="city" name="city" value="${param.city}">
             </div>
             <!-- Display error message if it exists -->
             <% 
@@ -66,7 +65,7 @@
             %>
             <button type="submit">Sign Up</button>
         </form>
-        <p>Already have an account? <a href="login.jsp">Log in here</a>.</p>
+        <p>Already have an account? <a href="${pageContext.request.contextPath}/views/login.jsp">Log in here</a>.</p>
     </main>
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>
