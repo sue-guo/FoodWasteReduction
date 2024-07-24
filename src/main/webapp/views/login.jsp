@@ -10,7 +10,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Log In</title>
-         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/login.css">
+        <base href="${pageContext.request.contextPath}/" />
+        <link rel="stylesheet" href="styles/login.css">
     </head>
     <body>
     <header>
@@ -18,7 +19,7 @@
     </header>
     <main class="login">
         <h2>Login</h2>
-        <form id="login-form" action="${pageContext.request.contextPath}/login" method="post">
+        <form id="login-form" action="login" method="post">
             <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required value="${param.email}">
@@ -41,7 +42,7 @@
             <button type="submit">Log In</button>
         </form>
 
-        <p>Don't have an account? <a href="${pageContext.request.contextPath}/views/signup.jsp">Sign up here</a>.</p>
+        <p>Don't have an account? <a href="views/signup.jsp">Sign up here</a>.</p>
     </main>
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>

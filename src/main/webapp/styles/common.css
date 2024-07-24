@@ -36,6 +36,12 @@ nav ul li a {
     text-decoration: none;
 }
 
+nav ul li p {
+    display: inline;
+    color: #876969;
+    text-decoration: none;
+}
+
 main{
     flex: 1;
     padding: 2rem;

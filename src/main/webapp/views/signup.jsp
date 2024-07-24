@@ -11,7 +11,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/login.css">
+    <base href="${pageContext.request.contextPath}/" />
+    <link rel="stylesheet" href="styles/login.css">
 </head>
 <body>
     <header>
@@ -19,7 +20,7 @@
     </header>
     <main class="login">
         <h2>Sign Up</h2>
-        <form id="signup-form" action="${pageContext.request.contextPath}/signup" method="post">
+        <form id="signup-form" action="signup" method="post">
             <div>
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required value="${param.name}">
@@ -65,7 +66,7 @@
             %>
             <button type="submit">Sign Up</button>
         </form>
-        <p>Already have an account? <a href="${pageContext.request.contextPath}/views/login.jsp">Log in here</a>.</p>
+        <p>Already have an account? <a href="views/login.jsp">Log in here</a>.</p>
     </main>
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>
