@@ -46,12 +46,18 @@
                 </select>
             </div>
             <div>
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address" value="${param.address}">
+                <label for="city">City:</label>
+                <select name="city">
+                    <option value="Downtown" ${param.city == 'Downtown' ? 'selected' : ''}>Ottawa Downtown</option>
+                    <option value="Kanata" ${param.city == 'Kanata' ? 'selected' : ''}>Kanata</option>
+                    <option value="Nepean" ${param.city == 'Nepean' ? 'selected' : ''}>Nepean</option>
+                    <option value="Orleans" ${param.city == 'Orleans' ? 'selected' : ''}>Orleans</option>
+                    <option value="Barrhaven" ${param.city == 'Barrhaven' ? 'selected' : ''}>Barrhaven</option>
+                </select>
             </div>
             <div>
-                <label for="city">City:</label>
-                <input type="text" id="city" name="city" value="${param.city}">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="${param.address}">
             </div>
             <!-- Display error message if it exists -->
             <% 

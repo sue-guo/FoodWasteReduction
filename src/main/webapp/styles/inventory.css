@@ -1,0 +1,37 @@
+
+/* 
+    Created on : Jul. 24, 2024, 11:29:09 p.m.
+    Author     : Hongxiu Guo
+*/
+
+@import url('common.css');
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
