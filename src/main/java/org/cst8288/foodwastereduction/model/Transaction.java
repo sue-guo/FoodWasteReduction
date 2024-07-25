@@ -1,0 +1,63 @@
+package org.cst8288.foodwastereduction.model;
+
+import java.sql.Timestamp;
+
+/**
+ *
+ * @author yaoyi
+ */
+public class Transaction {
+    private Integer transactionID;
+    private Integer inventoryID;
+    private Integer userID;
+    private Integer quantity;
+    private TransactionType transactionType;
+    private Timestamp transactionDate;
+
+    /**
+     * Getters and Setters
+     */
+    public Integer getTransactionID() {
+        return transactionID;
+    }
+    public void setTransactionID(Integer transactionID) {
+        this.transactionID = transactionID;
+    }
+
+    public Integer getInventoryID() {
+        return inventoryID;
+    }
+    public void setInventoryID(Integer inventoryID) {
+        this.inventoryID = inventoryID;
+    }
+
+    public Integer getUserID() {
+        return userID;
+    }
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public Timestamp getTransactionDate() {
+        return transactionDate;
+    }
+    public void setTransactionDate(Timestamp transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+
+}
