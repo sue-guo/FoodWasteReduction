@@ -1,0 +1,58 @@
+@import url('common.css');
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.window {
+    display: none; 
+    position: fixed;
+    z-index: 1; 
+    left: 50%;
+    top: 50%; 
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 300px;
+    overflow: auto;
+    background-color: rgb(249, 253, 248);
+    border: 0.5px solid black;
+}
+
+.close {
+    position: absolute; 
+    top: 10px; 
+    right: 15px; 
+    font-size: 25px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+#purchase-qty {
+    height: 28px;
+    font-size: 15px;
+}
