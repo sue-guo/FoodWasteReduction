@@ -18,11 +18,10 @@ CREATE TABLE Users (
     UserType ENUM('Retailer', 'Consumer', 'CharitableOrganization') NOT NULL,
     PhoneNumber VARCHAR(20),
     Address VARCHAR(100),
-	City VARCHAR(50),
+    City VARCHAR(50),
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create FoodItems
 CREATE TABLE FoodItems (
     FoodItemID INT AUTO_INCREMENT PRIMARY KEY,
     RetailerID INT NOT NULL,
@@ -31,10 +30,9 @@ CREATE TABLE FoodItems (
     Category ENUM('Dairy', 'Egg', 'Beef', 'Pork', 'Poultry', 'Fruit', 'Vegetable', 'Seafood', 'Grain', 'Nut', 'Legume', 'Bakery', 'Beverage', 'Snack', 'Condiment', 'Other') NOT NULL,
     Brand VARCHAR(100),
     Unit VARCHAR(20),
-    FOREIGN KEY (RetailerID) REFERENCES Users(UserID)
+    FOREIGN KEY (RetailerID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- Create Inventory
 CREATE TABLE Inventory (
     InventoryID INT AUTO_INCREMENT PRIMARY KEY,
     RetailerID INT NOT NULL,
@@ -46,16 +44,14 @@ CREATE TABLE Inventory (
     ExpirationDate DATE NOT NULL,
     ReceiveDate DATE NOT NULL,
     IsSurplus BOOLEAN DEFAULT FALSE,
-    -- ListedForDonation BOOLEAN DEFAULT FALSE,
     SurplusStatus ENUM('None', 'Donation', 'Discount') DEFAULT 'None',
     LastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     IsActive BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (RetailerID) REFERENCES Users(UserID),
-    FOREIGN KEY (FoodItemID) REFERENCES FoodItems(FoodItemID),
+    FOREIGN KEY (RetailerID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (FoodItemID) REFERENCES FoodItems(FoodItemID) ON UPDATE CASCADE ON DELETE CASCADE,
     UNIQUE KEY (RetailerID, FoodItemID, BatchNumber)
 );
 
--- Create Transactions
 CREATE TABLE Transactions (
     TransactionID INT AUTO_INCREMENT PRIMARY KEY,
     InventoryID INT NOT NULL,
@@ -63,12 +59,10 @@ CREATE TABLE Transactions (
     Quantity INT NOT NULL,
     TransactionType ENUM('Purchase', 'Donation') NOT NULL,
     TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-
--- Create Subscriptions
 CREATE TABLE Subscriptions (
     SubscriptionID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
@@ -77,20 +71,18 @@ CREATE TABLE Subscriptions (
     FoodPreferences SET('Dairy', 'Egg', 'Beef', 'Pork', 'Poultry', 'Fruit', 'Vegetable', 'Seafood', 'Grain', 'Nut', 'Legume', 'Bakery', 'Beverage', 'Snack', 'Condiment', 'Other') NOT NULL,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     LastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (RetailerID) REFERENCES Users(UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (RetailerID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-
--- Create Notifications
 CREATE TABLE Notifications (
     NotificationID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
     InventoryID INT NOT NULL,
     NotificationType ENUM('SurplusAlert', 'Other') NOT NULL,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- ---------Test data----
