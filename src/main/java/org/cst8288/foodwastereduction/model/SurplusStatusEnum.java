@@ -6,8 +6,8 @@ package org.cst8288.foodwastereduction.model;
 
 /**
  *
- * @author Carri
+ * @author WANG JIAYUN
  */
-public class FoodItem {
-    
-}
+   public enum SurplusStatusEnum {
+         None, Donation, Discount
+    }

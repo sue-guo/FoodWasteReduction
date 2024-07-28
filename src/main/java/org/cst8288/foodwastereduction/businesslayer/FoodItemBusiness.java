@@ -8,38 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
-import org.cst8288.foodwastereduction.model.FoodItem;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 /**
  *
  * @author WANG JIAYUN
  */
+
 public class FoodItemBusiness {
-    
-    private FoodItemDAO foodItemDAO = null;
-    private List<FoodItem> foodItems = new ArrayList<>();
-    private FoodItem foodItem = new FoodItem();
-    
+
+    private FoodItemDAO foodItemDAO;
+    private List<FoodItemDTO> foodItems;
+
+
     public FoodItemBusiness() {
-        foodItemDAO = new FoodItemDAOImpl();
+        this.foodItemDAO = new FoodItemDAOImpl();
+        this.foodItems = new ArrayList<>();
     }
 
-    public List<FoodItem> getFoodItemsByRetailerID(int RetailerID) {
-      
-        return foodItems;
-        
+    public List<FoodItemDTO> getFoodItemsByRetailerID(int retailerID) {
+        return foodItemDAO.getFoodItemsByRetailerId(retailerID);
     }
 
-//    public FoodItem getFoodItemByID(int FoodItemID) {
-//        
-//       return foodItem;
-//        
-//    }
-
-    
-    public void addFoodItem (FoodItem foodItem) {
-        // userDao.addUser(user);
+    public void addFoodItem(FoodItemDTO foodItem) {
+        foodItemDAO.addFoodItem(foodItem);
     }
-    
-    
 }

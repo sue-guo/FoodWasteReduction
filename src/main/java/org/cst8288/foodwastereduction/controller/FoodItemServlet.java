@@ -13,9 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
-import org.cst8288.foodwastereduction.model.FoodItem;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import java.util.ArrayList;
 import java.util.List;
+import org.cst8288.foodwastereduction.model.CategoryEnum;
 
 /**
  *
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class FoodItemServlet extends HttpServlet {
 
-
+       
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -39,7 +40,7 @@ public class FoodItemServlet extends HttpServlet {
         int userId = Integer.parseInt(request.getParameter("userId").trim());
         
         FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
-        List<FoodItem> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
+        List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
         
         request.setAttribute("foodItems", foodItems);
         RequestDispatcher dispatcher = request.getRequestDispatcher("views/foodItem.jsp");
@@ -57,18 +58,30 @@ public class FoodItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
         
-    }
+        int userId = Integer.parseInt(request.getParameter("userId").trim());
+        String name = request.getParameter("name").trim();
+        String description = request.getParameter("description").trim();
+        String category = request.getParameter("category").trim();
+        String brand = request.getParameter("brand").trim();
+        String unit = request.getParameter("unit").trim();
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        FoodItemDTO foodItem = new FoodItemDTO();
+        foodItem.setRetailerId(userId);
+        foodItem.setName(name);
+        foodItem.setDescription(description);
+        foodItem.setCategory(CategoryEnum.valueOf(category));
+        foodItem.setBrand(brand);
+        foodItem.setUnit(unit);
+        
+        FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
+        foodItemBusiness.addFoodItem(foodItem);
+        
+        // Redirect to doGet method to list all current food items
+        doGet(request, response);
+   
+    }
+    
+
 
 }

@@ -4,10 +4,17 @@
  */
 package org.cst8288.foodwastereduction.dataaccesslayer;
 
+import java.util.List;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
+
 /**
  *
- * @author Carri
+ * @author WANG JIAYUN
  */
 public interface FoodItemDAO {
+    
+    void addFoodItem(FoodItemDTO foodItem);
+ 
+    List<FoodItemDTO> getFoodItemsByRetailerId(int retailerId);
     
 }
