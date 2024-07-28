@@ -1,10 +1,10 @@
 
 package org.cst8288.foodwastereduction.businesslayer;
 
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.utility.PasswordUtil;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDAO;
 
 /**
  *
@@ -12,7 +12,7 @@ import org.cst8288.foodwastereduction.utility.PasswordUtil;
  */
 public class UserBusiness {
     
-    private UserDao userDao = null;
+    private UserDAO userDao = null;
     
     public UserBusiness() {
         userDao = new UserDaoImpl();

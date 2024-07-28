@@ -1,5 +1,5 @@
 
-package org.cst8288.foodwastereduction.model;
+package org.cst8288.foodwastereduction.constants;
 
 /**
  *

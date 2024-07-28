@@ -4,13 +4,12 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
-import java.util.List;
-import org.cst8288.foodwastereduction.model.Subscription;
-
 /**
  *
  * @author ryany
  */
-public interface SurplusObserver {
-    void update(Inventory surplusItem);
+public interface Subject {
+    void registerObserver(Observer observer);
+    void removeObserver(Observer observer);
+    void notifyObservers();    
 }

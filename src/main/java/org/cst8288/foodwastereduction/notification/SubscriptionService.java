@@ -1,39 +1,24 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package org.cst8288.foodwastereduction.notification;
 
-import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
+import java.util.List;
+import java.util.Set;
+import org.cst8288.foodwastereduction.constants.CommunicationPreference;
+import org.cst8288.foodwastereduction.constants.FoodCategory;
 import org.cst8288.foodwastereduction.model.Subscription;
-import org.cst8288.foodwastereduction.model.User;
 
 /**
  *
  * @author ryany
  */
-public class SubscriptionService {
-    private InventoryManager inventoryManager;
-    private SubscriptionDAO subscriptionDAO;
-	private NotificationService notificationService;
-    private FoodItemDAO foodItemDAO;
-
-    public SubscriptionService(InventoryManager inventoryManager, SubscriptionDAO subscriptionDAO, 
-                               NotificationService notificationService, FoodItemDAO foodItemDAO) {
-        this.inventoryManager = inventoryManager;
-        this.subscriptionDAO = subscriptionDAO;
-        this.notificationService = notificationService;
-        this.foodItemDAO = foodItemDAO;
-    }
-
-    public void subscribe(User user, int retailerId) {
-        Subscription subscription = new Subscription(user.getUserId(), retailerId, user.getCommunicationPreference(), user.getFoodPreferences());
-        subscriptionDAO.saveSubscription(subscription);
-        UserNotificationObserver observer = new UserNotificationObserver(user, notificationService, foodItemDAO);
-        inventoryManager.registerObserver(observer);
-    }
-
-    public void unsubscribe(User user, int retailerId) {
-        subscriptionDAO.deleteSubscription(user.getUserId(), retailerId);
-    }
+public interface SubscriptionService {
+    void addSubscription(int userId, int retailerId, String communicationPreference, Set<String> foodPreferences);
+    void updateSubscription(Subscription subscription);
+    List<Subscription> getSubscriptionsByRetailer(int retailerId);
+    List<Subscription> getSubscriptionsByUser(int userId);
+    void removeSubscription(int userId, int retailerId);
+    boolean hasSubscription(int userId, int retailerId);
 }

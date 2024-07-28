@@ -11,14 +11,14 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.model.User;
-import org.cst8288.foodwastereduction.model.UserType;
+import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.utility.DatetimeUtil;
 
 /**
  *
  * @author Hongxiu Guo
  */
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDAO{
     
     /**
      * Gets user by user email
@@ -91,5 +91,45 @@ public class UserDaoImpl implements UserDao{
     }
     
     
-    
+    @Override
+    public User getById(int userId) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        User user = null;
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM Users WHERE UserID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            
+            rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setName(rs.getString("Name"));
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("PasswordHash"));
+                user.setUserType(UserType.valueOf(rs.getString("UserType").toUpperCase()));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                user.setAddress(rs.getString("Address"));
+                user.setCity(rs.getString("City"));
+                user.setCreateAt(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("CreatedAt"), "YYYY-MM-DD HH:mm"));
+            }
+             
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // 确保关闭资源
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return user;
+    }    
 }
