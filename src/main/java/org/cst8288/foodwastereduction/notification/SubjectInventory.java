@@ -34,6 +34,7 @@ public class SubjectInventory implements Subject {
     @Override
     public void notifyObservers() {
         for (Observer observer : observers) {
+            System.out.print(observer); // for testing
             observer.update(inventory);
         }
     }

@@ -14,9 +14,9 @@ import java.time.temporal.ChronoUnit;
 import org.cst8288.foodwastereduction.constants.SurplusStatus;
 
 public class Inventory {
-    private int inventoryID;
-    private int retailerID;
-    private int foodItemID;
+    private int inventoryId;
+    private int retailerId;
+    private int foodItemId;
     private String batchNumber;
     private int quantity;
     private double regularPrice;
@@ -34,12 +34,12 @@ public class Inventory {
     public Inventory() {}
 
     // Parameterized constructor
-    public Inventory(int inventoryID, int retailerID, int foodItemID, String batchNumber,
+    public Inventory(int inventoryId, int retailerId, int foodItemId, String batchNumber,
             int quantity, double regularPrice, double discountRate, LocalDate expirationDate, 
-            LocalDate receiveDate, boolean isSurplus, SurplusStatus surplusStatus, Timestamp lastUpdated, boolean isActive) {
-        this.inventoryID = inventoryID;
-        this.retailerID = retailerID;
-        this.foodItemID = foodItemID;
+            LocalDate receiveDate, boolean isSurplus, SurplusStatus surplusStatus, boolean isActive) {
+        this.inventoryId = inventoryId;
+        this.retailerId = retailerId;
+        this.foodItemId = foodItemId;
         this.batchNumber = batchNumber;
         this.quantity = quantity;
         this.regularPrice = regularPrice;
@@ -53,28 +53,28 @@ public class Inventory {
     }
 
     // Getters and Setters
-    public int getInventoryID() {
-        return inventoryID;
+    public int getInventoryId() {
+        return inventoryId;
     }
 
-    public void setInventoryID(int inventoryID) {
-        this.inventoryID = inventoryID;
+    public void setInventoryId(int inventoryId) {
+        this.inventoryId = inventoryId;
     }
 
-    public int getRetailerID() {
-        return retailerID;
+    public int getRetailerId() {
+        return retailerId;
     }
 
-    public void setRetailerID(int retailerID) {
-        this.retailerID = retailerID;
+    public void setRetailerId(int retailerId) {
+        this.retailerId = retailerId;
     }
 
-    public int getFoodItemID() {
-        return foodItemID;
+    public int getFoodItemId() {
+        return foodItemId;
     }
 
-    public void setFoodItemID(int foodItemID) {
-        this.foodItemID = foodItemID;
+    public void setFoodItemId(int foodItemId) {
+        this.foodItemId = foodItemId;
     }
 
     public String getBatchNumber() {
@@ -160,9 +160,9 @@ public class Inventory {
     @Override
     public String toString() {
         return "Inventory{" +
-                "inventoryID=" + inventoryID +
-                ", retailerID=" + retailerID +
-                ", foodItemID=" + foodItemID +
+                "inventoryID=" + inventoryId +
+                ", retailerID=" + retailerId +
+                ", foodItemID=" + foodItemId +
                 ", batchNumber='" + batchNumber + '\'' +
                 ", quantity=" + quantity +
                 ", regularPrice=" + regularPrice +

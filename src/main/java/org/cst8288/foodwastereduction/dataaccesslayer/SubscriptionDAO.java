@@ -17,4 +17,5 @@ public interface SubscriptionDAO {
     List<Subscription> getSubscriptionsByRetailer(int retailerId);
     List<Subscription> getSubscriptionsByUser(int userId);
     void deleteSubscription(int userId, int retailerId);
+    Subscription getSubscription(int consumerId, int retailerId);
 }

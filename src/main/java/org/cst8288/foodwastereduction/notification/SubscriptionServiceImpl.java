@@ -7,6 +7,8 @@ package org.cst8288.foodwastereduction.notification;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import org.cst8288.foodwastereduction.constants.FoodCategory;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.model.Subscription;
 
@@ -54,4 +56,30 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         List<Subscription> userSubscriptions = subscriptionDAO.getSubscriptionsByUser(userId);
         return userSubscriptions.stream().anyMatch(sub -> sub.getRetailerId() == retailerId);
     }
+    
+    @Override
+    public boolean isSubscribed(int consumerId, int retailerId) {
+        return hasSubscription(consumerId, retailerId);
+    }
+
+    @Override
+    public boolean isInterestedInCategory(int consumerId, int retailerId, FoodCategory foodCategory) {
+        Subscription subscription = subscriptionDAO.getSubscription(consumerId, retailerId);
+        if (subscription == null) {
+            return false;
+        }
+        return subscription.getFoodPreferences().contains(foodCategory);
+    }
+
+    /**
+     * Used to get Food Preferences of a consumer
+     * @param consumerId
+     * @return 
+     */
+    private Set<String> getFoodPreferences(int consumerId) {
+        List<Subscription> userSubscriptions = subscriptionDAO.getSubscriptionsByUser(consumerId);
+        return userSubscriptions.stream()
+            .flatMap(sub -> sub.getFoodPreferences().stream())
+            .collect(Collectors.toSet());
+    }    
 }

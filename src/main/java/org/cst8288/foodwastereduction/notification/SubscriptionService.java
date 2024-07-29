@@ -21,4 +21,6 @@ public interface SubscriptionService {
     List<Subscription> getSubscriptionsByUser(int userId);
     void removeSubscription(int userId, int retailerId);
     boolean hasSubscription(int userId, int retailerId);
+    boolean isSubscribed(int consumerId, int retailerId);
+    boolean isInterestedInCategory(int consumerId, int retailerId, FoodCategory foodCategory);
 }

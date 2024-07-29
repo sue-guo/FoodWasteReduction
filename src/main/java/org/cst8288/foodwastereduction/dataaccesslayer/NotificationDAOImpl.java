@@ -18,12 +18,12 @@ import org.cst8288.foodwastereduction.model.Notification;
  * @author ryany
  */
 public class NotificationDAOImpl implements NotificationDAO {
-    private Connection connection; // Assume this is set up in the constructor
 
     @Override
     public void saveNotification(Notification notification) {
         String sql = "INSERT INTO Notifications (UserID, InventoryID, NotificationType, CreatedAt) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DataSource.getConnection(); 
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, notification.getUserId());
             pstmt.setInt(2, notification.getInventoryId());
             pstmt.setString(3, notification.getNotificationType());
@@ -31,6 +31,7 @@ public class NotificationDAOImpl implements NotificationDAO {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error saving notification", e);
         }
     }
 
@@ -38,7 +39,8 @@ public class NotificationDAOImpl implements NotificationDAO {
     public List<Notification> getNotificationsByUserId(int userId) {
         List<Notification> notifications = new ArrayList<>();
         String sql = "SELECT * FROM Notifications WHERE UserID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DataSource.getConnection(); 
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -53,6 +55,7 @@ public class NotificationDAOImpl implements NotificationDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error retrieving notification", e);            
         }
         return notifications;
     }
@@ -60,11 +63,13 @@ public class NotificationDAOImpl implements NotificationDAO {
     @Override
     public void deleteNotification(int notificationId) {
         String sql = "DELETE FROM Notifications WHERE NotificationID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DataSource.getConnection(); 
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, notificationId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error saving notification", e);            
         }
     }
 }

@@ -13,7 +13,7 @@ import java.util.Properties;
  * @author Hongxiu Guo
  */
 public class DataSource {
-     private static Connection connection = null;
+    private static Connection connection = null;
     private DataSource() { }
     
      // static load jdbc driver
@@ -31,7 +31,7 @@ public class DataSource {
      */
     public static Connection getConnection() {
         try {
-            if (connection == null) {
+            if (connection == null || connection.isClosed()) {
                 // get connection information 
                 String[] connectionInfo = openPropsFile();
                 // connect to database
@@ -69,6 +69,7 @@ public class DataSource {
         String username = props.getProperty("jdbc.username");//CST8288Group
         String password = props.getProperty("jdbc.password"); // 12345678
        
+        System.out.printf("DataSource:\nurl:%s\nusername:%s\npassword:%s\n", connectionString, username, password);
 
         String[] info = new String[3];
         info[0] = connectionString;

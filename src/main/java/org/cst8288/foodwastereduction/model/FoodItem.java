@@ -11,8 +11,8 @@ import org.cst8288.foodwastereduction.constants.FoodCategory;
  * @author ryany
  */
 public class FoodItem {
-    private int foodItemID;
-    private int retailerID;
+    private int foodItemId;
+    private int retailerId;
     private String name;
     private String description;
     private FoodCategory category;
@@ -23,9 +23,9 @@ public class FoodItem {
     public FoodItem() {}
 
     // Parameterized constructor
-    public FoodItem(int foodItemID, int retailerID, String name, String description, FoodCategory category, String brand, String unit) {
-        this.foodItemID = foodItemID;
-        this.retailerID = retailerID;
+    public FoodItem(int foodItemId, int retailerId, String name, String description, FoodCategory category, String brand, String unit) {
+        this.foodItemId = foodItemId;
+        this.retailerId = retailerId;
         this.name = name;
         this.description = description;
         this.category = category;
@@ -34,20 +34,20 @@ public class FoodItem {
     }
 
     // Getters and Setters
-    public int getFoodItemID() {
-        return foodItemID;
+    public int getFoodItemId() {
+        return foodItemId;
     }
 
-    public void setFoodItemID(int foodItemID) {
-        this.foodItemID = foodItemID;
+    public void setFoodItemId(int foodItemId) {
+        this.foodItemId = foodItemId;
     }
 
-    public int getRetailerID() {
-        return retailerID;
+    public int getRetailerId() {
+        return retailerId;
     }
 
-    public void setRetailerID(int retailerID) {
-        this.retailerID = retailerID;
+    public void setRetailerId(int retailerId) {
+        this.retailerId = retailerId;
     }
 
     public String getName() {
@@ -93,8 +93,8 @@ public class FoodItem {
     @Override
     public String toString() {
         return "FoodItemDTO{" +
-                "foodItemID=" + foodItemID +
-                ", retailerID=" + retailerID +
+                "foodItemId=" + foodItemId +
+                ", retailerId=" + retailerId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +

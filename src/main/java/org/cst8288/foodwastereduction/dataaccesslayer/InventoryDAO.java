@@ -14,8 +14,8 @@ import org.cst8288.foodwastereduction.model.Inventory;
  */
 public interface InventoryDAO {
     void insert(Inventory inventory) throws SQLException;
-    Inventory getById(int inventoryID) throws SQLException;
+    Inventory getById(int inventoryId) throws SQLException;
     List<Inventory> getAll() throws SQLException;
     void update(Inventory inventory) throws SQLException;
-    void delete(int inventoryID) throws SQLException;
+    void delete(int inventoryId) throws SQLException;
 }

@@ -23,17 +23,17 @@ import org.cst8288.foodwastereduction.model.User;
  * @author ryany
  */
 public class NotificationMessageServiceImpl implements NotificationMessageService {
-    private UserDAO userDAO;
-    private FoodItemDAO foodItemDAO;
-
-    public NotificationMessageServiceImpl(UserDAO userDAO, FoodItemDAO foodItemDAO) {
-        this.userDAO = userDAO;
+    private final FoodItemDAO foodItemDAO;
+    private final UserDAO userDAO;
+    
+    public NotificationMessageServiceImpl(FoodItemDAO foodItemDAO, UserDAO userDAO) {
         this.foodItemDAO = foodItemDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
     public String createDonationMessage(Inventory item) {
-        return createMessage(item, UserType.CHARITABLE_ORGANIZATION);
+        return createMessage(item, UserType.CHARITABLEORGANIZATION);
     }
 
     @Override
@@ -45,12 +45,12 @@ public class NotificationMessageServiceImpl implements NotificationMessageServic
         FoodItem foodItem;
         User retailer;
         try {
-            foodItem = foodItemDAO.getById(item.getFoodItemID());
-            retailer = userDAO.getById(item.getRetailerID());
+            foodItem = foodItemDAO.getById(item.getFoodItemId());
+            retailer = userDAO.getById(item.getRetailerId());
             if (userType.equals(UserType.CONSUMER)){
-                return "Discount available for " + foodItem.getName() + " at retailer " + item.getRetailerID() + 
-                   ". Regular price: $" + item.getRegularPrice()  + ", Discount: " + item.getDiscountRate();            
-            } else if (userType.equals(UserType.CHARITABLE_ORGANIZATION)){
+                return "Discount available for " + foodItem.getName() + " at retailer " + retailer.getName() + 
+                   ": Regular price: $" + item.getRegularPrice()  + ", Discount: " + item.getDiscountRate();        
+            } else if (userType.equals(UserType.CHARITABLEORGANIZATION)){
                 return "Donation available for " + foodItem.getName() + " at retailer " + retailer.getName();            
             } else {
                 return "Unknown user type";

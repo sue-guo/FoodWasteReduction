@@ -12,7 +12,7 @@ import org.cst8288.foodwastereduction.constants.UserType;
  * @author Hongxiu Guo
  */
 public class User {
-    private Integer userID;
+    private Integer userId;
     private String name;
     private String email;
     private String password;
@@ -22,12 +22,26 @@ public class User {
     private String city;
     private String createAt;
 
-    public Integer getUserID() {
-        return userID;
+    public User(){};
+    
+    public User(Integer userId, String name, String email, String password, UserType userType, String phoneNumber, String address, String city) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.city = city;
     }
 
-    public void setUserID(Integer userID) {
-        this.userID = userID;
+    
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getName() {

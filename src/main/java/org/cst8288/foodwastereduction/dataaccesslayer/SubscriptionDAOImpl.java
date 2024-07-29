@@ -22,20 +22,16 @@ import java.util.*;
 import org.cst8288.foodwastereduction.model.Subscription;
 
 public class SubscriptionDAOImpl implements SubscriptionDAO {
-    private Connection connection; 
-
-    public SubscriptionDAOImpl(Connection connection) {
-        this.connection = connection;
-    }
 
     @Override
     public void saveSubscription(Subscription subscription) {
         String sql = "INSERT INTO Subscriptions (UserID, RetailerID, CommunicationPreference, FoodPreferences, CreatedAt, LastUpdated) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = DataSource.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, subscription.getUserId());
             pstmt.setInt(2, subscription.getRetailerId());
-            pstmt.setString(3, subscription.getCommunicationPreference());
+            pstmt.setString(3, subscription.getCommunicationPreference().toUpperCase());
             pstmt.setString(4, String.join(",", subscription.getFoodPreferences())); // transfer Set to String
             pstmt.setTimestamp(5, subscription.getCreatedAt());
             pstmt.setTimestamp(6, subscription.getLastUpdated());
@@ -61,9 +57,10 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     public void updateSubscription(Subscription subscription) {
         String sql = "UPDATE Subscriptions SET RetailerID = ?, CommunicationPreference = ?, " +
                      "FoodPreferences = ?, LastUpdated = ? WHERE SubscriptionID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DataSource.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, subscription.getRetailerId());
-            pstmt.setString(2, subscription.getCommunicationPreference());
+            pstmt.setString(2, subscription.getCommunicationPreference().toUpperCase());
             pstmt.setString(3, String.join(",", subscription.getFoodPreferences()));
             pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
             pstmt.setInt(5, subscription.getSubscriptionId());
@@ -77,7 +74,8 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     @Override
     public void deleteSubscription(int userId, int retailerId) {
         String sql = "DELETE FROM Subscriptions WHERE UserID = ? AND RetailerID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DataSource.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             pstmt.setInt(2, retailerId);
             pstmt.executeUpdate();
@@ -90,7 +88,8 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     public List<Subscription> getSubscriptionsByRetailer(int retailerId) {
         List<Subscription> subscriptions = new ArrayList<>();
         String sql = "SELECT * FROM Subscriptions WHERE RetailerID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DataSource.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, retailerId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -107,7 +106,8 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     public List<Subscription> getSubscriptionsByUser(int userId) {
         List<Subscription> subscriptions = new ArrayList<>();
         String sql = "SELECT * FROM Subscriptions WHERE UserID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DataSource.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -126,9 +126,47 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
             rs.getInt("UserID"),
             rs.getInt("RetailerID"),
             rs.getString("CommunicationPreference"),
-            new HashSet<>(Arrays.asList(rs.getString("FoodPreferences").split(","))),
+            new HashSet<>(Arrays.asList(rs.getString("FoodPreferences").toUpperCase().split(","))),
             rs.getTimestamp("CreatedAt"),
             rs.getTimestamp("LastUpdated")
         );
     }
+
+    @Override
+    public Subscription getSubscription(int consumerId, int retailerId) {
+        String sql = "SELECT * FROM subscriptions WHERE user_id = ? AND retailer_id = ?";
+        
+        try (Connection connection = DataSource.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, consumerId);
+            pstmt.setInt(2, retailerId);
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToSubscription(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return null;  // No subscription
+    }
+
+    private Subscription mapResultSetToSubscription(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        int userId = rs.getInt("user_id");
+        int retailerId = rs.getInt("retailer_id");
+        String communicationPreference = rs.getString("communication_preference");
+        
+        // Save the fodd preferences in string split by ","
+        String foodPreferencesStr = rs.getString("food_preferences").toUpperCase();
+        Set<String> foodPreferences = new HashSet<>(Arrays.asList(foodPreferencesStr.split(",")));
+        
+        Timestamp createdAt = rs.getTimestamp("created_at");
+        Timestamp updatedAt = rs.getTimestamp("updated_at");
+
+        return new Subscription(id, userId, retailerId, communicationPreference, foodPreferences, createdAt, updatedAt);
+    }    
+    
 }
