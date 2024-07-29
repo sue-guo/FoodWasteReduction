@@ -77,8 +77,10 @@ public class FoodItemServlet extends HttpServlet {
         FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
         foodItemBusiness.addFoodItem(foodItem);
         
-        // Redirect to doGet method to list all current food items
-        doGet(request, response);
+        // Redirect to list all current food items
+        RequestDispatcher dispatcher = request.getRequestDispatcher("views/foodItem.jsp");
+        dispatcher.forward(request, response);
+        
    
     }
     

@@ -1,101 +1,98 @@
 <%-- 
     Document   : inventory
-    Created on : Jul 27, 2024, 10:41:48 PM
-    Author     : Carri
+    Created on : [Current Date]
+    Author     : [Your Name]
 --%>
-
+<%@page import="org.cst8288.foodwastereduction.model.User"%>
+<%@page import="org.cst8288.foodwastereduction.model.InventoryDTO"%>
+<%@page import="org.cst8288.foodwastereduction.model.FoodItemDTO"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory</title>
-    <link rel="stylesheet" href="styles/inventory.css">
+    <title>Retailer's Inventory Management</title>
+    <base href="${pageContext.request.contextPath}/" />
+    <link rel="stylesheet" href="styles/fooditemlist.css">
 </head>
 <body>
     <header>
         <h1>Food Waste Reduction Platform</h1>
         <nav>
             <ul>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="inventory.html">Inventory</a></li>
-                <li><a href="add.html">Add Item</a></li>
-                <li><a href="reports.html">Reports</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="views/home.jsp">Home</a></li>
+                <li>
+                    <%
+                        User user = (User) session.getAttribute("user");
+                        if (user != null) {
+                            out.print("<p>Welcome, " + user.getName() + "! </p>" + 
+                            "<a href=\"logout\" class=\"logout\">[ Logout ]</a>");
+                        }
+                    %>
+                </li>
             </ul>
         </nav>
     </header>
+    
     <main>
-        <h2>Inventory List</h2>
-        <table id="inventory-table">
+        <h2>Current Inventory</h2>
+        <%
+            List<InventoryDTO> inventories = (List<InventoryDTO>) request.getAttribute("inventories");
+            List<FoodItemDTO> foodItems = (List<FoodItemDTO>) request.getAttribute("foodItems");
+            if (inventories == null || inventories.isEmpty()) {
+        %>
+            <p>No Inventory Items Now!</p>
+        <%
+            } else {
+        %>
+        <table>
             <thead>
                 <tr>
-                    <th>Item Name</th>
+                    <th>Food Item Name</th>
+                    <th>Category</th>
                     <th>Quantity</th>
+                    <th>Regular Price</th>
                     <th>Expiration Date</th>
-                    <th>Status</th>
-                    <th>Operation</th>
                 </tr>
             </thead>
             <tbody>
+                <%
+                    for (InventoryDTO inventory : inventories) {
+                        FoodItemDTO foodItem = foodItems.stream()
+                            .filter(item -> item.getFoodItemId().equals(inventory.getFoodItemId()))
+                            .findFirst()
+                            .orElse(null);
+                        if (foodItem != null) {
+                %>
                 <tr>
-                    <td>Apples</td>
-                    <td>10</td>
-                    <td>2024-01-01</td>
-                    <td>Good</td>
-                    <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
-                    </td>
+                    <td><%= foodItem.getName() %></td>
+                    <td><%= foodItem.getCategory() %></td>
+                    <td><%= inventory.getQuantity() %></td>
+                    <td><%= inventory.getRegularPrice() %></td>
+                    <td><%= inventory.getExpirationDate() %></td>
                 </tr>
-                <tr>
-                    <td>Oranges</td>
-                    <td>20</td>
-                    <td>2024-01-01</td>
-                    <td>Good</td>
-                    <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Oranges</td>
-                    <td>20</td>
-                    <td>2024-01-01</td>
-                    <td>Good</td>
-                    <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Oranges</td>
-                    <td>20</td>
-                    <td>2024-01-01</td>
-                    <td>Good</td>
-                    <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Oranges</td>
-                    <td>20</td>
-                    <td>2024-01-01</td>
-                    <td>Good</td>
-                    <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
-                    </td>
-                </tr>
+                <%
+                        }
+                    }
+                %>
             </tbody>
         </table>
-        <button onclick="loadInventory()">Load Inventory</button>
+        <%
+            }
+        %>
+        <button onclick="loadFoodItem(<%= user.getUserID() %>)">Add Inventory</button>
     </main>
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>
     </footer>
-    <script src="scripts.js"></script>
+   
+    <script>
+        function loadFoodItem(userId) {
+            // load the food item management page
+            window.location.href = "inventoryAdd?userId="+userId;
+        }
+    </script>
 </body>
 </html>

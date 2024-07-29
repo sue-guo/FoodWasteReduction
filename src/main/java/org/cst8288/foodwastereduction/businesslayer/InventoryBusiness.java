@@ -12,36 +12,31 @@ import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**
  *
- * @author Carri
+ * @author WANG JIAYUN
  */
 public class InventoryBusiness {
-    
-    
-    private InventoryDAO inventoryDAO = null;
-    private List<InventoryDTO> inventories = new ArrayList<>();
-    private InventoryDTO inventory = new InventoryDTO();
-    
+
+    private InventoryDAO inventoryDAO;
+    private List<InventoryDTO> inventories;
+
     public InventoryBusiness() {
-        inventoryDAO = new InventoryDAOImpl();
+        this.inventoryDAO = new InventoryDAOImpl();
+        this.inventories = new ArrayList<>();
     }
 
-    public List<InventoryDTO> getFoodItemsByRetailerID(int RetailerID) {
-      
-        return inventories;
-        
+    public List<InventoryDTO> getInventoriesByRetailerId(int retailerId) {
+        return inventoryDAO.getInventoriesByRetailerId(retailerId);
     }
 
-    public InventoryDTO getInventoryByID(int InventoryID) {
-        
-       return inventory;
-        
+    public InventoryDTO getInventoryById(int inventoryID) {
+        return inventoryDAO.getInventoryById(inventoryID);
     }
 
-    
-    public void addInventory (InventoryDTO inventory) {
-        // userDao.addUser(user);
+    public void addInventory(InventoryDTO inventory) {
+        inventoryDAO.addInventory(inventory);
     }
-    
-    
-    
+
+    public void updateInventory(InventoryDTO inventory) {
+        inventoryDAO.updateInventory(inventory);
+    }
 }

@@ -4,10 +4,23 @@
  */
 package org.cst8288.foodwastereduction.dataaccesslayer;
 
+import java.util.List;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
+
 /**
  *
  * @author WANG JIAYUN
  */
 public interface InventoryDAO {
+    
+     
+    List<InventoryDTO> getInventoriesByRetailerId(int retailerId);
+    
+    InventoryDTO getInventoryById(int inventoryID);
+    
+    void addInventory(InventoryDTO inventory);
+    
+    void updateInventory(InventoryDTO inventory);
+    
     
 }
