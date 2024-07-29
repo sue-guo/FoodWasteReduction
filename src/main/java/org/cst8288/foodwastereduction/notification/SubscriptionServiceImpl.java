@@ -5,12 +5,15 @@
 package org.cst8288.foodwastereduction.notification;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.cst8288.foodwastereduction.constants.FoodCategory;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDAO;
 import org.cst8288.foodwastereduction.model.Subscription;
+import org.cst8288.foodwastereduction.model.User;
 
 /**
  *
@@ -18,9 +21,11 @@ import org.cst8288.foodwastereduction.model.Subscription;
  */
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionDAO subscriptionDAO;
+    private final UserDAO userDAO;
 
-    public SubscriptionServiceImpl(SubscriptionDAO subscriptionDAO) {
+    public SubscriptionServiceImpl(SubscriptionDAO subscriptionDAO, UserDAO userDAO) {
         this.subscriptionDAO = subscriptionDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -81,5 +86,25 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return userSubscriptions.stream()
             .flatMap(sub -> sub.getFoodPreferences().stream())
             .collect(Collectors.toSet());
+    }
+    
+    /**
+     * This function is used to get Subscribers by retailerId
+     * @param retailerId
+     * @return 
+     */
+    @Override
+    public List<User> getSubscribersByRetailerId(int retailerId) {
+        List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
+        List<User> subscribers = new ArrayList<>();
+        
+        for (Subscription subscription : subscriptions) {
+            User user = userDAO.getById(subscription.getUserId());
+            if (user != null) {
+                subscribers.add(user);
+            }
+        } 
+        return subscribers;
     }    
+    
 }

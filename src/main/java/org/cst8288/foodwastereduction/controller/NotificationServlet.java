@@ -4,7 +4,6 @@
  */
 package org.cst8288.foodwastereduction.controller;
 import java.io.IOException;
-import static java.lang.System.out;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,7 +56,7 @@ public class NotificationServlet extends HttpServlet {
         EmailConfig emailConfig = EmailConfig.getTestConfig();
         notificationService = new NotificationServiceImpl(notificationDAO, true, emailConfig);
         messageService = new NotificationMessageServiceImpl(new FoodItemDAOImpl(), userDAO);
-        subscriptionService = new SubscriptionServiceImpl(subscriptionDAO);
+        subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, userDAO);
     }
 
     @Override
@@ -84,7 +83,7 @@ public class NotificationServlet extends HttpServlet {
                 SurplusStatus newStatus = SurplusStatus.valueOf(statusString);
                 
                 SubjectInventory subject = new SubjectInventory(inventory);
-                List<User> subscribers = userDAO.getSubscribersByRetailerId(inventory.getRetailerId());
+                List<User> subscribers = subscriptionService.getSubscribersByRetailerId(inventory.getRetailerId());
                 for (User subscriber : subscribers) {
                     Observer observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber);
                     subject.registerObserver(observer);
