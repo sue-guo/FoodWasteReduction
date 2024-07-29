@@ -1,6 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* File: LoginServlet.java
+ * Author: Hongxiu Guo
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Date: 2024.07
+ * Modified: 
+ * Description: This Servlet class for handling user login requests.
+ *
  */
 package org.cst8288.foodwastereduction.controller;
 
@@ -15,17 +20,27 @@ import org.cst8288.foodwastereduction.businesslayer.UserBusiness;
 import org.cst8288.foodwastereduction.model.User;
 
 /**
- *
+ * Servlet for handling user login requests.
+ * 
+ * This servlet processes HTTP POST requests to authenticate users based on
+ * the provided email and password. It interacts with the UserBusiness class
+ * to perform authentication and forwards the user to the appropriate JSP page
+ * based on the authentication result.
+ * 
  * @author Hongxiu Guo
  */
 public class LoginServlet extends HttpServlet {
 
 
     /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
+     * Handles HTTP POST requests for user login.
+     * 
+     * Retrieves the email and password from the request parameters, 
+     * uses the UserBusiness class to authenticate the user, and forwards
+     * the request to the appropriate JSP page based on the authentication result.
+     * 
+     * @param request the HttpServletRequest object containing the request data
+     * @param response the HttpServletResponse object used to send a response to the client
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
