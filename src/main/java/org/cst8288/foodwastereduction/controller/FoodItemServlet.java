@@ -77,9 +77,9 @@ public class FoodItemServlet extends HttpServlet {
         FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
         foodItemBusiness.addFoodItem(foodItem);
         
+   
         // Redirect to list all current food items
-        RequestDispatcher dispatcher = request.getRequestDispatcher("views/foodItem.jsp");
-        dispatcher.forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/foodItem?userId=" + userId);
         
    
     }

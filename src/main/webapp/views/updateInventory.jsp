@@ -1,19 +1,13 @@
-<%-- 
-    Document   : addInventory
-    Created on : Jul 27, 2024, 10:43:09 PM
-    Author     : WANG JIAYUN
---%>
-
-<%@page import="org.cst8288.foodwastereduction.model.FoodItemDTO"%>
-<%@page import="java.util.List"%>
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
-<%@page import="org.cst8288.foodwastereduction.model.UserType"%>
+<%@page import="org.cst8288.foodwastereduction.model.FoodItemDTO"%>
+<%@page import="org.cst8288.foodwastereduction.model.InventoryDTO"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Inventory Add Page</title>
+        <title>Inventory Update Page</title>
         <base href="${pageContext.request.contextPath}/" />
         <link rel="stylesheet" href="styles/add.css">
     </head>
@@ -26,7 +20,6 @@
                     <li><a href="views/home.jsp">Home</a></li>
                     <li>
                         <%
-                            // Get the session attribute
                             User user = (User) session.getAttribute("user");
                             if (user != null) {
                                 out.print("<p>Welcome, " + user.getName() + "! </p>" + 
@@ -39,14 +32,17 @@
         </header>
                     
         <main>
-            <form action="inventoryAdd" method="post">
-                 <div>
+            <form action="inventoryUpdate" method="post">
+              
+                <div>
                     <label for="foodItemId">Food Item:</label>
                     <select id="foodItemId" name="foodItemId" required>
                         <%
                             List<FoodItemDTO> foodItems = (List<FoodItemDTO>) request.getAttribute("foodItems");
+                            InventoryDTO inventory = (InventoryDTO) request.getAttribute("inventory");
                             for (FoodItemDTO foodItem : foodItems) {
-                                out.print("<option value=\"" + foodItem.getFoodItemId() + "\">" + foodItem.getName() + "</option>");
+                                String selected = foodItem.getFoodItemId() == inventory.getFoodItemId() ? "selected" : "";
+                                out.print("<option value=\"" + foodItem.getFoodItemId() + "\" " + selected + ">" + foodItem.getName() + "</option>");
                             }
                         %>
                     </select>
@@ -54,37 +50,39 @@
                 
                 <div>
                     <label for="batchNumber">Batch Number:</label>
-                    <input type="text" id="batchNumber" name="batchNumber" value="${param.batchNumber}" required>
+                    <input type="text" id="batchNumber" name="batchNumber" value="${inventory.batchNumber}" required>
                 </div>
                 
                 <div>
                     <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" value="${param.quantity}" required>
+                    <input type="number" id="quantity" name="quantity" value="${inventory.quantity}" required>
                 </div>
                 
                 <div>
                     <label for="regularPrice">Regular Price:</label>
-                    <input type="number" step="0.01" id="regularPrice" name="regularPrice" value="${param.regularPrice}" required>
+                    <input type="number" step="0.01" id="regularPrice" name="regularPrice" value="${inventory.regularPrice}" required>
                 </div>
                 
                 <div>
                     <label for="discountRate">Discount Rate:</label>
-                    <input type="number" step="0.01" id="discountRate" name="discountRate" value="${param.discountRate}" required>
+                    <input type="number" step="0.01" id="discountRate" name="discountRate" value="${inventory.discountRate}" required>
                 </div>
                 
                 <div>
                     <label for="expirationDate">Expiration Date:</label>
-                    <input type="date" id="expirationDate" name="expirationDate" value="${param.expirationDate}" required>
+                    <input type="date" id="expirationDate" name="expirationDate" value="${inventory.expirationDate}" required>
                 </div>
                 
                 <div>
                     <label for="receiveDate">Receive Date:</label>
-                    <input type="date" id="receiveDate" name="receiveDate" value="${param.receiveDate}" required>
+                    <input type="date" id="receiveDate" name="receiveDate" value="${inventory.receiveDate}" required>
                 </div>
+                
+                <input type="hidden" name="inventoryId" value="${inventory.inventoryId}">
                 
                 <input type="hidden" name="userId" value="<%= user != null ? user.getUserID() : "" %>">
                 
-                <button type="submit">Add Inventory</button>
+                <button type="submit">Update Inventory</button>
             </form>
         </main>
     </body>

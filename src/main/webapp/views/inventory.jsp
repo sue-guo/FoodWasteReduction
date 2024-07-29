@@ -55,6 +55,9 @@
                     <th>Quantity</th>
                     <th>Regular Price</th>
                     <th>Expiration Date</th>
+                    <th>Is Active</th>
+                    <th>Actions</th>
+                    <th> </th>
                 </tr>
             </thead>
             <tbody>
@@ -72,6 +75,38 @@
                     <td><%= inventory.getQuantity() %></td>
                     <td><%= inventory.getRegularPrice() %></td>
                     <td><%= inventory.getExpirationDate() %></td>
+                    <td><%= inventory.getIsActive() ? "Yes" : "No" %></td>
+                    
+                     <%
+                           if (inventory.getIsActive()) {
+                     %>
+                    <td>
+                       <%
+                           if (inventory.getIsSurplus()) {
+                        %>
+                        <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Donation')">Donation</button>
+                        <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Discount')">Sale</button>
+                        <%
+                            } else {
+                        %>
+                        <span>None</span>
+                        <%
+                            }
+                        %>
+                    </td>
+                    <td>
+                        <button onclick="editInventory(<%= inventory.getInventoryId() %>)">Edit</button>
+                    </td>
+                    <%
+                            }else{
+                    %>
+                    
+                    <td></td>
+                    <td></td>
+                   
+                    <%
+                               }
+                    %>
                 </tr>
                 <%
                         }
@@ -92,6 +127,15 @@
         function loadFoodItem(userId) {
             // load the food item management page
             window.location.href = "inventoryAdd?userId="+userId;
+        }
+          function editInventory(inventoryId) {
+            // redirect to the InventoryUpdateServlet with the inventoryId
+            window.location.href = "inventoryUpdate?inventoryId=" + inventoryId;
+        }
+
+        function updateSurplusStatus(inventoryId, status) {
+            // redirect to the InventoryStatusServlet with the inventoryId and status
+            window.location.href = "inventoryStatus?inventoryId=" + inventoryId + "&status=" + status;
         }
     </script>
 </body>

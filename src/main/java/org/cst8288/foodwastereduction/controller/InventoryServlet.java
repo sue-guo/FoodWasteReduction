@@ -38,22 +38,8 @@ public class InventoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
      
-    
-        String userIdParam = request.getParameter("userId");
-        if (userIdParam == null || userIdParam.trim().isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or invalid userId parameter");
-            return;
-        }
-
-        int userId;
-        try {
-            userId = Integer.parseInt(userIdParam.trim());
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid userId parameter");
-            return;
-        }
-       
-        
+   
+       int userId = Integer.parseInt(request.getParameter("userId").trim());
        InventoryBusiness inventoryBusiness = new InventoryBusiness();
        List<InventoryDTO> inventories = inventoryBusiness.getInventoriesByRetailerId(userId);
        request.setAttribute("inventories", inventories);
@@ -61,6 +47,10 @@ public class InventoryServlet extends HttpServlet {
        FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
        List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
        request.setAttribute("foodItems", foodItems);
+       
+       
+     // set the is surplus to true if the expiretiondate is within 7 days from toda
+       
        
        RequestDispatcher dispatcher = request.getRequestDispatcher("views/inventory.jsp");
        dispatcher.forward(request, response);

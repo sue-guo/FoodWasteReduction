@@ -6,10 +6,17 @@ package org.cst8288.foodwastereduction.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
+import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**
  *
@@ -17,31 +24,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class InventoryUpdateServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet InventoryUpdateServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet InventoryUpdateServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -55,7 +37,21 @@ public class InventoryUpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        int inventoryId = Integer.parseInt(request.getParameter("inventoryId").trim());
+         
+        InventoryBusiness inventoryBusiness = new InventoryBusiness();
+        InventoryDTO inventory = inventoryBusiness.getInventoryById(inventoryId);
+        int retailerId = inventory.getRetailerId();
+        
+        FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
+        List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(retailerId);
+        
+        request.setAttribute("inventory", inventory);
+        request.setAttribute("foodItems", foodItems);
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("views/updateInventory.jsp");
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -69,17 +65,35 @@ public class InventoryUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        int userId = Integer.parseInt(request.getParameter("userId").trim());
+        int inventoryId = Integer.parseInt(request.getParameter("inventoryId").trim());
+        int foodItemId = Integer.parseInt(request.getParameter("foodItemId"));
+        String batchNumber = request.getParameter("batchNumber");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        double regularPrice = Double.parseDouble(request.getParameter("regularPrice"));
+        double discountRate = Double.parseDouble(request.getParameter("discountRate"));
+        Date expirationDate = Date.valueOf(request.getParameter("expirationDate"));
+        Date receiveDate = Date.valueOf(request.getParameter("receiveDate"));
+
+        InventoryDTO inventory = new InventoryDTO();
+        inventory.setRetailerId(userId);
+        inventory.setInventoryId(inventoryId);
+        inventory.setFoodItemId(foodItemId);
+        inventory.setBatchNumber(batchNumber);
+        inventory.setQuantity(quantity);
+        inventory.setRegularPrice(regularPrice);
+        inventory.setDiscountRate(discountRate);
+        inventory.setExpirationDate(expirationDate);
+        inventory.setReceiveDate(receiveDate);
+
+        InventoryBusiness inventoryBusiness = new InventoryBusiness();
+        inventoryBusiness.updateInventory(inventory);
+
+        response.sendRedirect(request.getContextPath() + "/inventory?userId=" + userId);
+      
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+   
 
 }
