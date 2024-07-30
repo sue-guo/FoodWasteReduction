@@ -1,6 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* File: SignupServlet.java
+ * Author: Hongxiu Guo
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Date: 2024.07
+ * Modified: 
+ * Description: This  Servlet class for handling user registration (signup) requests.
+ *
  */
 package org.cst8288.foodwastereduction.controller;
 
@@ -15,17 +20,28 @@ import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.utility.PasswordUtil;
 
 /**
- *
+ * Servlet for handling user registration (signup) requests.
+ * 
+ * This servlet processes HTTP POST requests to register new users. It checks
+ * if the user already exists based on the provided email, and if not, it adds
+ * the new user to the database. After successful registration, it redirects
+ * the user to the login page.
+ * 
  * @author Hongxiu Guo
  */
 public class SignupServlet extends HttpServlet {
 
 
     /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
+     * Handles HTTP POST requests for user registration.
+     * 
+     * Retrieves user details from the request parameters, checks if the user 
+     * already exists, and if not, adds the user to the database. It then 
+     * redirects to the login page upon successful registration or forwards 
+     * to the signup page with an error message if the user already exists.
+     * 
+     * @param request the HttpServletRequest object containing the request data
+     * @param response the HttpServletResponse object used to send a response to the client
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
@@ -49,9 +65,14 @@ public class SignupServlet extends HttpServlet {
     }
 
     /**
-     * Handle user addition into the database
-     * @param request
-     * @param response 
+     * Creates a User object from request parameters and adds it to the database.
+     * 
+     * This method retrieves user details from the request, creates a User object,
+     * hashes the password, sets the user type, and then adds the user to the database
+     * through the UserBusiness class.
+     * 
+     * @param request the HttpServletRequest object containing the request data
+     * @param response the HttpServletResponse object used to send a response to the client
      */
     private void addUser(HttpServletRequest request, HttpServletResponse response) {
         
