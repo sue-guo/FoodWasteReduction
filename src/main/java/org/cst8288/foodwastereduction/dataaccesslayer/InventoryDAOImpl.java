@@ -134,7 +134,7 @@ public class InventoryDAOImpl implements InventoryDAO {
       
        @Override
        public void updateInventory(InventoryDTO inventory) {
-        String sql = "UPDATE Inventory SET RetailerID = ?, FoodItemID = ?, BatchNumber = ?, Quantity = ?, RegularPrice = ?, DiscountRate = ?, ExpirationDate = ?, ReceiveDate = ? WHERE InventoryID = ?";
+        String sql = "UPDATE Inventory SET RetailerID = ?, FoodItemID = ?, BatchNumber = ?, Quantity = ?, RegularPrice = ?, DiscountRate = ?, ExpirationDate = ?, ReceiveDate = ?, IsSurplus = ?, SurplusStatus = ?, IsActive = ? WHERE InventoryID = ?";
         Connection con = null;
         PreparedStatement pstmt = null;
 
@@ -149,7 +149,10 @@ public class InventoryDAOImpl implements InventoryDAO {
             pstmt.setDouble(6, inventory.getDiscountRate());
             pstmt.setDate(7, inventory.getExpirationDate());
             pstmt.setDate(8, inventory.getReceiveDate());
-            pstmt.setInt(9, inventory.getInventoryId());
+            pstmt.setBoolean(9, inventory.getIsSurplus());
+            pstmt.setString(10, inventory.getSurplusStatus().name());
+            pstmt.setBoolean(11, inventory.getIsActive());
+            pstmt.setInt(12, inventory.getInventoryId());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

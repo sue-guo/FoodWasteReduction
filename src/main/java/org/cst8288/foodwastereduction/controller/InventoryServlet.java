@@ -6,12 +6,14 @@ package org.cst8288.foodwastereduction.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
@@ -42,16 +44,47 @@ public class InventoryServlet extends HttpServlet {
        int userId = Integer.parseInt(request.getParameter("userId").trim());
        InventoryBusiness inventoryBusiness = new InventoryBusiness();
        List<InventoryDTO> inventories = inventoryBusiness.getInventoriesByRetailerId(userId);
+      
+       
+
+        // Get today's date without time
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date today = new Date(calendar.getTimeInMillis());
+
+        // Calculate the date 7 days from today
+        calendar.add(Calendar.DAY_OF_YEAR, 7);
+        Date sevenDaysFromToday = new Date(calendar.getTimeInMillis());
+
+        // Update isSurplus and isActive fields
+        for (InventoryDTO inventory : inventories) {
+            Date expirationDate = inventory.getExpirationDate();
+            if (expirationDate != null) {
+                if (expirationDate.before(today)) {
+                    inventory.setIsActive(false);
+                } else {
+                    inventory.setIsActive(true);
+                }
+                if (expirationDate.before(sevenDaysFromToday) && !expirationDate.before(today)) {
+                    inventory.setIsSurplus(true);
+                } else {
+                    inventory.setIsSurplus(false);
+                }
+            }
+             inventoryBusiness.updateInventory(inventory);
+        }
+        
+      
        request.setAttribute("inventories", inventories);
        
        FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
        List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
        request.setAttribute("foodItems", foodItems);
        
-       
-     // set the is surplus to true if the expiretiondate is within 7 days from toda
-       
-       
+   
        RequestDispatcher dispatcher = request.getRequestDispatcher("views/inventory.jsp");
        dispatcher.forward(request, response);
         

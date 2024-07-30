@@ -82,6 +82,13 @@
                 
                 <input type="hidden" name="userId" value="<%= user != null ? user.getUserID() : "" %>">
                 
+                <input type="hidden" name="isSurplus" value="${inventory.isSurplus}">
+                
+                <input type="hidden" name="surplusStatus" value="${inventory.surplusStatus}">
+                
+                <input type="hidden" name="isActive" value="${inventory.isActive}">
+                
+                
                 <button type="submit">Update Inventory</button>
             </form>
         </main>

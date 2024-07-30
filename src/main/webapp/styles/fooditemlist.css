@@ -1,3 +1,7 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
 /* 
     Created on : Jul. 27, 2024, 5:42:11 PM
     Author     : WANG JIAYUN
@@ -72,10 +76,6 @@ table tr:nth-child(even) {
 
 table tr:hover {
     background-color: #ddd;
-}
-
-table td {
-    text-align: center; /* Center content horizontally */
 }
 
 button {

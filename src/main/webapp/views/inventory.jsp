@@ -50,12 +50,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>Food Item Name</th>
+                    <th>Name</th>
                     <th>Category</th>
                     <th>Quantity</th>
                     <th>Regular Price</th>
                     <th>Expiration Date</th>
                     <th>Is Active</th>
+                    <th>Status</th>
                     <th>Actions</th>
                     <th> </th>
                 </tr>
@@ -76,23 +77,33 @@
                     <td><%= inventory.getRegularPrice() %></td>
                     <td><%= inventory.getExpirationDate() %></td>
                     <td><%= inventory.getIsActive() ? "Yes" : "No" %></td>
-                    
+                
+                     
                      <%
                            if (inventory.getIsActive()) {
                      %>
+                     
+                    <td><%= inventory.getIsSurplus() ? inventory.getSurplusStatus() : "N/A" %></td>
+
                     <td>
                        <%
-                           if (inventory.getIsSurplus()) {
+                          if (inventory.getIsSurplus()) {
+                             if (inventory.getSurplusStatus().name().equals("None")) {
                         %>
-                        <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Donation')">Donation</button>
-                        <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Discount')">Sale</button>
-                        <%
-                            } else {
-                        %>
-                        <span>None</span>
-                        <%
-                            }
-                        %>
+                               <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Donation')">Donation</button>
+                               <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Discount')">Sale</button>
+                       <%
+                             } else {
+                       %>
+                                <span>Actions Already Made</span>
+                       <%
+                             }
+                         } else {
+                       %>
+                           <span>No Action Need Now</span>
+                       <%
+                         }
+                       %>
                     </td>
                     <td>
                         <button onclick="editInventory(<%= inventory.getInventoryId() %>)">Edit</button>
@@ -103,7 +114,7 @@
                     
                     <td></td>
                     <td></td>
-                   
+                    <td></td>
                     <%
                                }
                     %>
@@ -134,7 +145,7 @@
         }
 
         function updateSurplusStatus(inventoryId, status) {
-            // redirect to the InventoryStatusServlet with the inventoryId and status
+        // redirect to the InventoryStatusServlet with the inventoryId and status
             window.location.href = "inventoryStatus?inventoryId=" + inventoryId + "&status=" + status;
         }
     </script>

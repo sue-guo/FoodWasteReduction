@@ -17,6 +17,7 @@ import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
+import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 
 /**
  *
@@ -75,7 +76,12 @@ public class InventoryUpdateServlet extends HttpServlet {
         double discountRate = Double.parseDouble(request.getParameter("discountRate"));
         Date expirationDate = Date.valueOf(request.getParameter("expirationDate"));
         Date receiveDate = Date.valueOf(request.getParameter("receiveDate"));
-
+        boolean isSurplus = Boolean.parseBoolean(request.getParameter("isSurplus"));
+        SurplusStatusEnum surplusStatus = SurplusStatusEnum.valueOf(request.getParameter("surplusStatus"));
+        boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
+        
+        
+        
         InventoryDTO inventory = new InventoryDTO();
         inventory.setRetailerId(userId);
         inventory.setInventoryId(inventoryId);
@@ -86,6 +92,9 @@ public class InventoryUpdateServlet extends HttpServlet {
         inventory.setDiscountRate(discountRate);
         inventory.setExpirationDate(expirationDate);
         inventory.setReceiveDate(receiveDate);
+        inventory.setIsSurplus(isSurplus);
+        inventory.setSurplusStatus(surplusStatus);
+        inventory.setIsActive(isActive);
 
         InventoryBusiness inventoryBusiness = new InventoryBusiness();
         inventoryBusiness.updateInventory(inventory);
