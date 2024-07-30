@@ -6,8 +6,10 @@ package org.cst8288.foodwastereduction.dataaccesslayer;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.cst8288.foodwastereduction.constants.SurplusStatus;
-import org.cst8288.foodwastereduction.model.Inventory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 
 /**
@@ -15,100 +17,139 @@ import org.cst8288.foodwastereduction.model.Inventory;
  * @author ryany
  */
 public class InventoryDAOImpl implements InventoryDAO {
-
+	
+    private static final Logger LOGGER = Logger.getLogger(InventoryDAOImpl.class.getName());
+     
+   
     @Override
-    public void insert(Inventory inventory) throws SQLException {
-        String sql = "INSERT INTO Inventory (RetailerID, FoodItemID, BatchNumber, Quantity, RegularPrice, DiscountRate, ExpirationDate, ReceiveDate, IsSurplus, SurplusStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DataSource.getConnection(); 
-                PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, inventory.getRetailerId());
-            statement.setInt(2, inventory.getFoodItemId());
-            statement.setString(3, inventory.getBatchNumber());
-            statement.setInt(4, inventory.getQuantity());
-            statement.setDouble(5, inventory.getRegularPrice());
-            statement.setDouble(6, inventory.getDiscountRate());
-            statement.setDate(7, Date.valueOf(inventory.getExpirationDate()));
-            statement.setDate(8, Date.valueOf(inventory.getReceiveDate()));
-            statement.setBoolean(9, inventory.isSurplus());
-            statement.setString(10, inventory.getSurplusStatus().name());
-            
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Creating inventory failed, no rows affected.");
-            }
-            
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    inventory.setInventoryId(generatedKeys.getInt(1));
-                } else {
-                    throw new SQLException("Creating inventory failed, no ID obtained.");
-                }
-            }
-        }
-    }
+    public List<InventoryDTO> getInventoriesByRetailerId(int retailerId) {
+        
+        List<InventoryDTO> inventories = new ArrayList<>();
+        String sql = "SELECT * FROM Inventory WHERE RetailerID = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DataSource.getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, retailerId);
+            rs = pstmt.executeQuery();
 
-    @Override
-    public Inventory getById(int inventoryID) throws SQLException {
-        String sql = "SELECT * FROM Inventory WHERE InventoryID = ?";
-        try (Connection connection = DataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, inventoryID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return mapResultSetToInventory(resultSet);
-                }
+            while (rs.next()) {
+                InventoryDTO inventory = new InventoryDTO();
+                inventory.setInventoryId(rs.getInt("InventoryID"));
+                inventory.setRetailerId(rs.getInt("RetailerID"));
+                inventory.setFoodItemId(rs.getInt("FoodItemID"));
+                inventory.setBatchNumber(rs.getString("BatchNumber"));
+                inventory.setQuantity(rs.getInt("Quantity"));
+                inventory.setRegularPrice(rs.getDouble("RegularPrice"));
+                inventory.setDiscountRate(rs.getDouble("DiscountRate"));
+                inventory.setExpirationDate(rs.getDate("ExpirationDate"));
+                inventory.setReceiveDate(rs.getDate("ReceiveDate"));
+                inventory.setIsSurplus(rs.getBoolean("IsSurplus"));
+                inventory.setSurplusStatus(SurplusStatusEnum.valueOf(rs.getString("SurplusStatus")));
+                inventory.setLastUpdated(rs.getTimestamp("LastUpdated"));
+                inventory.setIsActive(rs.getBoolean("IsActive"));
+                inventories.add(inventory);
             }
-        }
-        return null;
-    }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } 
 
-    @Override
-    public List<Inventory> getAll() throws SQLException {
-        List<Inventory> inventories = new ArrayList<>();
-        String sql = "SELECT * FROM Inventory WHERE IsActive = TRUE";
-        try (Connection connection = DataSource.getConnection();
-                Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-            while (resultSet.next()) {
-                inventories.add(mapResultSetToInventory(resultSet));
-            }
-        }
         return inventories;
     }
+	
+	@Override
+     public InventoryDTO getInventoryById(int inventoryID) {
+        InventoryDTO inventory = null;
+        String sql = "SELECT * FROM Inventory WHERE InventoryID = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-    @Override
-    public void update(Inventory inventory) throws SQLException {
-        String sql = "UPDATE Inventory SET RetailerID = ?, FoodItemID = ?, BatchNumber = ?, Quantity = ?, RegularPrice = ?, DiscountRate = ?, ExpirationDate = ?, ReceiveDate = ?, IsSurplus = ?, SurplusStatus = ? WHERE InventoryID = ?";
-        try (Connection connection = DataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, inventory.getRetailerId());
-            statement.setInt(2, inventory.getFoodItemId());
-            statement.setString(3, inventory.getBatchNumber());
-            statement.setInt(4, inventory.getQuantity());
-            statement.setDouble(5, inventory.getRegularPrice());
-            statement.setDouble(6, inventory.getDiscountRate());
-            statement.setDate(7, Date.valueOf(inventory.getExpirationDate()));
-            statement.setDate(8, Date.valueOf(inventory.getReceiveDate()));
-            statement.setBoolean(9, inventory.isSurplus());
-            statement.setString(10, inventory.getSurplusStatus().name());
-            statement.setInt(11, inventory.getInventoryId());
-            
-            statement.executeUpdate();
-        }
+        try {
+            con = DataSource.getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, inventoryID);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                inventory = new InventoryDTO();
+                inventory.setInventoryId(rs.getInt("InventoryID"));
+                inventory.setRetailerId(rs.getInt("RetailerID"));
+                inventory.setFoodItemId(rs.getInt("FoodItemID"));
+                inventory.setBatchNumber(rs.getString("BatchNumber"));
+                inventory.setQuantity(rs.getInt("Quantity"));
+                inventory.setRegularPrice(rs.getDouble("RegularPrice"));
+                inventory.setDiscountRate(rs.getDouble("DiscountRate"));
+                inventory.setExpirationDate(rs.getDate("ExpirationDate"));
+                inventory.setReceiveDate(rs.getDate("ReceiveDate"));
+                inventory.setIsSurplus(rs.getBoolean("IsSurplus"));
+                inventory.setSurplusStatus(SurplusStatusEnum.valueOf(rs.getString("SurplusStatus")));
+                inventory.setLastUpdated(rs.getTimestamp("LastUpdated"));
+                inventory.setIsActive(rs.getBoolean("IsActive"));
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } 
+        return inventory;
     }
 
-    @Override
-    public void delete(int inventoryID) throws SQLException {
-        String sql = "UPDATE Inventory SET IsActive = FALSE WHERE InventoryID = ?";
-        try (Connection connection = DataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, inventoryID);
-            statement.executeUpdate();
-        }
+	@Override
+    public void addInventory(InventoryDTO inventory) {
+        String sql = "INSERT INTO Inventory (RetailerID, FoodItemID, BatchNumber, Quantity, RegularPrice, DiscountRate, ExpirationDate, ReceiveDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = DataSource.getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, inventory.getRetailerId());
+            pstmt.setInt(2, inventory.getFoodItemId());
+            pstmt.setString(3, inventory.getBatchNumber());
+            pstmt.setInt(4, inventory.getQuantity());
+            pstmt.setDouble(5, inventory.getRegularPrice());
+            pstmt.setDouble(6, inventory.getDiscountRate());
+            pstmt.setDate(7, inventory.getExpirationDate());
+            pstmt.setDate(8, inventory.getReceiveDate());
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } 
     }
 
-    private Inventory mapResultSetToInventory(ResultSet resultSet) throws SQLException {
-        Inventory inventory = new Inventory();
+
+
+
+    @Override
+    public void updateInventory(InventoryDTO inventory) {
+        String sql = "UPDATE Inventory SET RetailerID = ?, FoodItemID = ?, BatchNumber = ?, Quantity = ?, RegularPrice = ?, DiscountRate = ?, ExpirationDate = ?, ReceiveDate = ?, IsSurplus = ?, SurplusStatus = ?, IsActive = ? WHERE InventoryID = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = DataSource.getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, inventory.getRetailerId());
+            pstmt.setInt(2, inventory.getFoodItemId());
+            pstmt.setString(3, inventory.getBatchNumber());
+            pstmt.setInt(4, inventory.getQuantity());
+            pstmt.setDouble(5, inventory.getRegularPrice());
+            pstmt.setDouble(6, inventory.getDiscountRate());
+            pstmt.setDate(7, inventory.getExpirationDate());
+            pstmt.setDate(8, inventory.getReceiveDate());
+            pstmt.setBoolean(9, inventory.getIsSurplus());
+            pstmt.setString(10, inventory.getSurplusStatus().name());
+            pstmt.setBoolean(11, inventory.getIsActive());
+            pstmt.setInt(12, inventory.getInventoryId());
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } 
+    }
+
+    private InventoryDTO mapResultSetToInventory(ResultSet resultSet) throws SQLException {
+        InventoryDTO inventory = new InventoryDTO();
         inventory.setInventoryId(resultSet.getInt("InventoryId"));
         inventory.setRetailerId(resultSet.getInt("RetailerId"));
         inventory.setFoodItemId(resultSet.getInt("FoodItemId"));
@@ -116,12 +157,12 @@ public class InventoryDAOImpl implements InventoryDAO {
         inventory.setQuantity(resultSet.getInt("Quantity"));
         inventory.setRegularPrice(resultSet.getDouble("RegularPrice"));
         inventory.setDiscountRate(resultSet.getDouble("DiscountRate"));
-        inventory.setExpirationDate(resultSet.getDate("ExpirationDate").toLocalDate());
-        inventory.setReceiveDate(resultSet.getDate("ReceiveDate").toLocalDate());
-        inventory.setSurplus(resultSet.getBoolean("IsSurplus"));
-        inventory.setSurplusStatus(SurplusStatus.valueOf(resultSet.getString("SurplusStatus").toUpperCase()));
+        inventory.setExpirationDate(resultSet.getDate("ExpirationDate"));
+        inventory.setReceiveDate(resultSet.getDate("ReceiveDate"));
+        inventory.setIsSurplus(resultSet.getBoolean("IsSurplus"));
+        inventory.setSurplusStatus(SurplusStatusEnum.valueOf(resultSet.getString("SurplusStatus").toUpperCase()));
         inventory.setLastUpdated(resultSet.getTimestamp("LastUpdated"));
-        inventory.setActive(resultSet.getBoolean("IsActive"));
+        inventory.setIsActive(resultSet.getBoolean("IsActive"));
         return inventory;
     }
 }

@@ -4,12 +4,12 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
-import org.cst8288.foodwastereduction.model.Inventory;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**
  *
  * @author ryany
  */
 public interface Observer {
-    void update(Inventory inventory);    
+    void update(InventoryDTO inventory);    
 }

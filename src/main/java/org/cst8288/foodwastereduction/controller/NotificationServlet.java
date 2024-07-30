@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.cst8288.foodwastereduction.constants.SurplusStatus;
+import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;
@@ -19,7 +19,7 @@ import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.email.EmailConfig;
-import org.cst8288.foodwastereduction.model.Inventory;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.notification.FoodItemService;
 import org.cst8288.foodwastereduction.notification.NotificationMessageService;
@@ -78,9 +78,9 @@ public class NotificationServlet extends HttpServlet {
         }                
 
         try {
-            Inventory inventory = inventoryDAO.getById(inventoryId);
+            InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
             if (inventory != null) {
-                SurplusStatus newStatus = SurplusStatus.valueOf(statusString);
+                SurplusStatusEnum newStatus = SurplusStatusEnum.valueOf(statusString);
                 
                 SubjectInventory subject = new SubjectInventory(inventory);
                 List<User> subscribers = subscriptionService.getSubscribersByRetailerId(inventory.getRetailerId());
@@ -92,7 +92,7 @@ public class NotificationServlet extends HttpServlet {
 
                 // Update the database
                 inventory.setSurplusStatus(newStatus);
-                inventoryDAO.update(inventory);
+                inventoryDAO.updateInventory(inventory);
 
                 response.setContentType("text/plain;charset=UTF-8");
                 response.getWriter().write("Inventory updated and notifications sent.");

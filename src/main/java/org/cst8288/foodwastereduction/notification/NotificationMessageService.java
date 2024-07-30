@@ -4,13 +4,13 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
-import org.cst8288.foodwastereduction.model.Inventory;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**
  *
  * @author ryany
  */
 public interface NotificationMessageService {
-    String createDonationMessage(Inventory inventory);
-    String createDiscountMessage(Inventory inventory);
+    String createDonationMessage(InventoryDTO inventory);
+    String createDiscountMessage(InventoryDTO inventory);
 }

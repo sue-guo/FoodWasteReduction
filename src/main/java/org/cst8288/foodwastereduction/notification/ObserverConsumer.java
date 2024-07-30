@@ -6,8 +6,8 @@ package org.cst8288.foodwastereduction.notification;
 
 import java.util.NoSuchElementException;
 import org.cst8288.foodwastereduction.model.CategoryEnum;
-import org.cst8288.foodwastereduction.constants.SurplusStatus;
-import org.cst8288.foodwastereduction.model.Inventory;
+import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 
 /**
@@ -35,8 +35,8 @@ public class ObserverConsumer implements Observer {
 
 
 	@Override
-    public void update(Inventory inventory) {
-        if (inventory.getSurplusStatus() == SurplusStatus.DISCOUNT) {
+    public void update(InventoryDTO inventory) {
+        if (inventory.getSurplusStatus() == SurplusStatusEnum.DISCOUNT) {
             boolean isSubscribed = subscriptionService.isSubscribed(consumer.getUserId(), inventory.getRetailerId());
             
             try {

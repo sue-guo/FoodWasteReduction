@@ -5,7 +5,7 @@
 package org.cst8288.foodwastereduction.dataaccesslayer;
 import java.sql.SQLException;
 import java.util.List;
-import org.cst8288.foodwastereduction.model.Inventory;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 
 /**
@@ -13,9 +13,15 @@ import org.cst8288.foodwastereduction.model.Inventory;
  * @author ryany
  */
 public interface InventoryDAO {
-    void insert(Inventory inventory) throws SQLException;
-    Inventory getById(int inventoryId) throws SQLException;
-    List<Inventory> getAll() throws SQLException;
-    void update(Inventory inventory) throws SQLException;
-    void delete(int inventoryId) throws SQLException;
+    
+     
+    List<InventoryDTO> getInventoriesByRetailerId(int retailerId);
+    
+    InventoryDTO getInventoryById(int inventoryID);
+    
+    void addInventory(InventoryDTO inventory);
+    
+    void updateInventory(InventoryDTO inventory);
+    
+    
 }

@@ -6,8 +6,8 @@ package org.cst8288.foodwastereduction.notification;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.cst8288.foodwastereduction.constants.SurplusStatus;
-import org.cst8288.foodwastereduction.model.Inventory;
+import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**
  *
@@ -15,9 +15,9 @@ import org.cst8288.foodwastereduction.model.Inventory;
  */
 public class SubjectInventory implements Subject {
     private List<Observer> observers = new ArrayList<>();
-    private Inventory inventory;
+    private InventoryDTO inventory;
 
-    public SubjectInventory(Inventory inventory) {
+    public SubjectInventory(InventoryDTO inventory) {
         this.inventory = inventory;
     }
 
@@ -39,10 +39,10 @@ public class SubjectInventory implements Subject {
         }
     }
 
-    public void setSurplusStatus(SurplusStatus status) {
-        if (inventory.isSurplus()) {
+    public void setSurplusStatus(SurplusStatusEnum status) {
+        if (inventory.getIsSurplus()) {
             inventory.setSurplusStatus(status);
-            if (status != SurplusStatus.NONE) {
+            if (status != SurplusStatusEnum.NONE) {
                 notifyObservers();
             }
         }

@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
-import org.cst8288.foodwastereduction.model.Inventory;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 
@@ -28,16 +28,16 @@ public class NotificationMessageServiceImpl implements NotificationMessageServic
     }
 
     @Override
-    public String createDonationMessage(Inventory item) {
+    public String createDonationMessage(InventoryDTO item) {
         return createMessage(item, UserType.CHARITABLEORGANIZATION);
     }
 
     @Override
-    public String createDiscountMessage(Inventory item) {
+    public String createDiscountMessage(InventoryDTO item) {
         return createMessage(item, UserType.CONSUMER);
     }
 
-    private String createMessage(Inventory item, UserType userType){
+    private String createMessage(InventoryDTO item, UserType userType){
         FoodItemDTO foodItem;
         User retailer;
         foodItem = foodItemDAO.getFoodItemById(item.getFoodItemId());

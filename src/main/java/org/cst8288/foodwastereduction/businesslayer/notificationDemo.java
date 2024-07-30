@@ -4,8 +4,9 @@
  */
 package org.cst8288.foodwastereduction.businesslayer;
 
-import java.time.LocalDate;
-import org.cst8288.foodwastereduction.constants.SurplusStatus;
+import java.sql.Date;
+import java.util.Calendar;
+import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
@@ -15,7 +16,7 @@ import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.email.EmailConfig;
-import org.cst8288.foodwastereduction.model.Inventory;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.notification.FoodItemService;
 import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
@@ -53,7 +54,15 @@ public class notificationDemo {
         
         User testConsumer = new User(1, "Ryan Xu", "ryan.y.xu@hotmail.com", "password", UserType.CONSUMER, "2977277", "123 Woodroffe st.", "Ottawa");
         
-        Inventory testInventory = new Inventory(1, 1, 1, "BATCH001", 10, 100.00, 0.2, LocalDate.now().plusDays(-5), LocalDate.now(), true, SurplusStatus.DISCOUNT, true);
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date todayUtilDate = calendar.getTime();
+        Date currentDate = new Date(todayUtilDate.getTime());
+        
+        calendar.add(Calendar.DAY_OF_MONTH, -5);
+        java.util.Date pastUtilDate = calendar.getTime();
+        Date pastDate = new Date(pastUtilDate.getTime());
+        
+        InventoryDTO testInventory = new InventoryDTO(1, 1, 1, "BATCH001", 10, 100.00, 0.2, pastDate, currentDate, true, SurplusStatusEnum.DISCOUNT, true);
         
         Observer consumerObserver = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, testConsumer);
 
@@ -62,7 +71,7 @@ public class notificationDemo {
         // Create email service
         subject.registerObserver(consumerObserver);
         
-        subject.setSurplusStatus(SurplusStatus.DISCOUNT);
+        subject.setSurplusStatus(SurplusStatusEnum.DISCOUNT);
         
         
         System.out.println("Test completed. Check your test email account for the notification.");
