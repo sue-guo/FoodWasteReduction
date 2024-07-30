@@ -1,0 +1,81 @@
+
+/* 
+    Created on : Jul. 30, 2024, 3:20:53 p.m.
+    Author     : Hongxiu Guo
+*/
+
+@import url('common.css');
+
+/* Additional CSS for Login Page */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+form div {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+label {
+    width: 20%;
+    margin: 0.5rem;
+    text-align: end;
+}
+
+input {
+    width: 75%;
+    padding: 0.5rem;
+    margin: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+select {
+    width: 77.5%;
+    padding: 0.5rem;
+    margin: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+}
+
+textarea {
+    width: 77.5%;
+    padding: 0.5rem;
+    margin: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: max-content;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+p {
+    text-align: center;
+}
+
+.errorMsg{
+    color: red;
+    margin: 0.5rem auto;
+    align-self: center;
+}
