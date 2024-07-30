@@ -5,7 +5,7 @@
 package org.cst8288.foodwastereduction.dataaccesslayer;
 import java.sql.SQLException;
 import java.util.List;
-import org.cst8288.foodwastereduction.model.FoodItem;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 
 /**
@@ -13,10 +13,11 @@ import org.cst8288.foodwastereduction.model.FoodItem;
  * @author ryany
  */
 public interface FoodItemDAO {
-    void insert(FoodItem foodItem) throws SQLException;
-    FoodItem getById(int foodItemID) throws SQLException;
-    List<FoodItem> getAll() throws SQLException;
-    List<FoodItem> getByRetailer(int retailerID) throws SQLException;
-    void update(FoodItem foodItem) throws SQLException;
-    void delete(int foodItemID) throws SQLException;
+    void addFoodItem(FoodItemDTO foodItem);
+    List<FoodItemDTO> getFoodItemsByRetailerId(int retailerId);
+    
+    FoodItemDTO getFoodItemById(int foodItemId);
+    List<FoodItemDTO> getAllFoodItems();
+    void updateFoodItem(FoodItemDTO foodItem);
+    void deleteFoodItem(int foodItemId);
 }

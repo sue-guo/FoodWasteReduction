@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.logger.LMSLogger;
 import org.cst8288.foodwastereduction.logger.LogLevel;
@@ -122,14 +120,14 @@ public class UserDaoImpl implements UserDao{
             }
              
         } catch (SQLException ex) {
-            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            LMSLogger.getInstance().saveLogInformation("SQLException occur at getUserById: "+ex.getMessage(), UserDaoImpl.class.getName() , LogLevel.ERROR);
         } finally {
             try {
                 if (rs != null) rs.close();
                 if (pstmt != null) pstmt.close();
                 if (con != null) con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                LMSLogger.getInstance().saveLogInformation("SQLException occur at getUserById: "+ex.getMessage(), UserDaoImpl.class.getName() , LogLevel.ERROR);
             }
         }
         return user;

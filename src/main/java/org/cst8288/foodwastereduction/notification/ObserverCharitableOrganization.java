@@ -5,7 +5,7 @@
 package org.cst8288.foodwastereduction.notification;
 
 import java.util.NoSuchElementException;
-import org.cst8288.foodwastereduction.constants.FoodCategory;
+import org.cst8288.foodwastereduction.model.CategoryEnum;
 import org.cst8288.foodwastereduction.constants.SurplusStatus;
 import org.cst8288.foodwastereduction.model.Inventory;
 import org.cst8288.foodwastereduction.model.User;
@@ -40,7 +40,7 @@ public class ObserverCharitableOrganization implements Observer {
             
             try {
                 int foodItemId = inventory.getFoodItemId();
-                FoodCategory foodCategory = foodItemService.getFoodCategory(foodItemId);
+                CategoryEnum foodCategory = foodItemService.getFoodCategory(foodItemId);
                 boolean isInterested = subscriptionService.isInterestedInCategory(
                     charitableOrganization.getUserId(), 
                     inventory.getRetailerId(), 

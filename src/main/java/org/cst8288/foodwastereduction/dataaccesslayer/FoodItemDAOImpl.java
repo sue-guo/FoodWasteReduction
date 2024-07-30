@@ -3,11 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package org.cst8288.foodwastereduction.dataaccesslayer;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import org.cst8288.foodwastereduction.constants.FoodCategory;
-import org.cst8288.foodwastereduction.model.FoodItem;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 
 /**
@@ -16,112 +23,177 @@ import org.cst8288.foodwastereduction.model.FoodItem;
  */
 public class FoodItemDAOImpl implements FoodItemDAO {
     
+    private static final Logger LOGGER = Logger.getLogger(FoodItemDAOImpl.class.getName());
+
     @Override
-    public void insert(FoodItem foodItem) throws SQLException {
-        String sql = "INSERT INTO FoodItems (RetailerID, Name, Description, Category, Brand, Unit) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, foodItem.getRetailerId());
-            statement.setString(2, foodItem.getName());
-            statement.setString(3, foodItem.getDescription());
-            statement.setString(4, foodItem.getCategory().name());
-            statement.setString(5, foodItem.getBrand());
-            statement.setString(6, foodItem.getUnit());
-            
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Creating food item failed, no rows affected.");
+    public void addFoodItem(FoodItemDTO foodItem) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = DataSource.getConnection();
+            String sql = "INSERT INTO FoodItems (RetailerID, Name, Description, Category, Brand, Unit) VALUES (?, ?, ?, ?, ?, ?)";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, foodItem.getRetailerId());
+            pstmt.setString(2, foodItem.getName());
+            pstmt.setString(3, foodItem.getDescription());
+            pstmt.setString(4, foodItem.getCategory().toString());
+            pstmt.setString(5, foodItem.getBrand());
+            pstmt.setString(6, foodItem.getUnit());
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    @Override
+    public List<FoodItemDTO> getFoodItemsByRetailerId(int retailerId) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<FoodItemDTO> foodItems = new ArrayList<>();
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM FoodItems WHERE RetailerID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, retailerId);
+            rs = pstmt.executeQuery();
+           
+            while (rs.next()) {
+                foodItems.add(mapResultSetToFoodItem(rs));
             }
-            
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    foodItem.setFoodItemId(generatedKeys.getInt(1));
-                } else {
-                    throw new SQLException("Creating food item failed, no ID obtained.");
-                }
-            }
-        }
+ 
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } 
+        return foodItems;
     }
 
     @Override
-    public FoodItem getById(int foodItemID) throws SQLException {
-        String sql = "SELECT * FROM FoodItems WHERE FoodItemID = ?";
-        try (Connection connection = DataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, foodItemID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return mapResultSetToFoodItem(resultSet);
-                }
-            }
-        }
-        return null;
-    }
+    public FoodItemDTO getFoodItemById(int foodItemID) {
+       Connection con = null;
+       PreparedStatement pstmt = null;
+       ResultSet rs = null;
+       FoodItemDTO foodItem = null;
+
+       try {
+           con = DataSource.getConnection();
+           String sql = "SELECT * FROM FoodItems WHERE FoodItemID = ?";
+           pstmt = con.prepareStatement(sql);
+           pstmt.setInt(1, foodItemID);
+           rs = pstmt.executeQuery();
+
+           if (rs.next()) {
+                foodItem = mapResultSetToFoodItem(rs);
+           }
+       } catch (SQLException ex) {
+           LOGGER.log(Level.SEVERE, null, ex);
+       } finally {
+           try {
+               if (rs != null) rs.close();
+               if (pstmt != null) pstmt.close();
+               if (con != null) con.close();
+           } catch (SQLException ex) {
+               LOGGER.log(Level.SEVERE, null, ex);
+           }
+       }
+       return foodItem;
+   }
+
 
     @Override
-    public List<FoodItem> getAll() throws SQLException {
-        List<FoodItem> foodItems = new ArrayList<>();
-        String sql = "SELECT * FROM FoodItems";
-        try (Connection connection = DataSource.getConnection();
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(sql)) {
-            while (resultSet.next()) {
-                foodItems.add(mapResultSetToFoodItem(resultSet));
+    public List<FoodItemDTO> getAllFoodItems() {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<FoodItemDTO> foodItems = new ArrayList<>();
+
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM FoodItems";
+            pstmt = con.prepareStatement(sql);
+            rs = pstmt.executeQuery(sql);
+
+            while (rs.next()) {
+                foodItems.add(mapResultSetToFoodItem(rs));
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
             }
         }
         return foodItems;
     }
 
+
     @Override
-    public List<FoodItem> getByRetailer(int retailerID) throws SQLException {
-        List<FoodItem> foodItems = new ArrayList<>();
-        String sql = "SELECT * FROM FoodItems WHERE RetailerID = ?";
-        try (Connection connection = DataSource.getConnection(); 
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, retailerID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    foodItems.add(mapResultSetToFoodItem(resultSet));
-                }
+    public void updateFoodItem(FoodItemDTO foodItem) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = DataSource.getConnection();
+            String sql = "UPDATE FoodItems SET RetailerID = ?, Name = ?, Description = ?, Category = ?, Brand = ?, Unit = ? WHERE FoodItemID = ?";
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setInt(1, foodItem.getRetailerId());
+            pstmt.setString(2, foodItem.getName());
+            pstmt.setString(3, foodItem.getDescription());
+            pstmt.setString(4, foodItem.getCategory().name());
+            pstmt.setString(5, foodItem.getBrand());
+            pstmt.setString(6, foodItem.getUnit());
+            pstmt.setInt(7, foodItem.getFoodItemId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
             }
         }
-        return foodItems;
     }
 
+
     @Override
-    public void update(FoodItem foodItem) throws SQLException {
-        String sql = "UPDATE FoodItems SET RetailerID = ?, Name = ?, Description = ?, Category = ?, Brand = ?, Unit = ? WHERE FoodItemID = ?";
-        try (Connection connection = DataSource.getConnection(); 
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, foodItem.getRetailerId());
-            statement.setString(2, foodItem.getName());
-            statement.setString(3, foodItem.getDescription());
-            statement.setString(4, foodItem.getCategory().name());
-            statement.setString(5, foodItem.getBrand());
-            statement.setString(6, foodItem.getUnit());
-            statement.setInt(7, foodItem.getFoodItemId());
-            
-            statement.executeUpdate();
+    public void deleteFoodItem(int foodItemID) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = DataSource.getConnection();
+            String sql = "DELETE FROM FoodItems WHERE FoodItemID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, foodItemID);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-    @Override
-    public void delete(int foodItemID) throws SQLException {
-        String sql = "DELETE FROM FoodItems WHERE FoodItemID = ?";
-        try (Connection connection = DataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, foodItemID);
-            statement.executeUpdate();
-        }
-    }
 
-    private FoodItem mapResultSetToFoodItem(ResultSet resultSet) throws SQLException {
-        FoodItem foodItem = new FoodItem();
+    private FoodItemDTO mapResultSetToFoodItem(ResultSet resultSet) throws SQLException {
+        FoodItemDTO foodItem = new FoodItemDTO();
         foodItem.setFoodItemId(resultSet.getInt("FoodItemID"));
         foodItem.setRetailerId(resultSet.getInt("RetailerID"));
         foodItem.setName(resultSet.getString("Name"));
         foodItem.setDescription(resultSet.getString("Description"));
-        foodItem.setCategory(FoodCategory.valueOf(resultSet.getString("Category").toUpperCase()));
+        foodItem.setCategory(CategoryEnum.valueOf(resultSet.getString("Category").toUpperCase()));
         foodItem.setBrand(resultSet.getString("Brand"));
         foodItem.setUnit(resultSet.getString("Unit"));
         return foodItem;

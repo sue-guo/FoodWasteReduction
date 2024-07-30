@@ -7,7 +7,7 @@ package org.cst8288.foodwastereduction.notification;
 import java.util.List;
 import java.util.Set;
 import org.cst8288.foodwastereduction.constants.CommunicationPreference;
-import org.cst8288.foodwastereduction.constants.FoodCategory;
+import org.cst8288.foodwastereduction.model.CategoryEnum;
 import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
 
@@ -26,5 +26,5 @@ public interface SubscriptionService {
 
     boolean hasSubscription(int userId, int retailerId);
     boolean isSubscribed(int consumerId, int retailerId);
-    boolean isInterestedInCategory(int consumerId, int retailerId, FoodCategory foodCategory);
+    boolean isInterestedInCategory(int consumerId, int retailerId, CategoryEnum foodCategory);
 }

@@ -4,26 +4,24 @@
  */
 package org.cst8288.foodwastereduction.model;
 
-import org.cst8288.foodwastereduction.constants.FoodCategory;
-
 /**
  *
  * @author ryany
  */
-public class FoodItem {
+public class FoodItemDTO {
     private int foodItemId;
     private int retailerId;
     private String name;
     private String description;
-    private FoodCategory category;
+    private CategoryEnum category;
     private String brand;
     private String unit;
 
     // Default constructor
-    public FoodItem() {}
+    public FoodItemDTO() {}
 
     // Parameterized constructor
-    public FoodItem(int foodItemId, int retailerId, String name, String description, FoodCategory category, String brand, String unit) {
+    public FoodItemDTO(int foodItemId, int retailerId, String name, String description, CategoryEnum category, String brand, String unit) {
         this.foodItemId = foodItemId;
         this.retailerId = retailerId;
         this.name = name;
@@ -66,11 +64,11 @@ public class FoodItem {
         this.description = description;
     }
 
-    public FoodCategory getCategory() {
+    public CategoryEnum getCategory() {
         return category;
     }
 
-    public void setCategory(FoodCategory category) {
+    public void setCategory(CategoryEnum category) {
         this.category = category;
     }
 

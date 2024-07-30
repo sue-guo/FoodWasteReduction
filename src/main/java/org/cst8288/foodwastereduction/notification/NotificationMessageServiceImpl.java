@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
-import org.cst8288.foodwastereduction.model.FoodItem;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import org.cst8288.foodwastereduction.model.Inventory;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
@@ -38,22 +38,17 @@ public class NotificationMessageServiceImpl implements NotificationMessageServic
     }
 
     private String createMessage(Inventory item, UserType userType){
-        FoodItem foodItem;
+        FoodItemDTO foodItem;
         User retailer;
-        try {
-            foodItem = foodItemDAO.getById(item.getFoodItemId());
-            retailer = userDao.getUserById(item.getRetailerId());
-            if (userType.equals(UserType.CONSUMER)){
-                return "Discount available for " + foodItem.getName() + " at retailer " + retailer.getName() + 
-                   ": Regular price: $" + item.getRegularPrice()  + ", Discount: " + item.getDiscountRate();        
-            } else if (userType.equals(UserType.CHARITABLEORGANIZATION)){
-                return "Donation available for " + foodItem.getName() + " at retailer " + retailer.getName();            
-            } else {
-                return "Unknown user type";
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(NotificationMessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return "Error creating message";
+        foodItem = foodItemDAO.getFoodItemById(item.getFoodItemId());
+        retailer = userDao.getUserById(item.getRetailerId());
+        if (userType.equals(UserType.CONSUMER)){
+            return "Discount available for " + foodItem.getName() + " at retailer " + retailer.getName() +
+                    ": Regular price: $" + item.getRegularPrice()  + ", Discount: " + item.getDiscountRate();
+        } else if (userType.equals(UserType.CHARITABLEORGANIZATION)){
+            return "Donation available for " + foodItem.getName() + " at retailer " + retailer.getName();
+        } else {
+            return "Unknown user type";
         }
     }
 }

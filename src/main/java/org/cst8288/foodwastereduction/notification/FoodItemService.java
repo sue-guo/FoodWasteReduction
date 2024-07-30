@@ -5,12 +5,12 @@
 package org.cst8288.foodwastereduction.notification;
 
 import java.util.NoSuchElementException;
-import org.cst8288.foodwastereduction.constants.FoodCategory;
+import org.cst8288.foodwastereduction.model.CategoryEnum;
 
 /**
  *
  * @author ryany
  */
 public interface FoodItemService {
-    FoodCategory getFoodCategory(int foodItemId) throws NoSuchElementException;
+    CategoryEnum getFoodCategory(int foodItemId) throws NoSuchElementException;
 }

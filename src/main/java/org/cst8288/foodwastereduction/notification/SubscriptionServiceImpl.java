@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.cst8288.foodwastereduction.constants.FoodCategory;
+import org.cst8288.foodwastereduction.model.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
@@ -68,7 +68,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public boolean isInterestedInCategory(int consumerId, int retailerId, FoodCategory foodCategory) {
+    public boolean isInterestedInCategory(int consumerId, int retailerId, CategoryEnum foodCategory) {
         Subscription subscription = subscriptionDAO.getSubscription(consumerId, retailerId);
         if (subscription == null) {
             return false;

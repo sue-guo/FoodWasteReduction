@@ -8,9 +8,12 @@ import java.sql.SQLException;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.cst8288.foodwastereduction.constants.FoodCategory;
+import org.cst8288.foodwastereduction.model.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
-import org.cst8288.foodwastereduction.model.FoodItem;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 /**
  *
@@ -24,13 +27,9 @@ public class FoodItemServiceImpl implements FoodItemService {
     }
 
     @Override
-    public FoodCategory getFoodCategory(int foodItemId) throws NoSuchElementException {
-        FoodItem foodItem = null;
-        try {
-            foodItem = foodItemDAO.getById(foodItemId);
-        } catch (SQLException ex) {
-            Logger.getLogger(FoodItemServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public CategoryEnum getFoodCategory(int foodItemId) throws NoSuchElementException {
+        FoodItemDTO foodItem = null;
+        foodItem = foodItemDAO.getFoodItemById(foodItemId);
         if (foodItem == null) {
             throw new NoSuchElementException("Food item not found for id: " + foodItemId);
         }
