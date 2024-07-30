@@ -16,6 +16,7 @@
         <servlet-class>org.cst8288.foodwastereduction.controller.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>FoodItemServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.FoodItemServlet</servlet-class>
     </servlet>
@@ -34,6 +35,10 @@
     <servlet>
         <servlet-name>InventoryAddServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.InventoryAddServlet</servlet-class>
+
+        <servlet-name>ClaimFoodServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.ClaimFoodServlet</servlet-class>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
@@ -48,6 +53,7 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
         <servlet-name>FoodItemServlet</servlet-name>
         <url-pattern>/foodItem</url-pattern>
     </servlet-mapping>
@@ -66,6 +72,10 @@
     <servlet-mapping>
         <servlet-name>InventoryAddServlet</servlet-name>
         <url-pattern>/inventoryAdd</url-pattern>
+
+        <servlet-name>ClaimFoodServlet</servlet-name>
+        <url-pattern>/claimFood</url-pattern>
+
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -50,15 +50,15 @@
         <%
             }
          %>
+
         <% 
-            if (user != null && user.getUserType() == UserType.CONSUMER) {
+            if (user != null && user.getUserType() == UserType.CHARITABLE_ORGANIZATION) {
         %>
-            <button onclick="loadInventory(<%= user.getUserID() %>)">Inventory Management</button>
+            <button onclick="loadClaimFood(<%= user.getUserID() %>)">Claim Food Management</button>
             <button onclick="loadFoodItem(<%= user.getUserID() %>)"> Food Item Management</button>
         <%
             }
          %>
-
     </main>
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>
@@ -72,6 +72,10 @@
         function loadFoodItem(userId) {
             // load the food item management page
             window.location.href = "foodItem?userId="+userId;
+        }
+        function loadClaimFood(userId) {
+            // load the food item management page
+            window.location.href = "claimFood?userId="+userId;
         }
     </script>
 </body>

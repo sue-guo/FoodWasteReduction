@@ -1,6 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/* File: UserDaoImpl.java
+ * Author: Hongxiu Guo
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Date: 2024.07
+ * Modified: 
+ * Description: This class provides concrete methods for interacting with the `users` table in the database. 
+ *
  */
 package org.cst8288.foodwastereduction.dataaccesslayer;
 
@@ -8,23 +13,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.utility.DatetimeUtil;
 
 /**
- *
+ * Implementation of the UserDao interface for accessing and manipulating user data in the database.
+ * 
+ * This class provides concrete methods for interacting with the `users` table in the database. 
+ * It includes functionalities to retrieve a user by their email address and to add a new user. 
+ * The methods use JDBC to perform database operations and handle SQL exceptions appropriately.
+ * 
  * @author Hongxiu Guo
  */
 public class UserDaoImpl implements UserDao{
     
     /**
-     * Gets user by user email
+     * Retrieves a user by their email address from the database.
      * 
-     * @param email
-     * @return user with specific email or null
+     * @param email the email address of the user to retrieve
+     * @return the User object with the specified email, or null if no user is found
      */
     @Override
     public User getUserByEmail(String email) {
@@ -55,7 +65,7 @@ public class UserDaoImpl implements UserDao{
             }
              
         } catch (SQLException ex) {
-            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            LMSLogger.getInstance().saveLogInformation("SQLException occur at getUserByEmail: "+ex.getMessage(), UserDaoImpl.class.getName() , LogLevel.ERROR);
         }
        return user;
     }
@@ -84,9 +94,10 @@ public class UserDaoImpl implements UserDao{
             pstmt.setString(7, user.getCity());
             //Execute SQL statement
             pstmt.executeUpdate();
+            LMSLogger.getInstance().saveLogInformation("Insert an user into database successfully, userEmail="+user.getEmail(), UserDaoImpl.class.getName() , LogLevel.INFO);
             
         } catch (SQLException ex) {
-            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+           LMSLogger.getInstance().saveLogInformation("SQLException occur at addUser: "+ex.getMessage(), UserDaoImpl.class.getName() , LogLevel.ERROR);
         }
     }
     
