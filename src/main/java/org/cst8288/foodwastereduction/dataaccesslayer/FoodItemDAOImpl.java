@@ -193,7 +193,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
         foodItem.setRetailerId(resultSet.getInt("RetailerID"));
         foodItem.setName(resultSet.getString("Name"));
         foodItem.setDescription(resultSet.getString("Description"));
-        foodItem.setCategory(CategoryEnum.valueOf(resultSet.getString("Category").toUpperCase()));
+        foodItem.setCategory(CategoryEnum.valueOf(resultSet.getString("Category")));
         foodItem.setBrand(resultSet.getString("Brand"));
         foodItem.setUnit(resultSet.getString("Unit"));
         return foodItem;
