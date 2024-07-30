@@ -7,6 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 
+<%--Modify this file,
+dynamically get values from database and print rows,
+and contain table and popup window in the same form--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,16 +36,20 @@
         <tr>
             <th>Item Name</th>
             <th>Available Qty</th>
-            <th>Price (ea.)</th>
+            <th>Regular Price</th>
+            <th>Discounted Price</th>
             <th>Expiration Date</th>
             <th>Operation</th>
         </tr>
         </thead>
         <tbody>
+
+        <%-- examples of the list --%>
         <tr>
             <td>Apple</td>
             <td>50</td>
             <td>2.49</td>
+            <td>1.99</td>
             <td>2024-01-01</td>
             <td>
                 <button onclick="document.getElementById('purchase-window').style.display='block'">Purchase</button>
@@ -52,15 +59,17 @@
             <td>Orange</td>
             <td>20</td>
             <td>3.99</td>
+            <td>2.99</td>
             <td>2024-01-01</td>
             <td>
                 <button>Purchase</button>
             </td>
         </tr>
         <tr>
-            <td>Chili Powder</td>
+            <td>Chili</td>
             <td>30</td>
             <td>4.29</td>
+            <td>2.69</td>
             <td>2024-01-01</td>
             <td>
                 <button>Purchase</button>
@@ -70,6 +79,7 @@
             <td>Bread</td>
             <td>20</td>
             <td>3.89</td>
+            <td>2.49</td>
             <td>2024-01-01</td>
             <td>
                 <button>Purchase</button>
@@ -78,7 +88,8 @@
         <tr>
             <td>Milk</td>
             <td>40</td>
-            <td>5.99</td>
+            <td>7.99</td>
+            <td>4.99</td>
             <td>2024-01-01</td>
             <td>
                 <button>Purchase</button>
@@ -109,6 +120,5 @@
 <footer>
     <p>&copy; 2024 Food Waste Reduction Platform</p>
 </footer>
-<script src="scripts.js"></script>
 </body>
 </html>

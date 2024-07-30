@@ -12,7 +12,7 @@ public class Transaction {
     private Integer userID;
     private Integer quantity;
     private TransactionType transactionType;
-    private Timestamp transactionDate;
+    private String transactionDate;
 
     /**
      * Getters and Setters
@@ -52,10 +52,10 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public Timestamp getTransactionDate() {
+    public String getTransactionDate() {
         return transactionDate;
     }
-    public void setTransactionDate(Timestamp transactionDate) {
+    public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
 
