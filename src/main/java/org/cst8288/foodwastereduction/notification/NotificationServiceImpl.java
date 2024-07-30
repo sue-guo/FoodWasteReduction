@@ -12,12 +12,12 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDAOImpl;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.email.EmailConfig;
 import org.cst8288.foodwastereduction.email.EmailService;
 import org.cst8288.foodwastereduction.email.EmailServiceImpl;
 import org.cst8288.foodwastereduction.model.Notification;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 
 /**
  *

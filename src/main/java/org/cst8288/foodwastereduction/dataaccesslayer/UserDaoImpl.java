@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.constants.UserType;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.utility.DatetimeUtil;
 
@@ -18,7 +20,7 @@ import org.cst8288.foodwastereduction.utility.DatetimeUtil;
  *
  * @author ryany
  */
-public class UserDAOImpl implements UserDAO{
+public class UserDaoImpl implements UserDao{
     
     /**
      * Gets user by user email
@@ -26,7 +28,7 @@ public class UserDAOImpl implements UserDAO{
      * @param email
      * @return user with specific email or null
      */
-    @Override
+   @Override
     public User getUserByEmail(String email) {
         
         Connection con = null;
@@ -43,7 +45,7 @@ public class UserDAOImpl implements UserDAO{
             
             while (rs.next()) {
                 user = new User();
-                user.setUserId(rs.getInt("UserID"));
+                user.setUserID(rs.getInt("UserID"));
                 user.setName(rs.getString("Name"));
                 user.setEmail(rs.getString("Email"));
                 user.setPassword(rs.getString("PasswordHash"));
@@ -55,7 +57,7 @@ public class UserDAOImpl implements UserDAO{
             }
              
         } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            LMSLogger.getInstance().saveLogInformation("SQLException occur at getUserByEmail: "+ex.getMessage(), UserDaoImpl.class.getName() , LogLevel.ERROR);
         }
        return user;
     }
@@ -84,15 +86,16 @@ public class UserDAOImpl implements UserDAO{
             pstmt.setString(7, user.getCity());
             //Execute SQL statement
             pstmt.executeUpdate();
+            LMSLogger.getInstance().saveLogInformation("Insert an user into database successfully, userEmail="+user.getEmail(), UserDaoImpl.class.getName() , LogLevel.INFO);
             
         } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+           LMSLogger.getInstance().saveLogInformation("SQLException occur at addUser: "+ex.getMessage(), UserDaoImpl.class.getName() , LogLevel.ERROR);
         }
     }
     
     
     @Override
-    public User getById(int userId) {
+    public User getUserById(int userId) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -107,7 +110,7 @@ public class UserDAOImpl implements UserDAO{
             
             if (rs.next()) {
                 user = new User();
-                user.setUserId(rs.getInt("UserID"));
+                user.setUserID(rs.getInt("UserID"));
                 user.setName(rs.getString("Name"));
                 user.setEmail(rs.getString("Email"));
                 user.setPassword(rs.getString("PasswordHash"));
@@ -119,14 +122,14 @@ public class UserDAOImpl implements UserDAO{
             }
              
         } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (rs != null) rs.close();
                 if (pstmt != null) pstmt.close();
                 if (con != null) con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return user;

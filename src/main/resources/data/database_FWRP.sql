@@ -88,6 +88,7 @@ CREATE TABLE Notifications (
 -- ---------Test data----
 -- Test data for Users
 INSERT INTO Users (Name, Email, PasswordHash, UserType, PhoneNumber, Address, City) VALUES
+('Ryan Xu', 'xu000310@algonquinlive.com', 'hashed_password_5', 'Consumer', '297-7277', '104 Limebank', 'Ottawa'),
 ('Costo', 'john.doe@example.com', 'hashed_password_1', 'Retailer', '555-1234', '123 Elm St', 'Ottawa'),
 ('Jane Smith', 'jane.smith@example.com', 'hashed_password_2', 'Consumer', '555-5678', '456 Oak St', 'Ottawa'),
 ('Charity Org', 'contact@charity.org', 'hashed_password_3', 'CharitableOrganization', '555-8765', '789 Pine St', 'Kingston'),

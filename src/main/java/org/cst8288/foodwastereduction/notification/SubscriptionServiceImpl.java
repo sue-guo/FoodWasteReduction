@@ -11,9 +11,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.cst8288.foodwastereduction.constants.FoodCategory;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDAO;
 import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 
 /**
  *
@@ -21,11 +21,11 @@ import org.cst8288.foodwastereduction.model.User;
  */
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionDAO subscriptionDAO;
-    private final UserDAO userDAO;
+    private final UserDao userDao;
 
-    public SubscriptionServiceImpl(SubscriptionDAO subscriptionDAO, UserDAO userDAO) {
+    public SubscriptionServiceImpl(SubscriptionDAO subscriptionDAO, UserDao userDao) {
         this.subscriptionDAO = subscriptionDAO;
-        this.userDAO = userDAO;
+        this.userDao = userDao;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         List<User> subscribers = new ArrayList<>();
         
         for (Subscription subscription : subscriptions) {
-            User user = userDAO.getById(subscription.getUserId());
+            User user = userDao.getUserById(subscription.getUserId());
             if (user != null) {
                 subscribers.add(user);
             }

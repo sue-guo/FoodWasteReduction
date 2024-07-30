@@ -4,19 +4,15 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
-import java.util.List;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDAO;
 import org.cst8288.foodwastereduction.model.FoodItem;
 import org.cst8288.foodwastereduction.model.Inventory;
-import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 
 /**
  *
@@ -24,11 +20,11 @@ import org.cst8288.foodwastereduction.model.User;
  */
 public class NotificationMessageServiceImpl implements NotificationMessageService {
     private final FoodItemDAO foodItemDAO;
-    private final UserDAO userDAO;
+    private final UserDao userDao;
     
-    public NotificationMessageServiceImpl(FoodItemDAO foodItemDAO, UserDAO userDAO) {
+    public NotificationMessageServiceImpl(FoodItemDAO foodItemDAO, UserDao userDao) {
         this.foodItemDAO = foodItemDAO;
-        this.userDAO = userDAO;
+        this.userDao = userDao;
     }
 
     @Override
@@ -46,7 +42,7 @@ public class NotificationMessageServiceImpl implements NotificationMessageServic
         User retailer;
         try {
             foodItem = foodItemDAO.getById(item.getFoodItemId());
-            retailer = userDAO.getById(item.getRetailerId());
+            retailer = userDao.getUserById(item.getRetailerId());
             if (userType.equals(UserType.CONSUMER)){
                 return "Discount available for " + foodItem.getName() + " at retailer " + retailer.getName() + 
                    ": Regular price: $" + item.getRegularPrice()  + ", Discount: " + item.getDiscountRate();        

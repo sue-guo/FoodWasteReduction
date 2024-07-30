@@ -13,8 +13,7 @@ import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDAOImpl;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.email.EmailConfig;
 import org.cst8288.foodwastereduction.model.Inventory;
 import org.cst8288.foodwastereduction.model.User;
@@ -29,6 +28,7 @@ import org.cst8288.foodwastereduction.notification.ObserverConsumer;
 import org.cst8288.foodwastereduction.notification.SubjectInventory;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 
 /**
  *
@@ -38,7 +38,7 @@ public class notificationDemo {
     public static void main(String[] args) {
 
         FoodItemDAO foodItemDAO = new FoodItemDAOImpl();
-        UserDAO userDAO = new UserDAOImpl();
+        UserDao userDAO = new UserDaoImpl();
         NotificationDAO notificationDAO = new NotificationDAOImpl();
         SubscriptionDAO subscriptionDAO = new SubscriptionDAOImpl();
 

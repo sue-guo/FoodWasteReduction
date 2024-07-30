@@ -40,7 +40,7 @@ public class User {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserID(Integer userId) {
         this.userId = userId;
     }
 
