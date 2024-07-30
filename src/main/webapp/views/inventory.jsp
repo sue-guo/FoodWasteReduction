@@ -128,14 +128,14 @@
         <%
             }
         %>
-        <button onclick="loadFoodItem(<%= user.getUserID() %>)">Add Inventory</button>
+        <button onclick="addInventory(<%= user.getUserID() %>)">Add Inventory</button>
     </main>
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>
     </footer>
    
     <script>
-        function loadFoodItem(userId) {
+        function addInventory(userId) {
             // load the food item management page
             window.location.href = "inventoryAdd?userId="+userId;
         }
