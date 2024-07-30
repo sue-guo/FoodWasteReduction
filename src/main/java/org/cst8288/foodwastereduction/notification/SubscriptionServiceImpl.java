@@ -14,6 +14,7 @@ import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
+import org.cst8288.foodwastereduction.model.SubscriberDTO;
 
 /**
  *
@@ -41,10 +42,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionDAO.updateSubscription(subscription);
     }
 
-    @Override
-    public List<Subscription> getSubscriptionsByRetailer(int retailerId) {
-        return subscriptionDAO.getSubscriptionsByRetailer(retailerId);
-    }
+//    @Override
+//    public List<Subscription> getSubscriptionsByRetailer(int retailerId) {
+//        return subscriptionDAO.getSubscriptionsByRetailer(retailerId);
+//    }
 
     @Override
     public List<Subscription> getSubscriptionsByUser(int userId) {
@@ -94,7 +95,21 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      * @return 
      */
     @Override
-    public List<User> getSubscribersByRetailerId(int retailerId) {
+    public List<SubscriberDTO> getSubscribersByRetailerId(int retailerId) {
+        List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
+        List<SubscriberDTO> subscribers = new ArrayList<>();
+        
+        for (Subscription subscription : subscriptions) {
+            User user = userDao.getUserById(subscription.getUserId());
+            if (user != null) {
+                subscribers.add(new SubscriberDTO(user, subscription));
+            }
+        } 
+        return subscribers;
+    }
+    
+        @Override
+    public List<User> getUserByRetailerId(int retailerId) {
         List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
         List<User> subscribers = new ArrayList<>();
         
@@ -105,6 +120,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             }
         } 
         return subscribers;
-    }    
+    } 
     
 }

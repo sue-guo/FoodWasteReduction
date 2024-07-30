@@ -15,7 +15,7 @@ CREATE TABLE Users (
     Name VARCHAR(100) NOT NULL,
     Email VARCHAR(100) NOT NULL UNIQUE,
     PasswordHash VARCHAR(255) NOT NULL,
-    UserType ENUM('Retailer', 'Consumer', 'CharitableOrganization') NOT NULL,
+    UserType ENUM('RETAILER', 'CONSUMER', 'CHARITABLE_ORGANIZATION') NOT NULL,
     PhoneNumber VARCHAR(20),
     Address VARCHAR(100),
     City VARCHAR(50),
@@ -87,7 +87,6 @@ CREATE TABLE Notifications (
 
 -- ---------Test data----
 -- Test data for Users
-<<<<<<< HEAD
 INSERT INTO Users (Name, Email, PasswordHash, UserType, PhoneNumber, Address, City) VALUES
 ('Ryan Xu', 'xu000310@algonquinlive.com', 'hashed_password_5', 'Consumer', '297-7277', '104 Limebank', 'Ottawa'),
 ('Costo', 'john.doe@example.com', 'hashed_password_1', 'Retailer', '555-1234', '123 Elm St', 'Ottawa'),
@@ -190,4 +189,3 @@ INSERT INTO Subscriptions (UserID, RetailerID, CommunicationPreference, FoodPref
 -- 
 -- INSERT INTO Subscriptions (UserID, RetailerID, CommunicationPreference, FoodPreferences) VALUES
 -- (3, 4, 'Email', 'Grain,Dairy,Beverage');
->>>>>>> 1bb1f3e695c54c657fc8fe59160d2a55e2544ecf

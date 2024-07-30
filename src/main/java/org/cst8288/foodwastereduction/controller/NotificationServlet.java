@@ -33,6 +33,7 @@ import org.cst8288.foodwastereduction.notification.SubjectInventory;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
+import org.cst8288.foodwastereduction.model.SubscriberDTO;
 
 /**
  *
@@ -85,7 +86,7 @@ public class NotificationServlet extends HttpServlet {
                 SurplusStatusEnum newStatus = SurplusStatusEnum.valueOf(statusString);
                 
                 SubjectInventory subject = new SubjectInventory(inventory);
-                List<User> subscribers = subscriptionService.getSubscribersByRetailerId(inventory.getRetailerId());
+                List<User> subscribers = subscriptionService.getUserByRetailerId(inventory.getRetailerId());
                 for (User subscriber : subscribers) {
                     Observer observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber);
                     subject.registerObserver(observer);
@@ -124,7 +125,7 @@ public class NotificationServlet extends HttpServlet {
         InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
         if (inventory != null) {
             SubjectInventory subject = new SubjectInventory(inventory);
-            List<User> subscribers = subscriptionService.getSubscribersByRetailerId(inventory.getRetailerId());
+            List<User> subscribers = subscriptionService.getUserByRetailerId(inventory.getRetailerId());
             for (User subscriber : subscribers) {
                 Observer observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber);
                 subject.registerObserver(observer);

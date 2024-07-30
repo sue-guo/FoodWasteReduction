@@ -7,7 +7,7 @@ package org.cst8288.foodwastereduction.notification;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.cst8288.foodwastereduction.constants.UserType;
+import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
@@ -29,7 +29,7 @@ public class NotificationMessageServiceImpl implements NotificationMessageServic
 
     @Override
     public String createDonationMessage(InventoryDTO item) {
-        return createMessage(item, UserType.CHARITABLEORGANIZATION);
+        return createMessage(item, UserType.CHARITABLE_ORGANIZATION);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class NotificationMessageServiceImpl implements NotificationMessageServic
         if (userType.equals(UserType.CONSUMER)){
             return "Discount available for " + foodItem.getName() + " at retailer " + retailer.getName() +
                     ": Regular price: $" + item.getRegularPrice()  + ", Discount: " + item.getDiscountRate();
-        } else if (userType.equals(UserType.CHARITABLEORGANIZATION)){
+        } else if (userType.equals(UserType.CHARITABLE_ORGANIZATION)){
             return "Donation available for " + foodItem.getName() + " at retailer " + retailer.getName();
         } else {
             return "Unknown user type";
