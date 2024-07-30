@@ -89,7 +89,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
         List<Subscription> subscriptions = new ArrayList<>();
         String sql = "SELECT * FROM Subscriptions WHERE RetailerID = ?";
         try (Connection connection = DataSource.getConnection();
-                PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, retailerId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {

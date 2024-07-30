@@ -9,8 +9,8 @@ package org.cst8288.foodwastereduction.model;
  * @author ryany
  */
 public class FoodItemDTO {
-    private int foodItemId;
-    private int retailerId;
+    private Integer foodItemId;
+    private Integer retailerId;
     private String name;
     private String description;
     private CategoryEnum category;
@@ -21,7 +21,7 @@ public class FoodItemDTO {
     public FoodItemDTO() {}
 
     // Parameterized constructor
-    public FoodItemDTO(int foodItemId, int retailerId, String name, String description, CategoryEnum category, String brand, String unit) {
+    public FoodItemDTO(Integer foodItemId, Integer retailerId, String name, String description, CategoryEnum category, String brand, String unit) {
         this.foodItemId = foodItemId;
         this.retailerId = retailerId;
         this.name = name;
@@ -32,19 +32,19 @@ public class FoodItemDTO {
     }
 
     // Getters and Setters
-    public int getFoodItemId() {
+    public Integer getFoodItemId() {
         return foodItemId;
     }
 
-    public void setFoodItemId(int foodItemId) {
+    public void setFoodItemId(Integer foodItemId) {
         this.foodItemId = foodItemId;
     }
 
-    public int getRetailerId() {
+    public Integer getRetailerId() {
         return retailerId;
     }
 
-    public void setRetailerId(int retailerId) {
+    public void setRetailerId(Integer retailerId) {
         this.retailerId = retailerId;
     }
 

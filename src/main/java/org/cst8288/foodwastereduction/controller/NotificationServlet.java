@@ -17,6 +17,7 @@ import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
+import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.email.EmailConfig;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
@@ -52,6 +53,7 @@ public class NotificationServlet extends HttpServlet {
     public void init() throws ServletException {
         userDAO = new UserDaoImpl();
         inventoryDAO = new InventoryDAOImpl();
+        subscriptionDAO = new SubscriptionDAOImpl();
         NotificationDAO notificationDAO = new NotificationDAOImpl();
         EmailConfig emailConfig = EmailConfig.getTestConfig();
         notificationService = new NotificationServiceImpl(notificationDAO, true, emailConfig);
@@ -107,4 +109,32 @@ public class NotificationServlet extends HttpServlet {
             response.getWriter().write("Error updating inventory: " + e.getMessage());
         }
     }
+    
+    /**
+     * Make Existed NotificationServlet can be called by InventoryStatusServlet
+     * @param inventoryId
+     * @param newStatus
+     * @throws Exception 
+     */
+    public void processNotification(int inventoryId, SurplusStatusEnum newStatus) throws Exception {
+        if (subscriptionService == null) {
+                throw new ServletException("SubscriptionService is not initialized");
+        }
+		
+        InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
+        if (inventory != null) {
+            SubjectInventory subject = new SubjectInventory(inventory);
+            List<User> subscribers = subscriptionService.getSubscribersByRetailerId(inventory.getRetailerId());
+            for (User subscriber : subscribers) {
+                Observer observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber);
+                subject.registerObserver(observer);
+            }
+            subject.setSurplusStatus(newStatus);
+            // Update the database completed in InventoryStatusServLet, no need to do here again
+//            inventory.setSurplusStatus(newStatus);
+//            inventoryDAO.updateInventory(inventory);
+        } else {
+            throw new Exception("Inventory not found.");
+        }
+    }    
 }

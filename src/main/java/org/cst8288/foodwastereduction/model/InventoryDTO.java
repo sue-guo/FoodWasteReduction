@@ -149,8 +149,8 @@ public class InventoryDTO {
      * @param surplusStatus
      * @param isActive 
      */
-    public InventoryDTO(int inventoryId, int retailerId, int foodItemId, String batchNumber,
-            int quantity, double regularPrice, double discountRate, Date expirationDate, 
+    public InventoryDTO(Integer inventoryId, Integer retailerId, Integer foodItemId, String batchNumber,
+            Integer quantity, double regularPrice, double discountRate, Date expirationDate, 
             Date receiveDate, boolean isSurplus, SurplusStatusEnum surplusStatus, boolean isActive) {
         this.inventoryId = inventoryId;
         this.retailerId = retailerId;

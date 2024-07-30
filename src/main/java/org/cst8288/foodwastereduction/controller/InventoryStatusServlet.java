@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
+import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
+import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 
@@ -19,9 +21,16 @@ import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
  * @author Carri
  */
 public class InventoryStatusServlet extends HttpServlet {
+    private InventoryDAO inventoryDAO;
+    private NotificationServlet notificationServlet;
 
+    @Override
+    public void init() throws ServletException {
+        inventoryDAO = new InventoryDAOImpl();
+        notificationServlet = new NotificationServlet();
+        notificationServlet.init();
+    }    
   
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -42,20 +51,33 @@ public class InventoryStatusServlet extends HttpServlet {
         int inventoryId = Integer.parseInt(inventoryIdParam);
         SurplusStatusEnum status = SurplusStatusEnum.valueOf(statusParam);
         
-        InventoryBusiness inventoryBusiness = new InventoryBusiness();
+//        InventoryBusiness inventoryBusiness = new InventoryBusiness();
          // Update the surplus status of the inventory item
-         InventoryDTO inventory = inventoryBusiness.getInventoryById(inventoryId);
-               
-         inventory.setSurplusStatus(status);
-         inventoryBusiness.updateInventory(inventory);
+//        InventoryDTO inventory = inventoryBusiness.getInventoryById(inventoryId);
+        try {
+            InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
+            if (inventory != null) {
+                // Update the inventory
+                inventory.setSurplusStatus(status);
+                inventoryDAO.updateInventory(inventory);
 
-          // Redirect back to the inventory page
-         response.sendRedirect(request.getContextPath() + "/inventory?userId=" + inventory.getRetailerId());
+                // Call notificationServlet to deal with notification
+                notificationServlet.processNotification(inventoryId, status);
+                
+                // Redirect back to the inventory page
+                response.sendRedirect(request.getContextPath() + "/inventory?userId=" + inventory.getRetailerId());
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("Inventory not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error updating inventory: " + e.getMessage());
+        }
   
     }
         
-        
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
