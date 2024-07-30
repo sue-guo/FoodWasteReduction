@@ -1,6 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/* File: DatetimeUtil.java
+ * Author: Hongxiu Guo
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Date: 2024.07
+ * Modified: 
+ * Description: This is a utility class for handling date and time conversions.
+ *
  */
 package org.cst8288.foodwastereduction.utility;
 
@@ -9,7 +14,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- *
+ * A utility class for handling date and time conversions.
+ * This class provides methods to format timestamps into strings
+ * based on a given pattern.
+ * 
  * @author Hongxiu Guo
  */
 public class DatetimeUtil {

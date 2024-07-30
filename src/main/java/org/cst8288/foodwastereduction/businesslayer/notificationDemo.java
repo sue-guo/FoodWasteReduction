@@ -7,7 +7,7 @@ package org.cst8288.foodwastereduction.businesslayer;
 import java.sql.Date;
 import java.util.Calendar;
 import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
-import org.cst8288.foodwastereduction.constants.UserType;
+import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
@@ -62,7 +62,7 @@ public class notificationDemo {
         java.util.Date pastUtilDate = calendar.getTime();
         Date pastDate = new Date(pastUtilDate.getTime());
         
-        InventoryDTO testInventory = new InventoryDTO(1, 1, 1, "BATCH001", 10, 100.00, 0.2, pastDate, currentDate, true, SurplusStatusEnum.DISCOUNT, true);
+        InventoryDTO testInventory = new InventoryDTO(1, 1, 1, "BATCH001", 10, 100.00, 0.2, pastDate, currentDate, true, SurplusStatusEnum.Discount, true);
         
         Observer consumerObserver = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, testConsumer);
 
@@ -71,7 +71,7 @@ public class notificationDemo {
         // Create email service
         subject.registerObserver(consumerObserver);
         
-        subject.setSurplusStatus(SurplusStatusEnum.DISCOUNT);
+        subject.setSurplusStatus(SurplusStatusEnum.Discount);
         
         
         System.out.println("Test completed. Check your test email account for the notification.");

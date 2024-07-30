@@ -36,21 +36,21 @@ public class ObserverConsumer implements Observer {
 
 	@Override
     public void update(InventoryDTO inventory) {
-        if (inventory.getSurplusStatus() == SurplusStatusEnum.DISCOUNT) {
-            boolean isSubscribed = subscriptionService.isSubscribed(consumer.getUserId(), inventory.getRetailerId());
+        if (inventory.getSurplusStatus() == SurplusStatusEnum.Discount) {
+            boolean isSubscribed = subscriptionService.isSubscribed(consumer.getUserID(), inventory.getRetailerId());
             
             try {
                 int foodItemId = inventory.getFoodItemId();
                 CategoryEnum foodCategory = foodItemService.getFoodCategory(foodItemId);
                 boolean isInterested = subscriptionService.isInterestedInCategory(
-                    consumer.getUserId(), 
+                    consumer.getUserID(), 
                     inventory.getRetailerId(), 
                     foodCategory
                 );
 
                 if (isSubscribed && isInterested) {
                     String message = messageService.createDiscountMessage(inventory);
-                    notificationService.sendEmail(consumer.getUserId(), 
+                    notificationService.sendEmail(consumer.getUserID(), 
                                                   inventory.getInventoryId(), 
                                                   consumer.getEmail(), 
                                                   "Discount Available", 

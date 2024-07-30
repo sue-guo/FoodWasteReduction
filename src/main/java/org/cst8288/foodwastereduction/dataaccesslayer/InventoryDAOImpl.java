@@ -60,7 +60,7 @@ public class InventoryDAOImpl implements InventoryDAO {
         return inventories;
     }
 	
-	@Override
+    @Override
      public InventoryDTO getInventoryById(int inventoryID) {
         InventoryDTO inventory = null;
         String sql = "SELECT * FROM Inventory WHERE InventoryID = ?";
@@ -96,7 +96,7 @@ public class InventoryDAOImpl implements InventoryDAO {
         return inventory;
     }
 
-	@Override
+    @Override
     public void addInventory(InventoryDTO inventory) {
         String sql = "INSERT INTO Inventory (RetailerID, FoodItemID, BatchNumber, Quantity, RegularPrice, DiscountRate, ExpirationDate, ReceiveDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         Connection con = null;
@@ -117,9 +117,6 @@ public class InventoryDAOImpl implements InventoryDAO {
             LOGGER.log(Level.SEVERE, null, ex);
         } 
     }
-
-
-
 
     @Override
     public void updateInventory(InventoryDTO inventory) {

@@ -42,7 +42,7 @@ public class SubjectInventory implements Subject {
     public void setSurplusStatus(SurplusStatusEnum status) {
         if (inventory.getIsSurplus()) {
             inventory.setSurplusStatus(status);
-            if (status != SurplusStatusEnum.NONE) {
+            if (status != SurplusStatusEnum.None) {
                 notifyObservers();
             }
         }

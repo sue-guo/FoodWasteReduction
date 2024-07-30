@@ -87,18 +87,4 @@ public class FoodItemDTO {
     public void setUnit(String unit) {
         this.unit = unit;
     }
-
-    @Override
-    public String toString() {
-        return "FoodItemDTO{" +
-                "foodItemId=" + foodItemId +
-                ", retailerId=" + retailerId +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", category='" + category + '\'' +
-                ", brand='" + brand + '\'' +
-                ", unit='" + unit + '\'' +
-                '}';
-    }
 }
-

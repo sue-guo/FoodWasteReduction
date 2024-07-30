@@ -35,21 +35,21 @@ public class ObserverCharitableOrganization implements Observer {
 
     @Override
     public void update(InventoryDTO inventory) {
-        if (inventory.getSurplusStatus() == SurplusStatusEnum.DONATION) {
-            boolean isSubscribed = subscriptionService.isSubscribed(charitableOrganization.getUserId(), inventory.getRetailerId());
+        if (inventory.getSurplusStatus() == SurplusStatusEnum.Donation) {
+            boolean isSubscribed = subscriptionService.isSubscribed(charitableOrganization.getUserID(), inventory.getRetailerId());
             
             try {
                 int foodItemId = inventory.getFoodItemId();
                 CategoryEnum foodCategory = foodItemService.getFoodCategory(foodItemId);
                 boolean isInterested = subscriptionService.isInterestedInCategory(
-                    charitableOrganization.getUserId(), 
+                    charitableOrganization.getUserID(), 
                     inventory.getRetailerId(), 
                     foodCategory
                 );
 
                 if (isSubscribed && isInterested) {
                     String message = messageService.createDonationMessage(inventory);
-                    notificationService.sendEmail(charitableOrganization.getUserId(), 
+                    notificationService.sendEmail(charitableOrganization.getUserID(), 
                                                   inventory.getInventoryId(), 
                                                   charitableOrganization.getEmail(), 
                                                   "Donation Available", 

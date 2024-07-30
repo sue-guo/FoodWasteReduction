@@ -21,3 +21,4 @@ public interface FoodItemDAO {
     void updateFoodItem(FoodItemDTO foodItem);
     void deleteFoodItem(int foodItemId);
 }
+

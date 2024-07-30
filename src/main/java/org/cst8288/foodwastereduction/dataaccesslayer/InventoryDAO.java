@@ -7,10 +7,9 @@ import java.sql.SQLException;
 import java.util.List;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 
-
 /**
  *
- * @author ryany
+ * @author WANG JIAYUN
  */
 public interface InventoryDAO {
     
