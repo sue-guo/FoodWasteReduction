@@ -22,7 +22,7 @@
     <nav>
         <ul>
             <li><a href="home.jsp">Home</a></li>
-            <li><a href="purchase.jsp">Purchase</a></li>
+            <li><a href="consumer.jsp">Purchase</a></li>
             <li><a href="subscribe.jsp">Subscribe</a></li>
         </ul>
     </nav>
