@@ -12,10 +12,10 @@ import org.cst8288.foodwastereduction.model.Subscription;
  * @author ryany
  */
 public interface SubscriptionDAO {
-    void saveSubscription(Subscription subscription);
+    void addSubscription(Subscription subscription);
     void updateSubscription(Subscription subscription);
-    List<Subscription> getSubscriptionsByRetailer(int retailerId);
-    List<Subscription> getSubscriptionsByUser(int userId);
-    void deleteSubscription(int userId, int retailerId);
-    Subscription getSubscription(int consumerId, int retailerId);
+    List<Subscription> getSubscriptionsByRetailer(Integer retailerId);
+    List<Subscription> getSubscriptionsByUser(Integer userId);
+    void deleteSubscription(Integer userId, Integer retailerId);
+    Subscription getSubscription(Integer consumerId, Integer retailerId);
 }

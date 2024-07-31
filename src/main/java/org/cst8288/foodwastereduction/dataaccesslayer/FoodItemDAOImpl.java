@@ -46,7 +46,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
     }
     
     @Override
-    public List<FoodItemDTO> getFoodItemsByRetailerId(int retailerId) {
+    public List<FoodItemDTO> getFoodItemsByRetailerId(Integer retailerId) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -69,7 +69,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
     }
 
     @Override
-    public FoodItemDTO getFoodItemById(int foodItemID) {
+    public FoodItemDTO getFoodItemById(Integer foodItemID) {
        Connection con = null;
        PreparedStatement pstmt = null;
        ResultSet rs = null;
@@ -164,7 +164,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
 
 
     @Override
-    public void deleteFoodItem(int foodItemID) {
+    public void deleteFoodItem(Integer foodItemID) {
         Connection con = null;
         PreparedStatement pstmt = null;
 

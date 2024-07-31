@@ -8,31 +8,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import org.cst8288.foodwastereduction.model.Notification;
+import java.util.Set;
+import org.cst8288.foodwastereduction.constants.CommunicationPreference;
+import org.cst8288.foodwastereduction.model.Subscription;
 
 /**
  *
  * @author ryany
  */
-import java.sql.*;
-import java.util.*;
-import org.cst8288.foodwastereduction.model.Subscription;
+
 
 public class SubscriptionDAOImpl implements SubscriptionDAO {
 
     @Override
-    public void saveSubscription(Subscription subscription) {
+    public void addSubscription(Subscription subscription) {
         String sql = "INSERT INTO Subscriptions (UserID, RetailerID, CommunicationPreference, FoodPreferences, CreatedAt, LastUpdated) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DataSource.getConnection();
                 PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, subscription.getUserId());
             pstmt.setInt(2, subscription.getRetailerId());
-            pstmt.setString(3, subscription.getCommunicationPreference().toUpperCase());
-            pstmt.setString(4, String.join(",", subscription.getFoodPreferences())); // transfer Set to String
+            pstmt.setString(3, subscription.getCommunicationPreference().toString());
+            
+            String foodPreferencesString = convertSetToString(subscription.getFoodPreferences());
+//            System.out.println("FoodPreferences: " + foodPreferencesString); // Debug the FoodPreferences value
+            pstmt.setString(4, foodPreferencesString);
+            
+            pstmt.setString(4, convertSetToString(subscription.getFoodPreferences())); // transfer Set to String
             pstmt.setTimestamp(5, subscription.getCreatedAt());
             pstmt.setTimestamp(6, subscription.getLastUpdated());
             
@@ -50,9 +58,17 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            // Log more details if needed
+            System.err.println("SQL Error Code: " + e.getErrorCode());
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Message: " + e.getMessage());            
         }
     }
-
+    
+    private String convertSetToString(Set<String> set) {
+        return String.join(",", set);
+    }
+    
     @Override
     public void updateSubscription(Subscription subscription) {
         String sql = "UPDATE Subscriptions SET RetailerID = ?, CommunicationPreference = ?, " +
@@ -60,7 +76,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
         try (Connection connection = DataSource.getConnection();
                 PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, subscription.getRetailerId());
-            pstmt.setString(2, subscription.getCommunicationPreference().toUpperCase());
+            pstmt.setString(2, subscription.getCommunicationPreference().toString());
             pstmt.setString(3, String.join(",", subscription.getFoodPreferences()));
             pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
             pstmt.setInt(5, subscription.getSubscriptionId());
@@ -72,7 +88,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
-    public void deleteSubscription(int userId, int retailerId) {
+    public void deleteSubscription(Integer userId, Integer retailerId) {
         String sql = "DELETE FROM Subscriptions WHERE UserID = ? AND RetailerID = ?";
         try (Connection connection = DataSource.getConnection();
                 PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -85,7 +101,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByRetailer(int retailerId) {
+    public List<Subscription> getSubscriptionsByRetailer(Integer retailerId) {
         List<Subscription> subscriptions = new ArrayList<>();
         String sql = "SELECT * FROM Subscriptions WHERE RetailerID = ?";
         try (Connection connection = DataSource.getConnection();
@@ -103,7 +119,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByUser(int userId) {
+    public List<Subscription> getSubscriptionsByUser(Integer userId) {
         List<Subscription> subscriptions = new ArrayList<>();
         String sql = "SELECT * FROM Subscriptions WHERE UserID = ?";
         try (Connection connection = DataSource.getConnection();
@@ -125,7 +141,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
             rs.getInt("SubscriptionID"),
             rs.getInt("UserID"),
             rs.getInt("RetailerID"),
-            rs.getString("CommunicationPreference"),
+            CommunicationPreference.valueOf(rs.getString("CommunicationPreference").toUpperCase()),
             new HashSet<>(Arrays.asList(rs.getString("FoodPreferences").toUpperCase().split(","))),
             rs.getTimestamp("CreatedAt"),
             rs.getTimestamp("LastUpdated")
@@ -133,8 +149,8 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
-    public Subscription getSubscription(int consumerId, int retailerId) {
-        String sql = "SELECT * FROM subscriptions WHERE user_id = ? AND retailer_id = ?";
+    public Subscription getSubscription(Integer consumerId, Integer retailerId) {
+        String sql = "SELECT * FROM subscriptions WHERE userid = ? AND retailerid = ?";
         
         try (Connection connection = DataSource.getConnection();
                 PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -154,17 +170,17 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     private Subscription mapResultSetToSubscription(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
-        int userId = rs.getInt("user_id");
-        int retailerId = rs.getInt("retailer_id");
-        String communicationPreference = rs.getString("communication_preference");
+        Integer id = rs.getInt("SubscriptionID");
+        Integer userId = rs.getInt("UserID");
+        Integer retailerId = rs.getInt("RetailerID");
+        CommunicationPreference communicationPreference = CommunicationPreference.valueOf(rs.getString("CommunicationPreference").toUpperCase());
         
         // Save the fodd preferences in string split by ","
-        String foodPreferencesStr = rs.getString("food_preferences").toUpperCase();
+        String foodPreferencesStr = rs.getString("FoodPreferences").toUpperCase();
         Set<String> foodPreferences = new HashSet<>(Arrays.asList(foodPreferencesStr.split(",")));
         
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
+        Timestamp createdAt = rs.getTimestamp("CreatedAt");
+        Timestamp updatedAt = rs.getTimestamp("UpdatedAt");
 
         return new Subscription(id, userId, retailerId, communicationPreference, foodPreferences, createdAt, updatedAt);
     }    

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.cst8288.foodwastereduction.constants.CommunicationPreference;
 import org.cst8288.foodwastereduction.model.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.model.Subscription;
@@ -30,11 +31,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void addSubscription(Integer userId, Integer retailerId, String communicationPreference, Set<String> foodPreferences) {
+    public void addSubscription(Integer userId, Integer retailerId, CommunicationPreference communicationPreference, Set<String> foodPreferences) {
         Subscription subscription = new Subscription(0, userId, retailerId, communicationPreference, foodPreferences, 
                                                      new Timestamp(System.currentTimeMillis()), 
                                                      new Timestamp(System.currentTimeMillis()));
-        subscriptionDAO.saveSubscription(subscription);
+        subscriptionDAO.addSubscription(subscription);
     }
 
     @Override
@@ -98,13 +99,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public List<SubscriberDTO> getSubscribersByRetailerId(Integer retailerId) {
         List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
         List<SubscriberDTO> subscribers = new ArrayList<>();
+//        System.out.println("Found " + subscriptions.size() + " subscriptions for retailer " + retailerId);
         
         for (Subscription subscription : subscriptions) {
             User user = userDao.getUserById(subscription.getUserId());
             if (user != null) {
+                SubscriberDTO dto = new SubscriberDTO(user, subscription);
                 subscribers.add(new SubscriberDTO(user, subscription));
+//                System.out.println("Added subscriber: " + dto.getUserName() + ", Type: " + dto.getUserType());
             }
         } 
+        
+//        System.out.println("Returning " + subscribers.size() + " SubscriberDTOs");
         return subscribers;
     }
     

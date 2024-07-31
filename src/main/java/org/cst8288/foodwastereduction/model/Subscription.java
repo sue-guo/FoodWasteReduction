@@ -6,22 +6,23 @@ package org.cst8288.foodwastereduction.model;
 
 import java.sql.Timestamp;
 import java.util.Set;
+import org.cst8288.foodwastereduction.constants.CommunicationPreference;
 
 /**
  * dto of Subscriptions
  * @author ryany
  */
 public class Subscription {
-    private int subscriptionId;
-    private int userId;
-    private int retailerId;
-    private String communicationPreference;
+    private Integer subscriptionId;
+    private Integer userId;
+    private Integer retailerId;
+    private CommunicationPreference communicationPreference;
     private Set<String> foodPreferences;
     private Timestamp createdAt;
     private Timestamp lastUpdated;
 
     // Constructor
-    public Subscription(int subscriptionId, int userId, int retailerId, String communicationPreference, 
+    public Subscription(Integer subscriptionId, Integer userId, Integer retailerId, CommunicationPreference communicationPreference, 
                         Set<String> foodPreferences, Timestamp createdAt, Timestamp lastUpdated) {
         this.subscriptionId = subscriptionId;
         this.userId = userId;
@@ -33,35 +34,35 @@ public class Subscription {
     }
 
     // Getters and Setters
-    public int getSubscriptionId() {
+    public Integer getSubscriptionId() {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(int subscriptionId) {
+    public void setSubscriptionId(Integer subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public int getRetailerId() {
+    public Integer getRetailerId() {
         return retailerId;
     }
 
-    public void setRetailerId(int retailerId) {
+    public void setRetailerId(Integer retailerId) {
         this.retailerId = retailerId;
     }
 
-    public String getCommunicationPreference() {
+    public CommunicationPreference getCommunicationPreference() {
         return communicationPreference;
     }
 
-    public void setCommunicationPreference(String communicationPreference) {
+    public void setCommunicationPreference(CommunicationPreference communicationPreference) {
         this.communicationPreference = communicationPreference;
     }
 

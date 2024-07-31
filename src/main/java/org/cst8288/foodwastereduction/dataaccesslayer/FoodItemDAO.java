@@ -14,11 +14,11 @@ import org.cst8288.foodwastereduction.model.FoodItemDTO;
  */
 public interface FoodItemDAO {
     void addFoodItem(FoodItemDTO foodItem);
-    List<FoodItemDTO> getFoodItemsByRetailerId(int retailerId);
+    List<FoodItemDTO> getFoodItemsByRetailerId(Integer retailerId);
     
-    FoodItemDTO getFoodItemById(int foodItemId);
+    FoodItemDTO getFoodItemById(Integer foodItemId);
     List<FoodItemDTO> getAllFoodItems();
     void updateFoodItem(FoodItemDTO foodItem);
-    void deleteFoodItem(int foodItemId);
+    void deleteFoodItem(Integer foodItemId);
 }
 

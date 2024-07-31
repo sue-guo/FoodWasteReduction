@@ -40,7 +40,7 @@ public class ObserverConsumer implements Observer {
             boolean isSubscribed = subscriptionService.isSubscribed(consumer.getUserID(), inventory.getRetailerId());
             
             try {
-                int foodItemId = inventory.getFoodItemId();
+                Integer foodItemId = inventory.getFoodItemId();
                 CategoryEnum foodCategory = foodItemService.getFoodCategory(foodItemId);
                 boolean isInterested = subscriptionService.isInterestedInCategory(
                     consumer.getUserID(), 

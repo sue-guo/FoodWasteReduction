@@ -47,6 +47,7 @@
                     <thead>
                         <tr>
                             <th>User ID</th>
+                            <th>User Name</th>
                             <th>User Type</th>
                             <th>Communication Preference</th>
                             <th>Food Preferences</th>
@@ -55,14 +56,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="subscription" items="${subscriptions}">
+                        <c:forEach var="subscriber" items="${subscribers}">
                             <tr>
-                                <td>${subscription.userID}</td>
-                                <td>${subscription.userType}</td>
-                                <td>${subscription.communicationPreference}</td>
-                                <td>${subscription.foodPreferences}</td>
-                                <td>${subscription.createdAt}</td>
-                                <td>${subscription.lastUpdated}</td>
+                                <td>${subscriber.userID}</td>
+                                <td>${subscriber.userName}</td>
+                                <td>${subscriber.userType}</td>
+                                <td>${subscriber.communicationPreference}</td>
+                                <td>${subscriber.foodPreferences}</td>
+                                <td>${subscriber.createdAt}</td>
+                                <td>${subscriber.lastUpdated}</td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -81,15 +83,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="subscription" items="${subscriptions}">
+                        <c:forEach var="subscriber" items="${subscribers}">
                             <tr>
-                                <td>${subscription.userName}</td>
-                                <td>${subscription.communicationPreference}</td>
-                                <td>${subscription.foodPreferences}</td>
-                                <td>${subscription.createdAt}</td>
+                                <td>${subscriber.userName}</td>
+                                <td>${subscriber.communicationPreference}</td>
+                                <td>${subscriber.foodPreferences}</td>
+                                <td>${subscriber.createdAt}</td>
                                 <td>
-                                    <button onclick="editSubscription(${subscription.subscriptionId})">Edit</button>
-                                    <button onclick="deleteSubscription(${subscription.subscriptionId})">Delete</button>
+                                    <button onclick="editSubscription(${subscriber.subscriptionId})">Edit</button>
+                                    <button onclick="deleteSubscription(${subscriber.subscriptionId})">Delete</button>
                                 </td>
                             </tr>
                         </c:forEach>
