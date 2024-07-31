@@ -36,10 +36,6 @@
         <servlet-name>InventoryAddServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.InventoryAddServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ClaimFoodServlet</servlet-name>
-        <servlet-class>org.cst8288.foodwastereduction.controller.ClaimFoodServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
@@ -72,10 +68,6 @@
     <servlet-mapping>
         <servlet-name>InventoryAddServlet</servlet-name>
         <url-pattern>/inventoryAdd</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ClaimFoodServlet</servlet-name>
-        <url-pattern>/claimFood</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

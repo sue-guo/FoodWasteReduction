@@ -2,6 +2,8 @@ package org.cst8288.foodwastereduction.businesslayer;
 
 import org.cst8288.foodwastereduction.dataaccesslayer.TransactionDao;
 import org.cst8288.foodwastereduction.dataaccesslayer.TransactionDaoImpl;
+
+import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.Transaction;
 import org.cst8288.foodwastereduction.model.TransactionType;
 
@@ -16,7 +18,7 @@ public class TransactionBusiness{
     private final InventoryBusiness inventoryBusiness = new InventoryBusiness();
 
     public void purchaseInventory(Integer inventoryID, Integer userID, Integer quantity) throws SQLException {
-        InventoryDTO item = inventoryBusiness.getInventoryById(inventoryID);
+        InventoryDTO item = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryID);
         if (item.getQuantity() < quantity) {
             throw new RuntimeException("Exceeds maximum quantity");
         }
@@ -31,7 +33,7 @@ public class TransactionBusiness{
     }
 
     public void claimInventory(Integer inventoryID, Integer userID) throws SQLException {
-        InventoryDTO item = inventoryBusiness.getInventoryById(inventoryID);
+        InventoryDTO item = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryID);
 
         item.setQuantity(0);
         inventoryBusiness.updateInventory(item);

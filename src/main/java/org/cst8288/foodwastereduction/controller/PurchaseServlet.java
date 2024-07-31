@@ -1,6 +1,10 @@
 package org.cst8288.foodwastereduction.controller;
 
+import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
+import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
 import org.cst8288.foodwastereduction.businesslayer.TransactionBusiness;
+import org.cst8288.foodwastereduction.model.InventoryDTO;
+import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import org.cst8288.foodwastereduction.model.User;
 
 import java.io.IOException;
@@ -16,24 +20,32 @@ import javax.servlet.http.HttpSession;
  *
  * @author yaoyi
  */
-@WebServlet("/consumer/*")
+@WebServlet(value = "/consumer/purchase")
 public class PurchaseServlet extends HttpServlet {
 
     private final InventoryBusiness inventoryBusiness = new InventoryBusiness();
+    private final FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
     private final TransactionBusiness transactionBusiness = new TransactionBusiness();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int inventoryID = Integer.parseInt(request.getParameter("inventoryID"));
-
         try {
-            request.setAttribute("item", inventoryBusiness.getInventoryById(inventoryID));
+            Integer inventoryID = Integer.parseInt(request.getParameter("inventoryId"));
+            InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryID);
+            FoodItemDTO foodItem = (FoodItemDTO) foodItemBusiness.getFoodItemsByRetailerID(inventory.getRetailerId());
+
+            if (inventory != null) {
+                request.setAttribute("inventory", inventory);
+                request.setAttribute("foodItem", foodItem);
+                request.getRequestDispatcher("/views/purchase.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Inventory item not found");
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServletException(e);
         }
-        request.getRequestDispatcher("/views/purchase.jsp").forward(request, response);
     }
 
     @Override
@@ -44,7 +56,7 @@ public class PurchaseServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         try {
-            int inventoryID = Integer.parseInt(request.getParameter("inventoryID"));
+            Integer inventoryID = Integer.parseInt(request.getParameter("inventoryId"));
             Integer quantity = Integer.parseInt(request.getParameter("quantity"));
             transactionBusiness.purchaseInventory(inventoryID, user.getUserID(), quantity);
         } catch (SQLException e) {
@@ -52,5 +64,6 @@ public class PurchaseServlet extends HttpServlet {
         }
         response.sendRedirect(request.getContextPath() + "/consumer");
     }
+
 
 }

@@ -1,3 +1,8 @@
+<%@ page import="org.cst8288.foodwastereduction.model.User" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.cst8288.foodwastereduction.model.InventoryDTO" %>
+<%@ page import="org.cst8288.foodwastereduction.model.SurplusStatusEnum" %>
+<%@ page import="org.cst8288.foodwastereduction.model.FoodItemDTO" %>
 <%--
   Created by IntelliJ IDEA.
   User: yaoyi
@@ -7,16 +12,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-<%--Modify this file,
-dynamically get values from database and print rows,
-and contain table and popup window in the same form--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase</title>
-    <link rel="stylesheet" href="../styles/purchase.css">
+    <title>Consumer page</title>
+    <link rel="stylesheet" href="../styles/consumer.css">
 </head>
 <body>
 <header>
@@ -24,15 +26,30 @@ and contain table and popup window in the same form--%>
     <nav>
         <ul>
             <li><a href="home.jsp">Home</a></li>
-            <li><a href="consumer.jsp">Purchase</a></li>
-            <li><a href="subscribe.jsp">Subscribe</a></li>
+            <li>
+                <%
+                    // Get the session attribute
+                    User user = (User) session.getAttribute("user");
+                    if (user != null) {
+                        out.print("<p>Welcome, " + user.getName() + "! </p>" +
+                                "<a href=\"logout\" class=\"logout\">[ Logout ]</a>");
+                    }
+                %>
+            </li>
         </ul>
     </nav>
 </header>
+
 <main>
-    <h2>Food Items</h2>
+    <h2>Discounted Food Items</h2>
+    <%
+        List<InventoryDTO> inventories = (List<InventoryDTO>) request.getAttribute("inventories");
+        List<FoodItemDTO> foodItems = (List<FoodItemDTO>) request.getAttribute("foodItems");
+    %>
+
     <table id="purchase-table">
         <thead>
+        <%-- Table header row --%>
         <tr>
             <th>Item Name</th>
             <th>Available Qty</th>
@@ -42,80 +59,33 @@ and contain table and popup window in the same form--%>
             <th>Operation</th>
         </tr>
         </thead>
+        <%-- Table body --%>
         <tbody>
-
-        <%-- examples of the list --%>
+        <%
+            for (InventoryDTO inventory : inventories) {
+                FoodItemDTO foodItem = foodItems.stream()
+                        .filter(item -> item.getFoodItemId().equals(inventory.getFoodItemId()))
+                        .findFirst()
+                        .orElse(null);
+                if (inventory != null && inventory.getSurplusStatus() == SurplusStatusEnum.Discount) {
+                    assert foodItem != null;
+        %>
         <tr>
-            <td>Apple</td>
-            <td>50</td>
-            <td>2.49</td>
-            <td>1.99</td>
-            <td>2024-01-01</td>
+            <td><%= foodItem.getName() %></td>
+            <td><%= inventory.getQuantity() %></td>
+            <td><%= inventory.getRegularPrice() %></td>
+            <td><%= inventory.getRegularPrice() * inventory.getDiscountRate() %></td>
+            <td><%= inventory.getExpirationDate() %></td>
             <td>
-                <button onclick="document.getElementById('purchase-window').style.display='block'">Purchase</button>
+                <button type="button" onclick="window.location.href='${pageContext.request.contextPath}/consumer/purchase?inventoryId=<%= inventory.getFoodItemId() %>'">Purchase</button>
             </td>
         </tr>
-        <tr>
-            <td>Orange</td>
-            <td>20</td>
-            <td>3.99</td>
-            <td>2.99</td>
-            <td>2024-01-01</td>
-            <td>
-                <button>Purchase</button>
-            </td>
-        </tr>
-        <tr>
-            <td>Chili</td>
-            <td>30</td>
-            <td>4.29</td>
-            <td>2.69</td>
-            <td>2024-01-01</td>
-            <td>
-                <button>Purchase</button>
-            </td>
-        </tr>
-        <tr>
-            <td>Bread</td>
-            <td>20</td>
-            <td>3.89</td>
-            <td>2.49</td>
-            <td>2024-01-01</td>
-            <td>
-                <button>Purchase</button>
-            </td>
-        </tr>
-        <tr>
-            <td>Milk</td>
-            <td>40</td>
-            <td>7.99</td>
-            <td>4.99</td>
-            <td>2024-01-01</td>
-            <td>
-                <button>Purchase</button>
-            </td>
-        </tr>
+        <%
+                }
+            }
+        %>
         </tbody>
-    </table>
-    <br>
-    <button onclick="purchaseHistory()">Purchase History</button>
-
-    <!-- Popup window for consumers to edit quantity and confirm purchase -->
-    <div id="purchase-window" class="window">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('purchase-window').style.display='none'">&times;</span>
-            <br>
-            <br>
-            <h3>Please enter the quantity you wish to purchase</h3>
-            <br>
-            <label for="purchase-qty">Quantity:</label>
-            <input type="number" id="purchase-qty" name="purchase-qty" required>
-            <br>
-            <br>
-            <br>
-            <button onclick="makePurchase()">Confirm Purchase</button>
-        </div>
-    </div>
+    </table>>
 </main>
 <footer>
     <p>&copy; 2024 Food Waste Reduction Platform</p>
