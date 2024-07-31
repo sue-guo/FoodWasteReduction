@@ -39,39 +39,40 @@
         </nav>
     </header>
     <main>
-
+        <h2>Payment</h2>
         <form action="payment" method="post">
             <div>
                 <label for="amount">Amount:</label>
                 <input type="text" id="amount" name="amount" readonly value="222.33">
+                <input type="text" id="transactionId" name="transactionId" hidden value="1">
             </div>
             <div>
                 <label for="paymentType">Payment Method:</label>
                 <select id="paymentType" name="paymentType" required>
-                    <option value="">Please select a payment</option>
+                    <option value="">Please select a payment method</option>
                     <option value="check">Check</option>
-                    <option value="creditCard">Credit Card</option>
+                    <option value="credit_card">Credit Card</option>
                     <option value="paypal">PayPal</option>
-                    <option value="applePay">Apple Pay</option>
+                    <option value="apple_pay">Apple Pay</option>
                 </select><br><br>
             </div>
             <!-- Check Payment Details -->
              <div id="checkDetails" class="payment-details" style="display:none;">
                 <div>
-                    <label for="checkNumber">Check Number:</label>
+                    <label for="checkNumber">Check Number*:</label>
                     <input type="text" id="checkNumber" name="checkNumber" required>
                 </div>
                 <div>
-                    <label for="bankName">Bank Name:</label>
+                    <label for="bankName">Bank Name*:</label>
                     <input type="text" id="bankName" name="bankName" required>
                 </div>
                 <div>
-                    <label for="accountNumber">Account Number:</label>
-                    <input type="text" id="accountNumber" name="accountNumber" required>
+                    <label for="accountNumber">Account Number*:</label>
+                    <input type="number" id="accountNumber" name="accountNumber" required>
                 </div>
                 <div>
-                    <label for="routingNumber">Routing Number:</label>
-                    <input type="text" id="routingNumber" name="routingNumber" required>
+                    <label for="routingNumber">Routing Number*:</label>
+                    <input type="number" id="routingNumber" name="routingNumber" required>
                 </div>
                 <div>
                     <label for="payee">Payee:</label>
@@ -88,42 +89,42 @@
             </div>
             
             <!-- Credit Card Details -->
-            <div id="creditCardDetails" style="display:none;">
+            <div id="creditCardDetails" class="payment-details"  style="display:none;">
                 <div>
-                    <label for="cardNumber">Card Number:</label>
-                    <input type="text" id="cardNumber" name="cardNumber">
+                    <label for="cardNumber">Card Number*:</label>
+                    <input type="number" id="cardNumber" name="cardNumber" required>
                 </div>
                 <div>
-                    <label for="cardHolder">Card Holder:</label>
-                    <input type="text" id="cardHolder" name="cardHolder">
+                    <label for="cardHolder">Card Holder*:</label>
+                    <input type="text" id="cardHolder" name="cardHolder" required>
                 </div>
                 <div>
-                    <label for="expiryDate">Expiry Date:</label>
-                    <input type="text" id="expiryDate" name="expiryDate">
+                    <label for="expiryDate">Expiry Date*:</label>
+                    <input type="date" id="expiryDate" name="expiryDate" required>
                 </div>
                 <div>
-                    <label for="cvv">CVV:</label>
-                    <input type="text" id="cvv" name="cvv">
+                    <label for="cvv">CVV*:</label>
+                    <input type="text" id="cvv" name="cvv" required>
                 </div>
             </div>
 
             <!-- PayPal Details -->
-            <div id="paypalDetails" style="display:none;">
+            <div id="paypalDetails" class="payment-details" style="display:none;">
                 <div>
-                    <label for="email">Email:</label>
-                    <input type="text" id="email" name="email">
+                    <label for="email">Email*:</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
                 <div>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password">
+                    <label for="password">Password*:</label>
+                    <input type="password" id="password" name="password" required>
                 </div>
             </div>
 
             <!-- Apple Pay Details -->
-            <div id="applePayDetails" style="display:none;">
+            <div id="applePayDetails" class="payment-details"  style="display:none;">
                 <div>
-                    <label for="deviceToken">Device Token:</label>
-                    <input type="text" id="deviceToken" name="deviceToken">
+                    <label for="deviceToken">Device Token*:</label>
+                    <input type="text" id="deviceToken" name="deviceToken" required>
                 </div>
             </div>
 
@@ -134,36 +135,41 @@
         <p>&copy; 2024 Food Waste Reduction Platform</p>
     </footer>
     <script>
-        //Clear all input value
-        function clearInputFields(containerId) {
-            const container = document.getElementById(containerId);
-            const inputs = container.querySelectorAll('input');
-            inputs.forEach(input => input.value = '');
-        }
-
+        
         document.getElementById('paymentType').addEventListener('change', function() {
-            const paymentType = this.value;
-            // Clear all sections
-            clearInputFields('creditCardDetails');
-            clearInputFields('paypalDetails');
-            clearInputFields('applePayDetails');
-            clearInputFields('checkDetails');
+            var paymentType = this.value;
+            var paymentDetails = document.querySelectorAll('.payment-details');
             
-            // Hide all sections
-            document.getElementById('creditCardDetails').style.display = 'none';
-            document.getElementById('paypalDetails').style.display = 'none';
-            document.getElementById('applePayDetails').style.display = 'none';
-            document.getElementById('checkDetails').style.display = 'none';
+            // Hide all payment details and disable their inputs
+            paymentDetails.forEach(function(detail) {
+                detail.style.display = 'none';
+                detail.querySelectorAll('input').forEach(function(input) {
+                    input.disabled = true;
+                    input.value = ''; // Clear the input values
+                });
+            });
             
-            // Show the selected section
-            if (paymentType === 'creditCard') {
+            // Show and enable inputs for the selected payment type
+            if (paymentType == 'credit_card') {
                 document.getElementById('creditCardDetails').style.display = 'block';
-            } else if (paymentType === 'paypal') {
+                document.getElementById('creditCardDetails').querySelectorAll('input').forEach(function(input) {
+                    input.disabled = false;
+                });
+            } else if (paymentType == 'paypal') {
                 document.getElementById('paypalDetails').style.display = 'block';
-            } else if (paymentType === 'applePay') {
+                document.getElementById('paypalDetails').querySelectorAll('input').forEach(function(input) {
+                    input.disabled = false;
+                });
+            } else if (paymentType == 'apple_pay') {
                 document.getElementById('applePayDetails').style.display = 'block';
-            } else if (paymentType === 'check') {
+                document.getElementById('applePayDetails').querySelectorAll('input').forEach(function(input) {
+                    input.disabled = false;
+                });
+            } else if (paymentType == 'check') {
                 document.getElementById('checkDetails').style.display = 'block';
+                document.getElementById('checkDetails').querySelectorAll('input').forEach(function(input) {
+                    input.disabled = false;
+                });
             }
         });
     </script>
