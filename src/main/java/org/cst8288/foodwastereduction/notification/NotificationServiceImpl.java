@@ -68,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
         initializeNotification(userId, inventoryId, "SurplusAlert");
         try {
             String from = emailService.sendEmail(email, subject, content);
-            logTxtNotification(from, email, subject, content);
+//            logTxtNotification(from, email, subject, content);
             saveNotification();
             if (isTestMode) {
                 System.out.println("Test mode: Email sent to test account. Original recipient: " + email);

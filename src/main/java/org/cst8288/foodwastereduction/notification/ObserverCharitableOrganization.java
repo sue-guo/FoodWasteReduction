@@ -4,6 +4,7 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.cst8288.foodwastereduction.model.CategoryEnum;
 import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
@@ -20,17 +21,19 @@ public class ObserverCharitableOrganization implements Observer {
     private SubscriptionService subscriptionService;
     private FoodItemService foodItemService;    
     private User charitableOrganization;
+    private List<String> notifiedUsers;
 
     public ObserverCharitableOrganization(NotificationService notificationService, 
                                           NotificationMessageService messageService, 
                                           SubscriptionService subscriptionService,
                                           FoodItemService foodItemService,
-                                          User charitableOrganization) {
+                                          User charitableOrganization, List<String> notifiedUsers) {
         this.notificationService = notificationService;
         this.messageService = messageService;
         this.subscriptionService = subscriptionService;
         this.foodItemService = foodItemService;
         this.charitableOrganization = charitableOrganization;
+        this.notifiedUsers = notifiedUsers;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class ObserverCharitableOrganization implements Observer {
                                                   charitableOrganization.getEmail(), 
                                                   "Donation Available", 
                                                   message);
+                    notifiedUsers.add(charitableOrganization.getName());
                 }
             } catch (NoSuchElementException e) {
                 // logger??

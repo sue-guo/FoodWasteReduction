@@ -36,7 +36,9 @@ import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
+import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
+import org.cst8288.foodwastereduction.notification.ObserverCharitableOrganization;
 
 /**
  *
@@ -85,59 +87,61 @@ public class NotificationServlet extends HttpServlet {
 //        foodItemService = new FoodItemServiceImpl(); 
 //    }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-      throws ServletException, IOException {
-        System.out.println("Entering doPost method");
-
-        String statusString = request.getParameter("status").toUpperCase();
-        String inventoryIdParam = request.getParameter("inventoryId");
-        System.out.println("Received inventoryId: " + inventoryIdParam + ", status: " + statusString);
-        
-        int inventoryId;
-        try {
-            inventoryId = Integer.parseInt(inventoryIdParam);
-        } catch (NumberFormatException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("Invalid inventory ID format");
-            return;
-        }                
-
-        try {
-            InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
-            if (inventory != null) {
-                SurplusStatusEnum newStatus = SurplusStatusEnum.valueOf(statusString);
-                
-                SubjectInventory subject = new SubjectInventory(inventory);
-                List<User> subscribers = subscriptionService.getUserByRetailerId(inventory.getRetailerId());
-                for (User subscriber : subscribers) {
-                    Observer observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber);
-                    subject.registerObserver(observer);
-                }
-                subject.setSurplusStatus(newStatus);
-
-                // Update the database
-                inventory.setSurplusStatus(newStatus);
-                inventoryDAO.updateInventory(inventory);
-
-                response.setContentType("text/plain;charset=UTF-8");
-                response.getWriter().write("Inventory updated and notifications sent.");
-            } else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.getWriter().write("Inventory not found.");
-            }
-        } catch (Exception e) {
-            System.err.println("Error in doPost: " + e.getMessage());
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Error updating inventory: " + e.getMessage());
-        }
-    }
+//    @Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+//      throws ServletException, IOException {
+//        System.out.println("Entering doPost method");
+//
+//        String statusString = request.getParameter("status").toUpperCase();
+//        String inventoryIdParam = request.getParameter("inventoryId");
+//        System.out.println("Received inventoryId: " + inventoryIdParam + ", status: " + statusString);
+//        List<String> notifiedUsers = new ArrayList<>();
+//        
+//        int inventoryId;
+//        try {
+//            inventoryId = Integer.parseInt(inventoryIdParam);
+//        } catch (NumberFormatException e) {
+//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            response.getWriter().write("Invalid inventory ID format");
+//            return;
+//        }                
+//
+//        try {
+//            InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
+//            if (inventory != null) {
+//                SurplusStatusEnum newStatus = SurplusStatusEnum.valueOf(statusString);
+//                
+//                SubjectInventory subject = new SubjectInventory(inventory);
+//                List<User> subscribers = subscriptionService.getUserByRetailerId(inventory.getRetailerId());
+//                for (User subscriber : subscribers) {
+//                    Observer observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber, notifiedUsers);
+//                    subject.registerObserver(observer);
+//                }
+//                subject.setSurplusStatus(newStatus);
+//
+//                // Update the database
+//                inventory.setSurplusStatus(newStatus);
+//                inventoryDAO.updateInventory(inventory);
+//
+//                response.setContentType("text/plain;charset=UTF-8");
+//                response.getWriter().write("Inventory updated and notifications sent.");
+//            } else {
+//                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//                response.getWriter().write("Inventory not found.");
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Error in doPost: " + e.getMessage());
+//            e.printStackTrace();
+//            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//            response.getWriter().write("Error updating inventory: " + e.getMessage());
+//        }
+//    }
     
     /**
      * Make Existed NotificationServlet can be called by InventoryStatusServlet
      * @param inventoryId
      * @param newStatus
+     * @return 
      * @throws Exception 
      */
     public List<String> processNotification(int inventoryId, SurplusStatusEnum newStatus) throws Exception {
@@ -158,9 +162,14 @@ public class NotificationServlet extends HttpServlet {
 //            System.out.println("Found " + subscribers.size() + " subscribers for retailer: " + inventory.getRetailerId());
             
             for (User subscriber : subscribers) {
-                Observer observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber);
-                subject.registerObserver(observer);
-                notifiedUsers.add(subscriber.getName());
+                Observer observer;
+                if (subscriber.getUserType() == UserType.CONSUMER && newStatus == SurplusStatusEnum.Discount) {
+                    observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber, notifiedUsers);
+                    subject.registerObserver(observer);
+                } else if (subscriber.getUserType() == UserType.CHARITABLE_ORGANIZATION && newStatus == SurplusStatusEnum.Donation) {
+                    observer = new ObserverCharitableOrganization(notificationService, messageService, subscriptionService, foodItemService, subscriber, notifiedUsers);
+                    subject.registerObserver(observer);
+                }
             }
             subject.setSurplusStatus(newStatus);
             // Update the database completed in InventoryStatusServLet, no need to do here again

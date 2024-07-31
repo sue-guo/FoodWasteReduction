@@ -6,28 +6,18 @@ package org.cst8288.foodwastereduction.controller;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.json.JsonObject;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;
-import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAOImpl;
-import org.cst8288.foodwastereduction.email.EmailConfig;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
-import org.cst8288.foodwastereduction.notification.FoodItemService;
-import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
-import org.cst8288.foodwastereduction.notification.NotificationService;
-import org.cst8288.foodwastereduction.notification.NotificationServiceImpl;
+
 
 /**
  *
@@ -90,8 +80,8 @@ public class InventoryStatusServlet extends HttpServlet {
 
                 // Call notificationServlet to deal with notification
                 List<String> notifiedUsers = notificationServlet.processNotification(inventoryId, status);
-
-                sendSuccessResponse(response, notifiedUsers);
+                String userTypeNotified = (status == SurplusStatusEnum.Discount) ? "CONSUMER" : "CHARITABLE_ORGANIZATION";
+                sendSuccessResponse(response, notifiedUsers, userTypeNotified);
                 // Redirect back to the inventory page
 //                response.sendRedirect(request.getContextPath() + "/inventory?userId=" + inventory.getRetailerId());
             } else {
@@ -104,12 +94,13 @@ public class InventoryStatusServlet extends HttpServlet {
   
     }
     
-    private void sendSuccessResponse(HttpServletResponse response, List<String> notifiedUsers) throws IOException {
+    private void sendSuccessResponse(HttpServletResponse response, List<String> notifiedUsers, String userTypeNotified) throws IOException {
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("success", true);
         responseData.put("message", "Status updated successfully");
         responseData.put("notifiedUsers", notifiedUsers);
-
+        responseData.put("userTypeNotified", userTypeNotified);
+        
         sendJsonResponse(response, HttpServletResponse.SC_OK, responseData);
     }
     

@@ -6,6 +6,7 @@ package org.cst8288.foodwastereduction.businesslayer;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -69,9 +70,12 @@ public class notificationDemo {
         java.util.Date pastUtilDate = calendar.getTime();
         Date pastDate = new Date(pastUtilDate.getTime());
         
+        List<String> notifiedUsers = new ArrayList<>();
+//        notifiedUsers = ;
+        
         InventoryDTO testInventory = new InventoryDTO(1, 1, 1, "BATCH001", 10, 100.00, 0.2, pastDate, currentDate, true, SurplusStatusEnum.Discount, true);
         
-        Observer consumerObserver = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, testConsumer);
+        Observer consumerObserver = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, testConsumer, notifiedUsers);
 
         SubjectInventory subject = new SubjectInventory(testInventory);
         

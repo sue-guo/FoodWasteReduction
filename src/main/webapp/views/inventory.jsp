@@ -160,7 +160,9 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        var message = "Status updated successfully.\nNotified users:\n" + response.notifiedUsers.join(", ");
+                        var message = "Status updated successfully.\nNotified users are " + 
+                                response.userTypeNotified  + ":\n" + 
+                                response.notifiedUsers.join(", ");
                         alert(message);  
                         location.reload();
                     } else {
