@@ -33,7 +33,7 @@ public class LMSLogger {
     /**
      * File to which logs are written
      */
-    private final String LOGFILE = "logs.txt";
+    private final String LOGFILE = "D:\\CST8288-NetBeans\\FoodWasteReduction\\logs.txt";
     /**
      * writer for write file
      */
