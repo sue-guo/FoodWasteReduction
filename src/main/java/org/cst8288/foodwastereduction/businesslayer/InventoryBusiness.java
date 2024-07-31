@@ -40,4 +40,8 @@ public class InventoryBusiness {
     public void updateInventory(InventoryDTO inventory) {
         inventoryDAO.updateInventory(inventory);
     }
+
+    public List<InventoryDTO> getAllInventories() {
+        return inventoryDAO.getAllInventories();
+    }
 }

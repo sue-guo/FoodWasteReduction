@@ -25,7 +25,7 @@
     <h1>Food Waste Reduction Platform</h1>
     <nav>
         <ul>
-            <li><a href="home.jsp">Home</a></li>
+            <li><a href="views/home.jsp">Home</a></li>
             <li>
                 <%
                     // Get the session attribute
@@ -77,7 +77,7 @@
             <td><%= inventory.getRegularPrice() * inventory.getDiscountRate() %></td>
             <td><%= inventory.getExpirationDate() %></td>
             <td>
-                <button type="button" onclick="window.location.href='${pageContext.request.contextPath}/consumer/purchase?inventoryId=<%= inventory.getFoodItemId() %>'">Purchase</button>
+                <button type="button" onclick="window.location.href='${pageContext.request.contextPath}/consumer/purchase?inventoryId=<%= inventory.getInventoryId() %>'">Purchase</button>
             </td>
         </tr>
         <%
@@ -85,7 +85,7 @@
             }
         %>
         </tbody>
-    </table>>
+    </table>
 </main>
 <footer>
     <p>&copy; 2024 Food Waste Reduction Platform</p>

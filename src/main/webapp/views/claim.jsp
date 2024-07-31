@@ -49,7 +49,7 @@
             <p><strong>Item Name:</strong> <%= foodItem.getName() %></p>
             <p><strong>Regular Price:</strong> <%= inventory.getRegularPrice() %></p>
             <p><strong>Quantity:</strong> <%= inventory.getQuantity() %></p>
-            <button type="submit">Purchase</button>
+            <button type="submit">Claim</button>
         </div>
     </form>
     <%

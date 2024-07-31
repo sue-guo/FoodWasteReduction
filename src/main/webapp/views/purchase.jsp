@@ -38,6 +38,7 @@
 </header>
 
 <main>
+    <h2>Purchase Details</h2>
     <%
         InventoryDTO inventory = (InventoryDTO) request.getAttribute("inventory");
         FoodItemDTO foodItem = (FoodItemDTO) request.getAttribute("foodItem");
@@ -63,6 +64,8 @@
         }
     %>
 </main>
-
+<footer>
+    <p>&copy; 2024 Food Waste Reduction Platform</p>
+</footer>
 </body>
 </html>

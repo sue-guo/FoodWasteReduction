@@ -3,12 +3,12 @@ package org.cst8288.foodwastereduction.controller;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
 import org.cst8288.foodwastereduction.businesslayer.TransactionBusiness;
-import org.cst8288.foodwastereduction.model.InventoryDTO;
-import org.cst8288.foodwastereduction.model.FoodItemDTO;
-import org.cst8288.foodwastereduction.model.User;
+import org.cst8288.foodwastereduction.model.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,13 +32,18 @@ public class PurchaseServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            int inventoryID = Integer.parseInt(request.getParameter("inventoryId"));
-            InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryID);
-            FoodItemDTO foodItem = (FoodItemDTO) foodItemBusiness.getFoodItemsByRetailerID(inventory.getRetailerId());
+            String inventoryIdStr = request.getParameter("inventoryId");
+            int inventoryId = Integer.parseInt(inventoryIdStr);
+            InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryId);
+            if (inventory != null) {
+                FoodItemDTO foodItem = foodItemBusiness.getFoodItemById(inventory.getFoodItemId());
 
-            request.setAttribute("inventory", inventory);
-            request.setAttribute("foodItem", foodItem);
-            request.getRequestDispatcher("/views/purchase.jsp").forward(request, response);
+                request.setAttribute("inventory", inventory);
+                request.setAttribute("foodItem", foodItem);
+                request.getRequestDispatcher("/views/purchase.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Inventory not found");
+            }
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -52,13 +57,27 @@ public class PurchaseServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         try {
-            Integer inventoryID = Integer.parseInt(request.getParameter("inventoryId"));
+            String inventoryIdStr = request.getParameter("inventoryId");
+            int inventoryId = Integer.parseInt(inventoryIdStr);
             Integer quantity = Integer.parseInt(request.getParameter("quantity"));
-            transactionBusiness.purchaseInventory(inventoryID, user.getUserID(), quantity);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryId);
+
+            inventory.setQuantity(inventory.getQuantity() - quantity);
+            inventoryBusiness.updateInventory(inventory);
+
+            Transaction transaction = new Transaction();
+            transaction.setInventoryID(inventoryId);
+            transaction.setUserID(user.getUserID());
+            transaction.setQuantity(quantity);
+            transaction.setTransactionType(TransactionType.Purchase);
+            transactionBusiness.addTransaction(transaction);
+
+            response.sendRedirect(request.getContextPath() + "/consumer");
+        } catch (NumberFormatException e) {
+            Logger.getLogger(PurchaseServlet.class.getName()).log(Level.SEVERE, "Invalid inventoryId or quantity format", e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid inventory ID or quantity");
         }
-        response.sendRedirect(request.getContextPath() + "/consumer");
     }
 
 

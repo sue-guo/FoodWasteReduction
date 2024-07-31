@@ -31,8 +31,8 @@ public class ConsumerServlet extends HttpServlet {
         }
 
         int userId = Integer.parseInt(request.getParameter("userId").trim());
-        List<InventoryDTO> inventories = inventoryBusiness.getInventoriesByRetailerId(userId);
-        List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
+        List<InventoryDTO> inventories = inventoryBusiness.getAllInventories();
+        List<FoodItemDTO> foodItems = foodItemBusiness.getAllFoodItems();
 
         // Set attributes for JSP
         request.setAttribute("inventories", inventories);
