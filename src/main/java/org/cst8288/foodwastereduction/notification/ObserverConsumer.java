@@ -36,18 +36,24 @@ public class ObserverConsumer implements Observer {
 
 	@Override
     public void update(InventoryDTO inventory) {
+        System.out.println("Updating observer for inventory: " + inventory.getInventoryId());
         if (inventory.getSurplusStatus() == SurplusStatusEnum.Discount) {
+            System.out.println("Processing discount notification for consumer: " + consumer.getUserID());
+        
             boolean isSubscribed = subscriptionService.isSubscribed(consumer.getUserID(), inventory.getRetailerId());
-            
+            System.out.println("Is consumer subscribed: " + isSubscribed);
             try {
                 Integer foodItemId = inventory.getFoodItemId();
                 CategoryEnum foodCategory = foodItemService.getFoodCategory(foodItemId);
+                System.out.println("Food category: " + foodCategory);
+                
                 boolean isInterested = subscriptionService.isInterestedInCategory(
                     consumer.getUserID(), 
                     inventory.getRetailerId(), 
                     foodCategory
                 );
-
+                System.out.println("Is consumer interested in category: " + isInterested);
+                
                 if (isSubscribed && isInterested) {
                     String message = messageService.createDiscountMessage(inventory);
                     notificationService.sendEmail(consumer.getUserID(), 
@@ -55,6 +61,7 @@ public class ObserverConsumer implements Observer {
                                                   consumer.getEmail(), 
                                                   "Discount Available", 
                                                   message);
+                    System.out.println("Email sent successfully");
                 }
             } catch (NoSuchElementException e) {
                 // logger ??

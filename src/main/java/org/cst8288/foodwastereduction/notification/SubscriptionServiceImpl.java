@@ -75,7 +75,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if (subscription == null) {
             return false;
         }
-        return subscription.getFoodPreferences().contains(foodCategory);
+        // Debugging output
+        System.out.println("Checking food preferences: " + subscription.getFoodPreferences());
+        System.out.println("Looking for category: " + foodCategory.name());
+        return subscription.getFoodPreferences().contains(foodCategory.name().toUpperCase());
     }
 
     /**

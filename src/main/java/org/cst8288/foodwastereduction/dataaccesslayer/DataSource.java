@@ -94,7 +94,7 @@ public class DataSource {
         String username = props.getProperty("jdbc.username");//CST8288Group
         String password = props.getProperty("jdbc.password"); // 12345678
        
-        System.out.printf("DataSource:\nurl:%s\nusername:%s\npassword:%s\n", connectionString, username, password);
+//        System.out.printf("DataSource:\nurl:%s\nusername:%s\npassword:%s\n", connectionString, username, password);
 
         String[] info = new String[3];
         info[0] = connectionString;

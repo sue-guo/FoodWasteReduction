@@ -16,6 +16,7 @@
     <title>Retailer's Inventory Management</title>
     <base href="${pageContext.request.contextPath}/" />
     <link rel="stylesheet" href="styles/fooditemlist.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <header>
@@ -144,10 +145,33 @@
             window.location.href = "inventoryUpdate?inventoryId=" + inventoryId;
         }
 
+//        function updateSurplusStatus(inventoryId, status) {
+//        // redirect to the InventoryStatusServlet with the inventoryId and status
+//            window.location.href = "inventoryStatus?inventoryId=" + inventoryId + "&status=" + status;
+//        }
+        
         function updateSurplusStatus(inventoryId, status) {
-        // redirect to the InventoryStatusServlet with the inventoryId and status
-            window.location.href = "inventoryStatus?inventoryId=" + inventoryId + "&status=" + status;
-        }
+            $.ajax({
+                url: 'inventoryStatus',
+                type: 'GET',
+                data: {
+                    inventoryId: inventoryId,
+                    status: status
+                },
+                success: function(response) {
+                    if (response.success) {
+                        var message = "Status updated successfully.\nNotified users:\n" + response.notifiedUsers.join(", ");
+                        alert(message);  
+                        location.reload();
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("An error occurred: " + error);
+                }
+            });
+        }          
     </script>
 </body>
 </html>

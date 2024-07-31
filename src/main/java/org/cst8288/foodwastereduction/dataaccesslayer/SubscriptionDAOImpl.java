@@ -180,7 +180,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
         Set<String> foodPreferences = new HashSet<>(Arrays.asList(foodPreferencesStr.split(",")));
         
         Timestamp createdAt = rs.getTimestamp("CreatedAt");
-        Timestamp updatedAt = rs.getTimestamp("UpdatedAt");
+        Timestamp updatedAt = rs.getTimestamp("LastUpdated");
 
         return new Subscription(id, userId, retailerId, communicationPreference, foodPreferences, createdAt, updatedAt);
     }    

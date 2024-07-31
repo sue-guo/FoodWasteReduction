@@ -4,7 +4,9 @@
  */
 package org.cst8288.foodwastereduction.controller;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,18 +53,37 @@ public class NotificationServlet extends HttpServlet {
     private SubscriptionService subscriptionService;
     private FoodItemService foodItemService;
 
-    @Override
-    public void init() throws ServletException {
-        userDAO = new UserDaoImpl();
-        inventoryDAO = new InventoryDAOImpl();
-        subscriptionDAO = new SubscriptionDAOImpl();
-        NotificationDAO notificationDAO = new NotificationDAOImpl();
-        EmailConfig emailConfig = EmailConfig.getTestConfig();
-        notificationService = new NotificationServiceImpl(notificationDAO, true, emailConfig);
-        messageService = new NotificationMessageServiceImpl(new FoodItemDAOImpl(), userDAO);
-        subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, userDAO);
-        foodItemService = new FoodItemServiceImpl(); 
+    public NotificationServlet() {
+        initializeServices();
     }
+    private void initializeServices() {
+        if (userDAO == null) userDAO = new UserDaoImpl();
+        if (inventoryDAO == null) inventoryDAO = new InventoryDAOImpl();
+        if (subscriptionDAO == null) subscriptionDAO = new SubscriptionDAOImpl();
+        if (notificationService == null) {
+            NotificationDAO notificationDAO = new NotificationDAOImpl();
+            EmailConfig emailConfig = EmailConfig.getTestConfig();
+            notificationService = new NotificationServiceImpl(notificationDAO, true, emailConfig);
+        }
+        if (messageService == null) messageService = new NotificationMessageServiceImpl(new FoodItemDAOImpl(), userDAO);
+        if (subscriptionService == null) subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, userDAO);
+        if (foodItemService == null) foodItemService = new FoodItemServiceImpl();
+    }
+        
+//    @Override
+//    public void init() throws ServletException {
+//        super.init();
+//        userDAO = new UserDaoImpl();
+//        inventoryDAO = new InventoryDAOImpl();
+//        subscriptionDAO = new SubscriptionDAOImpl();
+//        NotificationDAO notificationDAO = new NotificationDAOImpl();
+//        EmailConfig emailConfig = EmailConfig.getTestConfig();
+//        ServletContext servletContext = getServletContext(); 
+//        notificationService = new NotificationServiceImpl(notificationDAO, true, emailConfig, servletContext);
+//        messageService = new NotificationMessageServiceImpl(new FoodItemDAOImpl(), userDAO);
+//        subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, userDAO);
+//        foodItemService = new FoodItemServiceImpl(); 
+//    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -119,7 +140,8 @@ public class NotificationServlet extends HttpServlet {
      * @param newStatus
      * @throws Exception 
      */
-    public void processNotification(int inventoryId, SurplusStatusEnum newStatus) throws Exception {
+    public List<String> processNotification(int inventoryId, SurplusStatusEnum newStatus) throws Exception {
+        List<String> notifiedUsers = new ArrayList<>();
         
         if (foodItemService == null) {
             throw new ServletException("FoodItemService is not initialized");
@@ -132,10 +154,13 @@ public class NotificationServlet extends HttpServlet {
         InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
         if (inventory != null) {
             SubjectInventory subject = new SubjectInventory(inventory);
-            List<User> subscribers = subscriptionService.getUserByRetailerId(inventory.getRetailerId());
+            List<User> subscribers = subscriptionService.getUserByRetailerId(inventory.getRetailerId());           
+//            System.out.println("Found " + subscribers.size() + " subscribers for retailer: " + inventory.getRetailerId());
+            
             for (User subscriber : subscribers) {
                 Observer observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber);
                 subject.registerObserver(observer);
+                notifiedUsers.add(subscriber.getName());
             }
             subject.setSurplusStatus(newStatus);
             // Update the database completed in InventoryStatusServLet, no need to do here again
@@ -144,5 +169,7 @@ public class NotificationServlet extends HttpServlet {
         } else {
             throw new Exception("Inventory not found.");
         }
-    }    
+        
+        return notifiedUsers;
+    }  
 }

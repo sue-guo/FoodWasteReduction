@@ -40,6 +40,14 @@
         <servlet-name>ClaimFoodServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.ClaimFoodServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>default</servlet-name>
+        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+        <init-param>
+            <param-name>readonly</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
         <url-pattern>/signup</url-pattern>

@@ -4,6 +4,7 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.servlet.ServletContext;
 import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.email.EmailConfig;
@@ -28,6 +30,7 @@ public class NotificationServiceImpl implements NotificationService {
     private Notification currentNotification;
     private EmailService emailService;
     private boolean isTestMode;
+    private ServletContext servletContext;
     
     /**
      * 
@@ -35,6 +38,16 @@ public class NotificationServiceImpl implements NotificationService {
      * @param isTestMode
      * @param eamilconfig, the configuration used in real operation environment.
      */
+    public NotificationServiceImpl(NotificationDAO notificationDAO, boolean isTestMode, EmailConfig eamilconfig, ServletContext servletContext) {
+        this.notificationDAO = notificationDAO;
+        this.isTestMode = isTestMode;
+        
+        // EmailService
+        EmailConfig emailConfig = isTestMode ? EmailConfig.getTestConfig() : eamilconfig;
+        this.emailService = new EmailServiceImpl(emailConfig, isTestMode);
+        this.servletContext = servletContext;
+    }
+    
     public NotificationServiceImpl(NotificationDAO notificationDAO, boolean isTestMode, EmailConfig eamilconfig) {
         this.notificationDAO = notificationDAO;
         this.isTestMode = isTestMode;
@@ -43,7 +56,9 @@ public class NotificationServiceImpl implements NotificationService {
         EmailConfig emailConfig = isTestMode ? EmailConfig.getTestConfig() : eamilconfig;
         this.emailService = new EmailServiceImpl(emailConfig, isTestMode);
     }
-
+    
+    
+    
     private void initializeNotification(Integer userId, Integer inventoryId, String notificationType) {
         this.currentNotification = new Notification(0, userId, inventoryId, notificationType, new Timestamp(System.currentTimeMillis()));
     }
@@ -53,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
         initializeNotification(userId, inventoryId, "SurplusAlert");
         try {
             String from = emailService.sendEmail(email, subject, content);
-            logNotification(from, email, subject, content);
+            logTxtNotification(from, email, subject, content);
             saveNotification();
             if (isTestMode) {
                 System.out.println("Test mode: Email sent to test account. Original recipient: " + email);
@@ -97,8 +112,12 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
     
-    private void logNotification(String from, String to, String subject, String content) {
-        try (FileWriter fw = new FileWriter("./src/main/java/org/cst8288/foodwastereduction/logger/notificationLog.txt", true);
+    private void logTxtNotification(String from, String to, String subject, String content) {
+        String logFilePath = servletContext.getRealPath("/WEB-INF/logs/notificationLog.txt");
+        File logFile = new File(logFilePath);
+        logFile.getParentFile().mkdirs(); 
+        
+        try (FileWriter fw = new FileWriter(logFilePath, true);
             PrintWriter pw = new PrintWriter(fw)) {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             pw.printf("Date: %s\nFrom: %s\nTo: %s\nSubject: %s\nContent: %s\n\n", 

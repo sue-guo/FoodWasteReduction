@@ -15,6 +15,7 @@
     <base href="${pageContext.request.contextPath}/" />
     <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/fooditemlist.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <header>
@@ -112,7 +113,7 @@
         function deleteSubscription(subscriptionId) {
             // Implement delete functionality
             console.log("Delete subscription: " + subscriptionId);
-        }
+        }    
     </script>
 </body>
 </html>
