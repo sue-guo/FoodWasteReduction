@@ -39,6 +39,18 @@ public interface UserDao {
      */
     void addUser(User user);
     
+    /**
+     * 
+     * @param userId
+     * @return 
+     */
     User getUserById(int userId);
+    
+    /**
+     * 
+     * @param city
+     * @return 
+     */
+    List<User> getRetailersByCity(String city);
     
 }

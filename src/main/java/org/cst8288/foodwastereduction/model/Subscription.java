@@ -32,6 +32,19 @@ public class Subscription {
         this.createdAt = createdAt;
         this.lastUpdated = lastUpdated;
     }
+    
+        // Constructor
+    public Subscription(Integer userId, Integer retailerId, CommunicationPreference communicationPreference, 
+                        Set<String> foodPreferences) {
+        this.userId = userId;
+        this.retailerId = retailerId;
+        this.communicationPreference = communicationPreference;
+        this.foodPreferences = foodPreferences;
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.lastUpdated = new Timestamp(System.currentTimeMillis());
+    }
+    
+    
 
     // Getters and Setters
     public Integer getSubscriptionId() {

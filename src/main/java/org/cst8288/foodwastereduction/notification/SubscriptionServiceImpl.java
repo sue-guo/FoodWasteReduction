@@ -6,6 +6,7 @@ package org.cst8288.foodwastereduction.notification;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -131,4 +132,23 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscribers;
     } 
     
+    @Override
+    public void updateUserSubscriptions(int userId, int retailerId, CommunicationPreference communicationPreference, Set<String> foodPreferences) {
+        // Get current user's all subscriptions
+        Subscription existingSubscription = subscriptionDAO.getSubscription(userId, retailerId);
+        
+        if (existingSubscription != null) {
+            // Update existed subscription
+            existingSubscription.setCommunicationPreference(communicationPreference);
+            existingSubscription.setFoodPreferences(foodPreferences);
+            subscriptionDAO.updateSubscription(existingSubscription);
+        } else if (!foodPreferences.isEmpty()) {
+            // New subscription
+            Subscription newSubscription = new Subscription(userId, retailerId, communicationPreference, foodPreferences);
+            subscriptionDAO.addSubscription(newSubscription);
+        } else {
+            // If no selection, there would be no operation
+            System.out.println("No categories selected for new subscription. Skipping.");
+        }
+    }
 }

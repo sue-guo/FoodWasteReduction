@@ -29,4 +29,6 @@ public interface SubscriptionService {
     boolean hasSubscription(Integer userId, Integer retailerId);
     boolean isSubscribed(Integer consumerId, Integer retailerId);
     boolean isInterestedInCategory(Integer consumerId, Integer retailerId, CategoryEnum foodCategory);
+    
+    void updateUserSubscriptions(int userId, int retailerId, CommunicationPreference communicationPreference, Set<String> foodPreferences);
 }
