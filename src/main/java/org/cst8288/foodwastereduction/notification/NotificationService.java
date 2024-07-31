@@ -4,9 +4,7 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
-import java.sql.Timestamp;
 import java.util.List;
-import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
 import org.cst8288.foodwastereduction.model.Notification;
 
 /**
@@ -14,9 +12,9 @@ import org.cst8288.foodwastereduction.model.Notification;
  * @author ryany
  */
 public interface NotificationService {
-    void sendEmail(int userId, int inventoryId, String email, String subject, String content);
-    void sendSMS(int userId, int inventoryId, String phoneNumber, String message);
-    void logNotification(int userId, int inventoryId, String notificationType);
-    List<Notification> getUserNotifications(int userId);
-    void deleteNotification(int notificationId);
+    void sendEmail(Integer userId, Integer inventoryId, String email, String subject, String content);
+    void sendSMS(Integer userId, Integer inventoryId, String phoneNumber, String message);
+    void logNotification(Integer userId, Integer inventoryId, String notificationType);
+    List<Notification> getUserNotifications(Integer userId);
+    void deleteNotification(Integer notificationId);
 }

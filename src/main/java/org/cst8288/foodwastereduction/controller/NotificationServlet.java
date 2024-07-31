@@ -34,6 +34,7 @@ import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
+import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
 
 /**
  *
@@ -60,6 +61,7 @@ public class NotificationServlet extends HttpServlet {
         notificationService = new NotificationServiceImpl(notificationDAO, true, emailConfig);
         messageService = new NotificationMessageServiceImpl(new FoodItemDAOImpl(), userDAO);
         subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, userDAO);
+        foodItemService = new FoodItemServiceImpl(); 
     }
 
     @Override
@@ -118,6 +120,11 @@ public class NotificationServlet extends HttpServlet {
      * @throws Exception 
      */
     public void processNotification(int inventoryId, SurplusStatusEnum newStatus) throws Exception {
+        
+        if (foodItemService == null) {
+            throw new ServletException("FoodItemService is not initialized");
+        }
+        
         if (subscriptionService == null) {
                 throw new ServletException("SubscriptionService is not initialized");
         }

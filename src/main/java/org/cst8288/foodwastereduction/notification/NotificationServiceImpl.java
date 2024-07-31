@@ -44,12 +44,12 @@ public class NotificationServiceImpl implements NotificationService {
         this.emailService = new EmailServiceImpl(emailConfig, isTestMode);
     }
 
-    private void initializeNotification(int userId, int inventoryId, String notificationType) {
+    private void initializeNotification(Integer userId, Integer inventoryId, String notificationType) {
         this.currentNotification = new Notification(0, userId, inventoryId, notificationType, new Timestamp(System.currentTimeMillis()));
     }
 
     @Override
-    public void sendEmail(int userId, int inventoryId, String email, String subject, String content) {
+    public void sendEmail(Integer userId, Integer inventoryId, String email, String subject, String content) {
         initializeNotification(userId, inventoryId, "SurplusAlert");
         try {
             String from = emailService.sendEmail(email, subject, content);
@@ -65,14 +65,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void sendSMS(int userId, int inventoryId, String phoneNumber, String message) {
+    public void sendSMS(Integer userId, Integer inventoryId, String phoneNumber, String message) {
         initializeNotification(userId, inventoryId, "SurplusAlert");
         // Implement SMS sending logic
         saveNotification();
     }
 
     @Override
-    public void logNotification(int userId, int inventoryId, String notificationType) {
+    public void logNotification(Integer userId, Integer inventoryId, String notificationType) {
         if (!notificationType.equals("SurplusAlert") && !notificationType.equals("Other")) {
             throw new IllegalArgumentException("Invalid notification type");
         }
@@ -81,12 +81,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> getUserNotifications(int userId) {
+    public List<Notification> getUserNotifications(Integer userId) {
         return notificationDAO.getNotificationsByUserId(userId);
     }
 
     @Override
-    public void deleteNotification(int notificationId) {
+    public void deleteNotification(Integer notificationId) {
         notificationDAO.deleteNotification(notificationId);
     }
 

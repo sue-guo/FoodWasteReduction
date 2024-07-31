@@ -15,6 +15,8 @@ import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.notification.FoodItemService;
+import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
 
 /**
  *
@@ -23,11 +25,13 @@ import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 public class InventoryStatusServlet extends HttpServlet {
     private InventoryDAO inventoryDAO;
     private NotificationServlet notificationServlet;
+    private FoodItemService foodItemService;
 
     @Override
     public void init() throws ServletException {
         inventoryDAO = new InventoryDAOImpl();
         notificationServlet = new NotificationServlet();
+        foodItemService = new FoodItemServiceImpl();
         notificationServlet.init();
     }    
   

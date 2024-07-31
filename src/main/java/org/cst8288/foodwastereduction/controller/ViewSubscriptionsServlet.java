@@ -60,8 +60,8 @@ public class ViewSubscriptionsServlet extends HttpServlet {
         System.out.println("User found: " + user.getName() + ", Type: " + user.getUserType());
         if (user.getUserType() == UserType.RETAILER) {
             List<SubscriberDTO> subscribers = subscriptionService.getSubscribersByRetailerId(userId);
-            System.out.println("Number of subscribers found: " + subscribers.size());
-            System.out.println("Subscribers set in request: " + subscribers);
+//            System.out.println("Number of subscribers found: " + subscribers.size());
+//            System.out.println("Subscribers set in request: " + subscribers);
             request.setAttribute("subscribers", subscribers);
         } else {
             // For now, we'll just return an empty list for other user types
@@ -69,7 +69,7 @@ public class ViewSubscriptionsServlet extends HttpServlet {
             System.out.println("User is not a RETAILER. UserType: " + user.getUserType());
         }
 
-        System.out.println("UserType set in request: " + user.getUserType());
+//        System.out.println("UserType set in request: " + user.getUserType());
 
         request.setAttribute("userType", user.getUserType());
         request.getRequestDispatcher("views/viewSubscriptions.jsp").forward(request, response);

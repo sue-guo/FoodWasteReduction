@@ -57,7 +57,7 @@ public class notificationDemo {
         NotificationService notificationService = new NotificationServiceImpl(notificationDAO, isTestMode, emailConfig);     
         NotificationMessageService messageService = new NotificationMessageServiceImpl(foodItemDAO, userDAO);
         SubscriptionService subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, userDAO);
-        FoodItemService foodItemService = new FoodItemServiceImpl(foodItemDAO);
+        FoodItemService foodItemService = new FoodItemServiceImpl();
         
         User testConsumer = new User(1, "Ryan Xu", "ryan.y.xu@hotmail.com", "password", UserType.CONSUMER, "2977277", "123 Woodroffe st.", "Ottawa");
         

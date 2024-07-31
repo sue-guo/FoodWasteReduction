@@ -12,5 +12,11 @@ import org.cst8288.foodwastereduction.model.CategoryEnum;
  * @author ryany
  */
 public interface FoodItemService {
-    CategoryEnum getFoodCategory(int foodItemId) throws NoSuchElementException;
+    /**
+     * 
+     * @param foodItemId
+     * @return
+     * @throws NoSuchElementException 
+     */
+    CategoryEnum getFoodCategory(Integer foodItemId) throws NoSuchElementException;
 }

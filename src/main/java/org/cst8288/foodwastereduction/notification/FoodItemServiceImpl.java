@@ -4,13 +4,11 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
-import java.sql.SQLException;
+
 import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.model.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
+import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
 import org.cst8288.foodwastereduction.logger.LMSLogger;
 import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
@@ -22,12 +20,12 @@ import org.cst8288.foodwastereduction.model.FoodItemDTO;
 public class FoodItemServiceImpl implements FoodItemService {
     private final FoodItemDAO foodItemDAO;
 
-    public FoodItemServiceImpl(FoodItemDAO foodItemDAO) {
-        this.foodItemDAO = foodItemDAO;
+    public FoodItemServiceImpl() {
+        this.foodItemDAO = new FoodItemDAOImpl();
     }
 
     @Override
-    public CategoryEnum getFoodCategory(int foodItemId) throws NoSuchElementException {
+    public CategoryEnum getFoodCategory(Integer foodItemId) throws NoSuchElementException {
         FoodItemDTO foodItem = null;
         foodItem = foodItemDAO.getFoodItemById(foodItemId);
         if (foodItem == null) {
