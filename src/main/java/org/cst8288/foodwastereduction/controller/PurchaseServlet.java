@@ -73,7 +73,7 @@ public class PurchaseServlet extends HttpServlet {
             transaction.setTransactionType(TransactionType.Purchase);
             transactionBusiness.addTransaction(transaction);
 
-            response.sendRedirect(request.getContextPath() + "/consumer");
+            response.sendRedirect(request.getContextPath() + "/consumer?userId=" + user.getUserID());
         } catch (NumberFormatException e) {
             Logger.getLogger(PurchaseServlet.class.getName()).log(Level.SEVERE, "Invalid inventoryId or quantity format", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid inventory ID or quantity");

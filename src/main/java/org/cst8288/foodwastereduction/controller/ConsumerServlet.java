@@ -30,7 +30,9 @@ public class ConsumerServlet extends HttpServlet {
             return;
         }
 
-        int userId = Integer.parseInt(request.getParameter("userId").trim());
+        String userIdStr = request.getParameter("userId");
+        int userId = Integer.parseInt(userIdStr);
+
         List<InventoryDTO> inventories = inventoryBusiness.getAllInventories();
         List<FoodItemDTO> foodItems = foodItemBusiness.getAllFoodItems();
 

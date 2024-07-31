@@ -44,9 +44,9 @@
         FoodItemDTO foodItem = (FoodItemDTO) request.getAttribute("foodItem");
         if (inventory != null) {
     %>
-    <form action="${pageContext.request.contextPath}/consumer/purchase" method="post">
+    <form action="${pageContext.request.contextPath}/consumer/purchase?userId=<%= user.getUserID() %>" method="post">
         <div class="details">
-            <input type="hidden" name="inventoryId" value="<%= inventory.getFoodItemId() %>">
+            <input type="hidden" name="inventoryId" value="<%= inventory.getInventoryId() %>">
             <p><strong>Item Name:</strong> <%= foodItem.getName() %></p>
             <p><strong>Regular Price:</strong> <%= inventory.getRegularPrice() %></p>
             <p><strong>Discounted Price:</strong> <%= inventory.getRegularPrice() * inventory.getDiscountRate() %></p>
