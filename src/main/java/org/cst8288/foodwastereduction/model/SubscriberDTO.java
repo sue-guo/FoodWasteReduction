@@ -13,7 +13,8 @@ import java.util.Set;
  * @author ryany
  */
 public class SubscriberDTO {
-    private int userId;
+    private Integer userID;
+    private String userName;
     private UserType userType;
     private String communicationPreference;
     private Set<String> foodPreferences;
@@ -26,11 +27,20 @@ public class SubscriberDTO {
      * @param subscription 
      */
     public SubscriberDTO(User user, Subscription subscription) {
-        this.userId = user.getUserID();
+        this.userID = user.getUserID();
+        this.userName = user.getName();
         this.userType = user.getUserType();
         this.communicationPreference = subscription.getCommunicationPreference();
         this.foodPreferences = subscription.getFoodPreferences();
         this.createdAt = subscription.getCreatedAt();
         this.lastUpdated = subscription.getLastUpdated();
     }
+    
+    public Integer getUserID() { return userID; }
+    public String getUserName() { return userName; }
+    public UserType getUserType() { return userType; }
+    public String getCommunicationPreference() { return communicationPreference; }
+    public Set<String> getFoodPreferences() { return foodPreferences; }
+    public Timestamp getCreatedAt() { return createdAt; }
+    public Timestamp getLastUpdated() { return lastUpdated; }
 }

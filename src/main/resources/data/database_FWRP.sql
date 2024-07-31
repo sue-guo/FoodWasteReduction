@@ -22,6 +22,18 @@ CREATE TABLE Users (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Alter the UserType
+-- Step 0: Check the value of existed UserType
+SELECT DISTINCT UserType FROM Users;
+-- Step 1: Change the ENUM to a VARCHAR temporarily (to avoid ENUM constraints)
+ALTER TABLE Users MODIFY UserType VARCHAR(100);
+-- Step 2: Update the existing entries if needed (optional step)
+UPDATE Users SET UserType = 'Charitable_Organization' WHERE UserType = 'CharitableOrganization';
+-- Step 3: Change the column back to ENUM with the updated values
+ALTER TABLE Users MODIFY UserType ENUM('Retailer', 'Consumer', 'Charitable_Organization') NOT NULL;
+
+
+
 CREATE TABLE FoodItems (
     FoodItemID INT AUTO_INCREMENT PRIMARY KEY,
     RetailerID INT NOT NULL,

@@ -57,8 +57,8 @@
                     <tbody>
                         <c:forEach var="subscription" items="${subscriptions}">
                             <tr>
-                                <td>${subscription.userId}</td>
-                                <td>${subscriber.userType}</td>
+                                <td>${subscription.userID}</td>
+                                <td>${subscription.userType}</td>
                                 <td>${subscription.communicationPreference}</td>
                                 <td>${subscription.foodPreferences}</td>
                                 <td>${subscription.createdAt}</td>
@@ -83,7 +83,7 @@
                     <tbody>
                         <c:forEach var="subscription" items="${subscriptions}">
                             <tr>
-                                <td>${subscription.retailerName}</td>
+                                <td>${subscription.userName}</td>
                                 <td>${subscription.communicationPreference}</td>
                                 <td>${subscription.foodPreferences}</td>
                                 <td>${subscription.createdAt}</td>

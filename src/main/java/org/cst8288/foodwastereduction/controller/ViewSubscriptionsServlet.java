@@ -49,7 +49,7 @@ public class ViewSubscriptionsServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
         User user = userDao.getUserById(userId);
 
         if (user == null) {
@@ -57,16 +57,15 @@ public class ViewSubscriptionsServlet extends HttpServlet {
             return;
         }
 
-        List<SubscriberDTO> subscriptions;
         if (user.getUserType() == UserType.RETAILER) {
-            subscriptions = subscriptionService.getSubscribersByRetailerId(userId);
+            List<SubscriberDTO> subscribers = subscriptionService.getSubscribersByRetailerId(userId);
+            request.setAttribute("subscribers", subscribers);
         } else {
             // For now, we'll just return an empty list for other user types
             // Later, we'll implement this for CONSUMER and CHARITABLE_ORGANIZATION
-            subscriptions = new ArrayList<>();
+            System.out.println("This is part is not ready.");
         }
 
-        request.setAttribute("subscriptions", subscriptions);
         request.setAttribute("userType", user.getUserType());
         request.getRequestDispatcher("views/viewSubscriptions.jsp").forward(request, response);
     }

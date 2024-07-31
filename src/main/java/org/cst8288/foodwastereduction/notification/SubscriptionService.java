@@ -16,16 +16,16 @@ import org.cst8288.foodwastereduction.model.User;
  * @author ryany
  */
 public interface SubscriptionService {
-    void addSubscription(int userId, int retailerId, String communicationPreference, Set<String> foodPreferences);
+    void addSubscription(Integer userId, Integer retailerId, String communicationPreference, Set<String> foodPreferences);
     void updateSubscription(Subscription subscription);
-    void removeSubscription(int userId, int retailerId);
+    void removeSubscription(Integer userId, Integer retailerId);
     
-//    List<Subscription> getSubscriptionsByRetailer(int retailerId);
-    List<Subscription> getSubscriptionsByUser(int userId);
-    List<SubscriberDTO> getSubscribersByRetailerId(int retailerId);
-    List<User> getUserByRetailerId(int retailerId);
+//    List<Subscription> getSubscriptionsByRetailer(Integer retailerId);
+    List<Subscription> getSubscriptionsByUser(Integer userId);
+    List<SubscriberDTO> getSubscribersByRetailerId(Integer retailerId);
+    List<User> getUserByRetailerId(Integer retailerId);
 
-    boolean hasSubscription(int userId, int retailerId);
-    boolean isSubscribed(int consumerId, int retailerId);
-    boolean isInterestedInCategory(int consumerId, int retailerId, CategoryEnum foodCategory);
+    boolean hasSubscription(Integer userId, Integer retailerId);
+    boolean isSubscribed(Integer consumerId, Integer retailerId);
+    boolean isInterestedInCategory(Integer consumerId, Integer retailerId, CategoryEnum foodCategory);
 }

@@ -30,7 +30,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void addSubscription(int userId, int retailerId, String communicationPreference, Set<String> foodPreferences) {
+    public void addSubscription(Integer userId, Integer retailerId, String communicationPreference, Set<String> foodPreferences) {
         Subscription subscription = new Subscription(0, userId, retailerId, communicationPreference, foodPreferences, 
                                                      new Timestamp(System.currentTimeMillis()), 
                                                      new Timestamp(System.currentTimeMillis()));
@@ -43,33 +43,33 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
 //    @Override
-//    public List<Subscription> getSubscriptionsByRetailer(int retailerId) {
+//    public List<Subscription> getSubscriptionsByRetailer(Integer retailerId) {
 //        return subscriptionDAO.getSubscriptionsByRetailer(retailerId);
 //    }
 
     @Override
-    public List<Subscription> getSubscriptionsByUser(int userId) {
+    public List<Subscription> getSubscriptionsByUser(Integer userId) {
         return subscriptionDAO.getSubscriptionsByUser(userId);
     }
 
     @Override
-    public void removeSubscription(int userId, int retailerId) {
+    public void removeSubscription(Integer userId, Integer retailerId) {
         subscriptionDAO.deleteSubscription(userId, retailerId);
     }
 
     @Override
-    public boolean hasSubscription(int userId, int retailerId) {
+    public boolean hasSubscription(Integer userId, Integer retailerId) {
         List<Subscription> userSubscriptions = subscriptionDAO.getSubscriptionsByUser(userId);
         return userSubscriptions.stream().anyMatch(sub -> sub.getRetailerId() == retailerId);
     }
     
     @Override
-    public boolean isSubscribed(int consumerId, int retailerId) {
+    public boolean isSubscribed(Integer consumerId, Integer retailerId) {
         return hasSubscription(consumerId, retailerId);
     }
 
     @Override
-    public boolean isInterestedInCategory(int consumerId, int retailerId, CategoryEnum foodCategory) {
+    public boolean isInterestedInCategory(Integer consumerId, Integer retailerId, CategoryEnum foodCategory) {
         Subscription subscription = subscriptionDAO.getSubscription(consumerId, retailerId);
         if (subscription == null) {
             return false;
@@ -82,7 +82,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      * @param consumerId
      * @return 
      */
-    private Set<String> getFoodPreferences(int consumerId) {
+    private Set<String> getFoodPreferences(Integer consumerId) {
         List<Subscription> userSubscriptions = subscriptionDAO.getSubscriptionsByUser(consumerId);
         return userSubscriptions.stream()
             .flatMap(sub -> sub.getFoodPreferences().stream())
@@ -95,7 +95,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      * @return 
      */
     @Override
-    public List<SubscriberDTO> getSubscribersByRetailerId(int retailerId) {
+    public List<SubscriberDTO> getSubscribersByRetailerId(Integer retailerId) {
         List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
         List<SubscriberDTO> subscribers = new ArrayList<>();
         
@@ -109,7 +109,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
     
         @Override
-    public List<User> getUserByRetailerId(int retailerId) {
+    public List<User> getUserByRetailerId(Integer retailerId) {
         List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
         List<User> subscribers = new ArrayList<>();
         
