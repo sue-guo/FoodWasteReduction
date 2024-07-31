@@ -1,0 +1,83 @@
+@import url('common.css');
+
+/* Additional CSS for Add Page */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+form div {
+    display: flex;  
+    width: 100%;
+    align-items: center;
+}
+
+label {
+    width: 30%;
+    margin: 0.5rem;
+    text-align: end;
+}
+
+input {
+    width: 70%;
+    padding: 0.5rem;
+    margin: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+p {
+    margin-left: 2rem;
+    margin-right: -1.5rem;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 75%;
+    gap: 0.1px;
+}
+
+.checkbox-item {
+    flex: 1 1 20%; 
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: -40px; 
+}
+
+select {
+    width: 72.5%;
+    padding: 0.5rem;
+    margin: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: max-content;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+p {
+    text-align: center;
+}

@@ -33,4 +33,12 @@ public class FoodItemBusiness {
     public void addFoodItem(FoodItemDTO foodItem) {
         foodItemDAO.addFoodItem(foodItem);
     }
+
+    public List<FoodItemDTO> getAllFoodItems() {
+        return foodItemDAO.getAllFoodItems();
+    }
+
+    public FoodItemDTO getFoodItemById(int foodItemID) {
+        return foodItemDAO.getFoodItemById(foodItemID);
+    };
 }
