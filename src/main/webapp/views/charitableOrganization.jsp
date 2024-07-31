@@ -66,7 +66,7 @@
                         .filter(item -> item.getFoodItemId().equals(inventory.getFoodItemId()))
                         .findFirst()
                         .orElse(null);
-                if (inventory != null && inventory.getSurplusStatus() == SurplusStatusEnum.Donation) {
+                if (inventory != null && inventory.getQuantity() > 0 && inventory.getSurplusStatus() == SurplusStatusEnum.Donation) {
                     assert foodItem != null;%>
         <tr>
             <td><%= foodItem.getName() %></td>
@@ -74,7 +74,7 @@
             <td><%= inventory.getRegularPrice() %></td>
             <td><%= inventory.getExpirationDate() %></td>
             <td>
-                <button type="button" onclick="window.location.href='${pageContext.request.contextPath}/charitable/claim?inventoryId=<%= inventory.getInventoryId() %>'">Claim</button>
+                <button type="button" onclick="window.location.href='${pageContext.request.contextPath}/charitableOrganization/claim?inventoryId=<%= inventory.getInventoryId() %>'">Claim</button>
             </td>
         </tr>
         <%
@@ -82,7 +82,7 @@
             }
         %>
         </tbody>
-    </table>>
+    </table>
 </main>
 <footer>
     <p>&copy; 2024 Food Waste Reduction Platform</p>

@@ -30,10 +30,12 @@ public class CharitableOrganizationServlet extends HttpServlet {
             return;
         }
 
-        int userId = Integer.parseInt(request.getParameter("userId").trim());
+        String userIdStr = request.getParameter("userId");
+        int userId = Integer.parseInt(userIdStr);
+
         List<InventoryDTO> inventories = inventoryBusiness.getAllInventories();
         List<FoodItemDTO> foodItems = foodItemBusiness.getAllFoodItems();
-        
+
         // Set attributes for JSP
         request.setAttribute("inventories", inventories);
         request.setAttribute("foodItems", foodItems);

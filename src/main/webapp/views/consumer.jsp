@@ -67,7 +67,7 @@
                         .filter(item -> item.getFoodItemId().equals(inventory.getFoodItemId()))
                         .findFirst()
                         .orElse(null);
-                if (inventory != null && inventory.getSurplusStatus() == SurplusStatusEnum.Discount) {
+                if (inventory != null && inventory.getQuantity() > 0 && inventory.getSurplusStatus() == SurplusStatusEnum.Discount) {
                     assert foodItem != null;
         %>
         <tr>

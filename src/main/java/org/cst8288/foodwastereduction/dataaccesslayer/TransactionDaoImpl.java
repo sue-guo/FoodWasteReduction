@@ -43,7 +43,7 @@ public class TransactionDaoImpl implements TransactionDao{
     }
 
     /**
-     * Get transactions of a certain by userID
+     * Get transactions of a certain user by userID
      *
      * @return transactions made by certain user
      */
@@ -74,6 +74,39 @@ public class TransactionDaoImpl implements TransactionDao{
             Logger.getLogger(TransactionDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return transactionList;
+    }
+
+    /**
+     * Get transactions by transactionID
+     *
+     * @return transaction of a certain transactionID
+     */
+    public Transaction getTransactionById(int transactionID) {
+        Connection con;
+        PreparedStatement pstmt;
+        ResultSet rs = null;
+        Transaction transaction = null;
+
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM Transactions WHERE TransactionID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, transactionID);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                transaction = new Transaction();
+                transaction.setTransactionID(rs.getInt("TransactionID"));
+                transaction.setInventoryID(rs.getInt("InventoryID"));
+                transaction.setUserID(rs.getInt("UserID"));
+                transaction.setQuantity(rs.getInt("Quantity"));
+                transaction.setTransactionType(TransactionType.valueOf(rs.getString("TransactionType").toUpperCase()));
+                transaction.setTransactionDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("TransactionDate"), "YYYY-MM-DD HH:ss"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TransactionDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return transaction;
     }
 
 

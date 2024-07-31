@@ -32,13 +32,18 @@ public class ClaimServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            int inventoryID = Integer.parseInt(request.getParameter("inventoryId"));
-            InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryID);
-            FoodItemDTO foodItem = (FoodItemDTO) foodItemBusiness.getFoodItemsByRetailerID(inventory.getRetailerId());
+            String inventoryIdStr = request.getParameter("inventoryId");
+            int inventoryId = Integer.parseInt(inventoryIdStr);
+            InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryId);
+            if (inventory != null) {
+                FoodItemDTO foodItem = foodItemBusiness.getFoodItemById(inventory.getFoodItemId());
 
-            request.setAttribute("inventory", inventory);
-            request.setAttribute("foodItem", foodItem);
-            request.getRequestDispatcher("/views/claim.jsp").forward(request, response);
+                request.setAttribute("inventory", inventory);
+                request.setAttribute("foodItem", foodItem);
+                request.getRequestDispatcher("/views/claim.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Inventory not found");
+            }
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -57,9 +62,6 @@ public class ClaimServlet extends HttpServlet {
 
             InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryId);
 
-            inventory.setQuantity(0);
-            inventoryBusiness.updateInventory(inventory);
-
             Transaction transaction = new Transaction();
             transaction.setInventoryID(inventoryId);
             transaction.setUserID(user.getUserID());
@@ -67,7 +69,10 @@ public class ClaimServlet extends HttpServlet {
             transaction.setTransactionType(TransactionType.Donation);
             transactionBusiness.addTransaction(transaction);
 
-            response.sendRedirect(request.getContextPath() + "/charitableOrganization");
+            inventory.setQuantity(0);
+            inventoryBusiness.updateInventory(inventory);
+
+            response.sendRedirect(request.getContextPath() + "/charitableOrganization?userId=" + user.getUserID());
         } catch (NumberFormatException e) {
             Logger.getLogger(PurchaseServlet.class.getName()).log(Level.SEVERE, "Invalid inventoryId or quantity format", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid inventory ID or quantity");

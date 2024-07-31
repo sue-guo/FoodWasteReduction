@@ -12,6 +12,6 @@ public interface TransactionDao {
 
     void addTransaction(Transaction transaction);
     List<Transaction> getTransactionByUser(int userID);
-
+    Transaction getTransactionById(int transactionID);
 }
 

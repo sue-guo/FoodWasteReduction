@@ -32,4 +32,8 @@ public class TransactionBusiness {
         return transactionDao.getTransactionByUser(userID);
     }
 
+    public Transaction getTransactionById(int transactionID) {
+        return transactionDao.getTransactionById(transactionID);
+    }
+
 }

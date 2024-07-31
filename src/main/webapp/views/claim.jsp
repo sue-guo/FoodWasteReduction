@@ -43,14 +43,13 @@
         FoodItemDTO foodItem = (FoodItemDTO) request.getAttribute("foodItem");
         if (inventory != null) {
     %>
-    <form action="${pageContext.request.contextPath}/charitableOrganization/claim" method="post">
-        <div class="details">
-            <input type="hidden" name="inventoryId" value="<%= inventory.getInventoryId() %>">
-            <p><strong>Item Name:</strong> <%= foodItem.getName() %></p>
-            <p><strong>Regular Price:</strong> <%= inventory.getRegularPrice() %></p>
-            <p><strong>Quantity:</strong> <%= inventory.getQuantity() %></p>
-            <button type="submit">Claim</button>
-        </div>
+    <form action="${pageContext.request.contextPath}/charitableOrganization/claim?userId=<%= user.getUserID() %>" method="post">
+        <input type="hidden" name="inventoryId" value="<%= inventory.getInventoryId() %>">
+        <p><strong>Item Name:</strong> <%= foodItem.getName() %></p>
+        <p><strong>Regular Price:</strong> <%= inventory.getRegularPrice() %></p>
+        <p><strong>Quantity:</strong> <%= inventory.getQuantity() %></p>
+        <br>
+        <button type="submit">Claim</button>
     </form>
     <%
     } else {
@@ -60,6 +59,8 @@
         }
     %>
 </main>
-
+<footer>
+    <p>&copy; 2024 Food Waste Reduction Platform</p>
+</footer>
 </body>
 </html>

@@ -78,12 +78,12 @@ form div {
     margin-bottom: 1rem;
 }
 
-form p {
-    margin: 0;
-    padding: 0;
-    font-size: 1rem;
-    line-height: 1.5;
-    text-align: left;
+.details p {
+    margin: 5px 0;
+}
+
+#quantity {
+    width: 150px;
 }
 
 footer {
