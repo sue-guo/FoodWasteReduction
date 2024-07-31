@@ -28,7 +28,7 @@ public class TransactionBusiness{
         transaction.setInventoryID(inventoryID);
         transaction.setUserID(userID);
         transaction.setQuantity(quantity);
-        transaction.setTransactionType(TransactionType.PURCHASE);
+        transaction.setTransactionType(TransactionType.Purchase);
         transactionDao.addTransaction(transaction);
     }
 
@@ -41,7 +41,7 @@ public class TransactionBusiness{
         transaction.setInventoryID(inventoryID);
         transaction.setUserID(userID);
         transaction.setQuantity(item.getQuantity());
-        transaction.setTransactionType(TransactionType.DONATION);
+        transaction.setTransactionType(TransactionType.Donation);
         transactionDao.addTransaction(transaction);
     }
 }

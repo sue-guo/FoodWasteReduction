@@ -16,7 +16,6 @@
         <servlet-class>org.cst8288.foodwastereduction.controller.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>FoodItemServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.FoodItemServlet</servlet-class>
     </servlet>
@@ -36,6 +35,24 @@
         <servlet-name>InventoryAddServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.InventoryAddServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ConsumerServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.ConsumerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CharitableOrganizationServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.CharitableOrganizationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PurchaseServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.PurchaseServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ClaimServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.ClaimServlet</servlet-class>
+    </servlet>
+
+
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
@@ -49,7 +66,6 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
         <servlet-name>FoodItemServlet</servlet-name>
         <url-pattern>/foodItem</url-pattern>
     </servlet-mapping>
@@ -68,6 +84,22 @@
     <servlet-mapping>
         <servlet-name>InventoryAddServlet</servlet-name>
         <url-pattern>/inventoryAdd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConsumerServlet</servlet-name>
+        <url-pattern>/consumer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CharitableOrganizationServlet</servlet-name>
+        <url-pattern>/charitableOrganization</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PurchaseServlet</servlet-name>
+        <url-pattern>/consumer/purchase</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClaimServlet</servlet-name>
+        <url-pattern>/charitableOrganization/claim</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -14,7 +14,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Claim page</title>
     <base href="${pageContext.request.contextPath}/" />
-    <link rel="stylesheet" href="../styles/.css">
+    <link rel="stylesheet" href="styles/purchase.css">
 </head>
 
 <body>
@@ -43,7 +43,7 @@
         FoodItemDTO foodItem = (FoodItemDTO) request.getAttribute("foodItem");
         if (inventory != null) {
     %>
-    <form action="${pageContext.request.contextPath}/consumer/purchase" method="post">
+    <form action="${pageContext.request.contextPath}/charitableOrganization/claim" method="post">
         <div class="details">
             <input type="hidden" name="inventoryId" value="<%= inventory.getFoodItemId() %>">
             <p><strong>Item Name:</strong> <%= foodItem.getName() %></p>

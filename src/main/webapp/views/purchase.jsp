@@ -14,7 +14,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Purchase page</title>
     <base href="${pageContext.request.contextPath}/" />
-    <link rel="stylesheet" href="../styles/.css">
+    <link rel="stylesheet" href="styles/purchase.css">
 </head>
 
 <body>

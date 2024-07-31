@@ -18,7 +18,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charity page</title>
-    <link rel="stylesheet" href="../styles/consumer.css">
+    <link rel="stylesheet" href="styles/consumer.css">
 </head>
 <body>
 <header>
@@ -66,7 +66,7 @@
                         .filter(item -> item.getFoodItemId().equals(inventory.getFoodItemId()))
                         .findFirst()
                         .orElse(null);
-                if (inventory != null && inventory.getSurplusStatus() == SurplusStatusEnum.Discount) {
+                if (inventory != null && inventory.getSurplusStatus() == SurplusStatusEnum.Donation) {
                     assert foodItem != null;%>
         <tr>
             <td><%= foodItem.getName() %></td>

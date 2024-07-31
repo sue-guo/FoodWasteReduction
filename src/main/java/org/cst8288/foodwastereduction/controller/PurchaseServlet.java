@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author yaoyi
  */
-@WebServlet(value = "/consumer/purchase")
+//@WebServlet(value = "/purchase")
 public class PurchaseServlet extends HttpServlet {
 
     private final InventoryBusiness inventoryBusiness = new InventoryBusiness();
@@ -32,17 +32,13 @@ public class PurchaseServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            Integer inventoryID = Integer.parseInt(request.getParameter("inventoryId"));
+            int inventoryID = Integer.parseInt(request.getParameter("inventoryId"));
             InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryID);
             FoodItemDTO foodItem = (FoodItemDTO) foodItemBusiness.getFoodItemsByRetailerID(inventory.getRetailerId());
 
-            if (inventory != null) {
-                request.setAttribute("inventory", inventory);
-                request.setAttribute("foodItem", foodItem);
-                request.getRequestDispatcher("/views/purchase.jsp").forward(request, response);
-            } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Inventory item not found");
-            }
+            request.setAttribute("inventory", inventory);
+            request.setAttribute("foodItem", foodItem);
+            request.getRequestDispatcher("/views/purchase.jsp").forward(request, response);
         } catch (Exception e) {
             throw new ServletException(e);
         }
