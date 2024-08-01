@@ -15,7 +15,7 @@ CREATE TABLE Users (
     Name VARCHAR(100) NOT NULL,
     Email VARCHAR(100) NOT NULL UNIQUE,
     PasswordHash VARCHAR(255) NOT NULL,
-    UserType ENUM('RETAILER', 'CONSUMER', 'CHARITABLE_ORGANIZATION') NOT NULL,
+    UserType ENUM('Retailer', 'Consumer', 'Charitable_Organization') NOT NULL,
     PhoneNumber VARCHAR(20),
     Address VARCHAR(100),
     City VARCHAR(50),

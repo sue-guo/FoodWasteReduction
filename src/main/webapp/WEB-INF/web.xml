@@ -16,7 +16,6 @@
         <servlet-class>org.cst8288.foodwastereduction.controller.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>FoodItemServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.FoodItemServlet</servlet-class>
     </servlet>
@@ -37,16 +36,20 @@
         <servlet-class>org.cst8288.foodwastereduction.controller.InventoryAddServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ClaimFoodServlet</servlet-name>
-        <servlet-class>org.cst8288.foodwastereduction.controller.ClaimFoodServlet</servlet-class>
+        <servlet-name>ConsumerServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.ConsumerServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>default</servlet-name>
-        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
-        <init-param>
-            <param-name>readonly</param-name>
-            <param-value>false</param-value>
-        </init-param>
+        <servlet-name>CharitableOrganizationServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.CharitableOrganizationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PurchaseServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.PurchaseServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ClaimServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.ClaimServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
@@ -61,7 +64,6 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
         <servlet-name>FoodItemServlet</servlet-name>
         <url-pattern>/foodItem</url-pattern>
     </servlet-mapping>
@@ -82,8 +84,20 @@
         <url-pattern>/inventoryAdd</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ClaimFoodServlet</servlet-name>
-        <url-pattern>/claimFood</url-pattern>
+        <servlet-name>ConsumerServlet</servlet-name>
+        <url-pattern>/consumer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CharitableOrganizationServlet</servlet-name>
+        <url-pattern>/charitableOrganization</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PurchaseServlet</servlet-name>
+        <url-pattern>/consumer/purchase</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClaimServlet</servlet-name>
+        <url-pattern>/charitableOrganization/claim</url-pattern>
     </servlet-mapping>
 
     <session-config>

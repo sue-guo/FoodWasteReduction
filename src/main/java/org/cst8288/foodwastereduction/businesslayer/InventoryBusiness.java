@@ -4,11 +4,12 @@
  */
 package org.cst8288.foodwastereduction.businesslayer;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,7 +29,7 @@ public class InventoryBusiness {
         return inventoryDAO.getInventoriesByRetailerId(retailerId);
     }
 
-    public InventoryDTO getInventoryById(int inventoryID) {
+    public Object getInventoryById(int inventoryID) {
         return inventoryDAO.getInventoryById(inventoryID);
     }
 
@@ -38,5 +39,9 @@ public class InventoryBusiness {
 
     public void updateInventory(InventoryDTO inventory) {
         inventoryDAO.updateInventory(inventory);
+    }
+
+    public List<InventoryDTO> getAllInventories() {
+        return inventoryDAO.getAllInventories();
     }
 }

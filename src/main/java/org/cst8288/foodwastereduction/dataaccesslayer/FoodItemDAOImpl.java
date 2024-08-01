@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -68,69 +67,74 @@ public class FoodItemDAOImpl implements FoodItemDAO {
         return foodItems;
     }
 
-    @Override
-    public FoodItemDTO getFoodItemById(Integer foodItemID) {
-       Connection con = null;
-       PreparedStatement pstmt = null;
-       ResultSet rs = null;
-       FoodItemDTO foodItem = null;
-
-       try {
-           con = DataSource.getConnection();
-           String sql = "SELECT * FROM FoodItems WHERE FoodItemID = ?";
-           pstmt = con.prepareStatement(sql);
-           pstmt.setInt(1, foodItemID);
-           rs = pstmt.executeQuery();
-
-           if (rs.next()) {
-                foodItem = mapResultSetToFoodItem(rs);
-           }
-       } catch (SQLException ex) {
-           LOGGER.log(Level.SEVERE, null, ex);
-       } finally {
-           try {
-               if (rs != null) rs.close();
-               if (pstmt != null) pstmt.close();
-               if (con != null) con.close();
-           } catch (SQLException ex) {
-               LOGGER.log(Level.SEVERE, null, ex);
-           }
-       }
-       return foodItem;
-   }
-
-
-    @Override
     public List<FoodItemDTO> getAllFoodItems() {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<FoodItemDTO> foodItems = new ArrayList<>();
-
         try {
             con = DataSource.getConnection();
             String sql = "SELECT * FROM FoodItems";
             pstmt = con.prepareStatement(sql);
-            rs = pstmt.executeQuery(sql);
+            rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                foodItems.add(mapResultSetToFoodItem(rs));
+                FoodItemDTO foodItem = new FoodItemDTO();
+
+                int foodItemId = rs.getInt("FoodItemID");
+                foodItem.setFoodItemId(rs.wasNull() ? null : foodItemId);
+
+                int retailerIdValue = rs.getInt("RetailerID");
+                foodItem.setRetailerId(rs.wasNull() ? null : retailerIdValue);
+
+                foodItem.setName(rs.getString("Name"));
+                foodItem.setDescription(rs.getString("Description"));
+                foodItem.setCategory(CategoryEnum.valueOf(rs.getString("Category")));
+                foodItem.setBrand(rs.getString("Brand"));
+                foodItem.setUnit(rs.getString("Unit"));
+                foodItems.add(foodItem);
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (con != null) con.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
-            }
         }
         return foodItems;
     }
 
+    @Override
+    public FoodItemDTO getFoodItemById(Integer foodItemId) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        FoodItemDTO foodItem = null;
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM FoodItems WHERE FoodItemID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, foodItemId);
+            rs = pstmt.executeQuery();
 
+            if (rs.next()) {
+                foodItem = new FoodItemDTO();
+
+                int id = rs.getInt("FoodItemID");
+                foodItem.setFoodItemId(rs.wasNull() ? null : id);
+
+                int retailerIdValue = rs.getInt("RetailerID");
+                foodItem.setRetailerId(rs.wasNull() ? null : retailerIdValue);
+
+                foodItem.setName(rs.getString("Name"));
+                foodItem.setDescription(rs.getString("Description"));
+                foodItem.setCategory(CategoryEnum.valueOf(rs.getString("Category")));
+                foodItem.setBrand(rs.getString("Brand"));
+                foodItem.setUnit(rs.getString("Unit"));
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        return foodItem;
+    }
+
+  
     @Override
     public void updateFoodItem(FoodItemDTO foodItem) {
         Connection con = null;

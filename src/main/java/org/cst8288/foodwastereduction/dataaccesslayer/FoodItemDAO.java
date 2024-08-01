@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package org.cst8288.foodwastereduction.dataaccesslayer;
-import java.sql.SQLException;
 import java.util.List;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
@@ -14,10 +13,11 @@ import org.cst8288.foodwastereduction.model.FoodItemDTO;
  */
 public interface FoodItemDAO {
     void addFoodItem(FoodItemDTO foodItem);
+
     List<FoodItemDTO> getFoodItemsByRetailerId(Integer retailerId);
+    List<FoodItemDTO> getAllFoodItems();
     
     FoodItemDTO getFoodItemById(Integer foodItemId);
-    List<FoodItemDTO> getAllFoodItems();
     void updateFoodItem(FoodItemDTO foodItem);
     void deleteFoodItem(Integer foodItemId);
 }
