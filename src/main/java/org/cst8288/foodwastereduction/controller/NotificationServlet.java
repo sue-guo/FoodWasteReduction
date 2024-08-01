@@ -21,7 +21,7 @@ import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
-import org.cst8288.foodwastereduction.email.EmailConfig;
+import org.cst8288.foodwastereduction.notification.EmailConfig;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.notification.FoodItemService;

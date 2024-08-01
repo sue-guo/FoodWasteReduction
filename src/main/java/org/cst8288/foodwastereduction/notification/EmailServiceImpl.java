@@ -2,8 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.cst8288.foodwastereduction.email;
-import org.cst8288.foodwastereduction.email.EmailService;
+package org.cst8288.foodwastereduction.notification;
+import org.cst8288.foodwastereduction.notification.EmailService;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
