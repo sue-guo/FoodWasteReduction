@@ -45,18 +45,20 @@ input[type="submit"] {
 } 
 
 #submit-btn {
-    /*background-color: #007bff;*/
+    background-color: #4CAF50; /* Green */
     color: white;
     border: 1px solid transparent;
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s, cursor 0.3s;
+    margin-left: 50px;
 }
 
 #submit-btn:disabled {
     background-color: #ccc;
     border-color: #aaa;
     cursor: not-allowed;
+    margin-left: 50px;
 }
 
 /* Default info message style */
@@ -74,4 +76,18 @@ input[type="submit"] {
     background-color: #ffeb3b; /* Yellow background for high visibility */
     color: #000; /* Black text for contrast */
     border-color: #ffeb3b; /* Match border with background */
+}
+
+button#selectAll, button#invertSelection {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #2E8B57;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button#selectAll:hover, button#invertSelection:hover {
+    background-color: #4CAF50;
 }

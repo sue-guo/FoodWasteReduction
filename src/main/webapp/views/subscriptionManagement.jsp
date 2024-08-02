@@ -83,7 +83,11 @@
                     </div>
                 </c:forEach>
             </div>
-            <input type="submit" id="submit-btn" value="Update Subscription" disabled>
+            <div>
+                <button type="button" id="selectAll">Select All</button>
+                <button type="button" id="invertSelection">Invert Selection</button>
+                <input type="submit" id="submit-btn" value="Update Subscription" disabled>
+            </div>
             <div id="message-container"></div>
         </div>
     </form>
@@ -92,7 +96,19 @@
     $(document).ready(function() {
         let initialFormState = getFormState();
         
-        // Function to get the current state of the foodPreferences
+        // Select all food preferences
+        $('#selectAll').click(function() {
+            $('input[name="foodPreferences"]').prop('checked', true);
+        });
+
+        // invert Selection
+        $('#invertSelection').click(function() {
+            $('input[name="foodPreferences"]').each(function() {
+                $(this).prop('checked', !$(this).prop('checked'));
+            });
+        });
+        
+        // Get the current state of the foodPreferences
         function getFoodPreferencesState() {
             let foodPreferences = [];
 
@@ -126,10 +142,9 @@
         // Function to compare two form states
         function isFormStateChanged() {
             let currentState = getFormState();
-            let retailerIdChanged = (currentState.retailerId !== initialFormState.retailerId);
-            let cpChanged = (currentState.communicationPreference !== initialFormState.communicationPreference);
-            let fpChanged = (currentState.foodPreferences.toString() !== initialFormState.foodPreferences.toString());
-            return  retailerIdChanged || cpChanged || fpChanged;
+            return currentState.retailerId !== initialFormState.retailerId ||
+                   currentState.communicationPreference !== initialFormState.communicationPreference ||
+                   currentState.foodPreferences.toString() !== initialFormState.foodPreferences.toString();
         }
         
         // Event listener for any form changes
@@ -160,7 +175,7 @@
         });
 
         // Load subscription details based on selected retailer
-       function loadSubscription(retailerId) {
+        function loadSubscription(retailerId) {
             console.log('Sending data to server:', {
                 userId: ${sessionScope.user.userID},
                 retailerId: retailerId
@@ -205,7 +220,7 @@
                     showNoSubscriptionMessage();
                 }
             }); 
-       }
+        }
 
         // Update the form with subscription details
         function updateShowSubscriptionDetails(subscription) {
@@ -224,10 +239,6 @@
                         $(this).prop('checked', true);
                     }
                 });
-                $('#message-container').html('<div class="alert alert-success"></div>');
-                $('#submit-btn').prop('disabled', true);
-            } else {
-                console.error('foodPreferences is not an array:', subscription.foodPreferences);
             }
             // Reset the form state and disable submit button
             initialFormState = getFormState();
@@ -238,17 +249,12 @@
         function showNoSubscriptionMessage() {
             $('#subscription-details').show();
             resetSubscriptionForm();
-
-            // Check if the message element already exists
-            let $message = $('#no-subscription-message');
             const noSubscriptionMessage = 'No existing subscription found. You can subscribe by selecting your preferences below.';
+            let $message = $('#no-subscription-message');
             if ($message.length === 0) {
-                // Create the message element with the highlight class
                 $('#subscription-details').prepend('<p id="no-subscription-message" class="info-message highlight"> ' + noSubscriptionMessage + '</p>');
             } else {
-                // If it exists, just update the text and apply the highlight class
-                $message.text(noSubscriptionMessage);
-                $message.addClass('highlight');
+                $message.text(noSubscriptionMessage).addClass('highlight');
             }
         }
 
