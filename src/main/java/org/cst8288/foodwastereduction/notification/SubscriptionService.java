@@ -22,7 +22,7 @@ public interface SubscriptionService {
     void removeSubscription(Integer userId, Integer retailerId);
     
 //    List<Subscription> getSubscriptionsByRetailer(Integer retailerId);
-    List<Subscription> getSubscriptionsByUser(Integer userId);
+    List<SubscriberDTO> getSubscriptionsByUser(Integer userId);
     List<SubscriberDTO> getSubscribersByRetailerId(Integer retailerId);
     List<User> getUserByRetailerId(Integer retailerId);
 

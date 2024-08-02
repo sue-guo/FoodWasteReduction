@@ -4,10 +4,13 @@
  */
 package org.cst8288.foodwastereduction.controller;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +23,7 @@ import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.model.CategoryEnum;
-import org.cst8288.foodwastereduction.model.Subscription;
+import org.cst8288.foodwastereduction.model.SubscriberDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
@@ -30,8 +33,8 @@ import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
  *
  * @author ryany
  */
-@WebServlet(name = "SubscriptionManagementServlet", urlPatterns = {"/subscriptionManagement"})
-public class SubscriptionManagementServlet extends HttpServlet {
+@WebServlet(name = "SubscribeServlet", urlPatterns = {"/subscribe"})
+public class SubscribeServlet extends HttpServlet {
     private UserDao userDao;
     private SubscriptionDAO subscriptionDAO;
     private SubscriptionService subscriptionService;
@@ -60,10 +63,10 @@ public class SubscriptionManagementServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SubscriptionManagementServlet</title>");            
+            out.println("<title>Servlet SubscribeServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SubscriptionManagementServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SubscribeServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -94,14 +97,39 @@ public class SubscriptionManagementServlet extends HttpServlet {
         }
 
         List<User> localRetailers = userDao.getRetailersByCity(user.getCity());
-        List<Subscription> userSubscriptions = subscriptionService.getSubscriptionsByUser(userId);
+        List<SubscriberDTO> userSubscriptions = subscriptionService.getSubscriptionsByUser(userId);
+        
+        // Check if the request is for AJAX or for a normal page
+        String acceptHeader = request.getHeader("Accept");
+        boolean isAjax = acceptHeader != null && acceptHeader.contains("application/json");
+        
+        if (isAjax) {
+            // Convert multiple objects to a JSON response
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("user", user);
+            responseData.put("localRetailers", localRetailers);
+            responseData.put("userSubscriptions", userSubscriptions);
+            responseData.put("foodCategories", CategoryEnum.values());
 
-        request.setAttribute("user", user);
-        request.setAttribute("localRetailers", localRetailers);
-        request.setAttribute("userSubscriptions", userSubscriptions);
-        request.setAttribute("foodCategories", CategoryEnum.values());
+            Gson gson = new Gson();
+            String jsonResponse = gson.toJson(responseData);
+            
+            System.out.println("JSON Response: " + jsonResponse);
 
-        request.getRequestDispatcher("/WEB-INF/views/subscriptionManagement.jsp").forward(request, response);
+            response.setContentType("application/json");
+            response.getWriter().write(jsonResponse);
+        } else {
+            // Forward to JSP for normal page request
+            request.setAttribute("user", user);
+            request.setAttribute("localRetailers", localRetailers);
+            request.setAttribute("userSubscriptions", userSubscriptions);
+            request.setAttribute("foodCategories", CategoryEnum.values());
+
+            request.getRequestDispatcher("views/subscriptionManagement.jsp").forward(request, response);
+        }
+
+//        request.getRequestDispatcher("views/subscribe.jsp").forward(request, response);
+
     }
 
     /**
@@ -118,11 +146,12 @@ public class SubscriptionManagementServlet extends HttpServlet {
         int retailerId = Integer.parseInt(request.getParameter("retailerId"));
         String communicationPrefString = request.getParameter("communicationPreference");
         String[] selectedFoodPreferences = request.getParameterValues("foodPreferences");
+        boolean noFoodPreference = Boolean.parseBoolean(request.getParameter("noFoodPreference"));
 
         CommunicationPreference communicationPreference = CommunicationPreference.valueOf(communicationPrefString);
         
         Set<String> foodPreferences = new HashSet<>();
-        if (selectedFoodPreferences != null) {
+        if (selectedFoodPreferences != null && !noFoodPreference) {
             for (String pref : selectedFoodPreferences) {
                 try {
                     foodPreferences.add(CategoryEnum.valueOf(pref).toString());
@@ -133,8 +162,13 @@ public class SubscriptionManagementServlet extends HttpServlet {
         }
         
         try {
-            subscriptionService.updateUserSubscriptions(userId, retailerId, communicationPreference, foodPreferences);
-            response.sendRedirect(request.getContextPath() + "/subscriptionManagement?userId=" + userId);
+            if (noFoodPreference) {
+                subscriptionService.removeSubscription(userId, retailerId);
+            } else {
+                subscriptionService.updateUserSubscriptions(userId, retailerId, communicationPreference, foodPreferences);
+            }
+            request.getSession().setAttribute("successMessage", "Subscription updated successfully.");
+            response.sendRedirect(request.getContextPath() + "/subscribe?userId=" + userId);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating subscriptions: " + e.getMessage());
         }

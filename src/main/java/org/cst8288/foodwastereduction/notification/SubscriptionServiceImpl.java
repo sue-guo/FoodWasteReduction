@@ -16,6 +16,7 @@ import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
+import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 
 /**
@@ -50,8 +51,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 //    }
 
     @Override
-    public List<Subscription> getSubscriptionsByUser(Integer userId) {
-        return subscriptionDAO.getSubscriptionsByUser(userId);
+    public List<SubscriberDTO> getSubscriptionsByUser(Integer userId) {
+        
+        List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByUser(userId);
+        List<SubscriberDTO> subscriptionsDTO = new ArrayList<>();
+        User user = new User();
+        for (Subscription subscription : subscriptions) {
+            UserDao userDao = new UserDaoImpl();
+            user = userDao.getUserById(subscription.getRetailerId());
+            SubscriberDTO subscriberDTO = new SubscriberDTO(user, subscription);
+            subscriptionsDTO.add(subscriberDTO);
+        }
+        return subscriptionsDTO;
     }
 
     @Override

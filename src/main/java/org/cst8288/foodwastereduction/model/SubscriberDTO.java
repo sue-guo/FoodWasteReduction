@@ -6,6 +6,8 @@ package org.cst8288.foodwastereduction.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import org.cst8288.foodwastereduction.constants.CommunicationPreference;
 
@@ -44,4 +46,34 @@ public class SubscriberDTO {
     public Set<String> getFoodPreferences() { return foodPreferences; }
     public Timestamp getCreatedAt() { return createdAt; }
     public Timestamp getLastUpdated() { return lastUpdated; }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public void setCommunicationPreference(CommunicationPreference communicationPreference) {
+        this.communicationPreference = communicationPreference;
+    }
+
+    public void setFoodPreferences(Set<String> foodPreferences) {
+        this.foodPreferences = foodPreferences;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setLastUpdated(Timestamp lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+    
+    
 }

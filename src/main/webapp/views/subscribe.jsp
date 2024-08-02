@@ -6,27 +6,38 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
-
+<%@page import="org.cst8288.foodwastereduction.model.User"%>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>View Subscriptions</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscribe</title>
-    <link rel="stylesheet" href="../styles/subscribe.css">
+    <base href="${pageContext.request.contextPath}/" />
+    <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/subscribe.css">
 </head>
 <body>
-<header>
-    <h1>Food Waste Reduction Platform</h1>
-    <nav>
-        <ul>
-            <li><a href="home.jsp">Home</a></li>
-            <li><a href="consumer.jsp">Purchase</a></li>
-            <li><a href="subscribe.jsp">Subscribe</a></li>
-        </ul>
-    </nav>
-</header>
+    <header>
+        <h1>Food Waste Reduction Platform</h1>
+        <nav>
+            <ul>
+                <li><a href="views/home.jsp">Home</a></li>
+                <li>
+                    <%
+                        // Get the session attribute
+                        User user = (User) session.getAttribute("user");
+                        if (user != null) {
+                            out.print("<p>Welcome, " + user.getName() + "! </p>" + 
+                            "<a href=\"logout\" class=\"logout\">[ Logout ]</a>");
+                        }
+                    %>               
+                </li>
+            </ul>
+
+        </nav>
+    </header>
 <main>
     <h2>Choose Your Subscription Preferences</h2>
     <form id="subscribe-form">

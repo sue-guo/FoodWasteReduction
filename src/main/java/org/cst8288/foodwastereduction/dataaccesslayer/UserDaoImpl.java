@@ -130,6 +130,8 @@ public class UserDaoImpl implements UserDao{
                 user.setAddress(rs.getString("Address"));
                 user.setCity(rs.getString("City"));
                 user.setCreateAt(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("CreatedAt"), "YYYY-MM-DD HH:mm"));
+            } else {
+                LMSLogger.getInstance().saveLogInformation("No user found with UserID: " + userId, UserDaoImpl.class.getName(), LogLevel.INFO);
             }
              
         } catch (SQLException ex) {
