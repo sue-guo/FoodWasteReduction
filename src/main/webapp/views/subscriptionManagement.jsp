@@ -3,7 +3,6 @@
     Created on : Jul 31, 2024, 4:04:36 p.m.
     Author     : ryany
 --%>
-
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -99,6 +98,7 @@
         // Select all food preferences
         $('#selectAll').click(function() {
             $('input[name="foodPreferences"]').prop('checked', true);
+            updateSubmitButtonState();
         });
 
         // invert Selection
@@ -106,6 +106,7 @@
             $('input[name="foodPreferences"]').each(function() {
                 $(this).prop('checked', !$(this).prop('checked'));
             });
+            updateSubmitButtonState();
         });
         
         // Get the current state of the foodPreferences
@@ -147,15 +148,20 @@
                    currentState.foodPreferences.toString() !== initialFormState.foodPreferences.toString();
         }
         
-        // Event listener for any form changes
-        $('#retailerId, input[name="communicationPreference"], input[name="foodPreferences"]').on('change', function() {
+        // Function to update Submit button state
+        function updateSubmitButtonState() {
             if (isFormStateChanged()) {
                 $('#submit-btn').prop('disabled', false);
             } else {
                 $('#submit-btn').prop('disabled', true);
             }
-        });
+        }
         
+        // Event listener for any form changes
+        $('#retailerId, input[name="communicationPreference"], input[name="foodPreferences"]').on('change', function() {
+            updateSubmitButtonState();
+        });
+
         
         // Automatically load the first retailer's subscription if available
         var firstRetailerId = $('#retailerId option:eq(1)').val();
@@ -242,7 +248,7 @@
             }
             // Reset the form state and disable submit button
             initialFormState = getFormState();
-            $('#submit-btn').prop('disabled', true);
+            updateSubmitButtonState(); 
        }
 
         // Show a message when no subscription is found
