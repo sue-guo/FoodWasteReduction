@@ -4,9 +4,9 @@ CREATE DATABASE FWRP;
 USE FWRP;
 
 -- Create database user for this group assignment
--- CREATE USER 'CST8288Group'@'localhost' IDENTIFIED BY '12345678';
--- GRANT ALL PRIVILEGES ON FWRP.* TO 'CST8288Group'@'localhost';
--- FLUSH PRIVILEGES;
+CREATE USER 'CST8288Group' IDENTIFIED BY '12345678';
+GRANT ALL PRIVILEGES ON FWRP.* TO 'CST8288Group';
+FLUSH PRIVILEGES;
 
 -- Create User Table
 -- Use City as Location for User Subscription
