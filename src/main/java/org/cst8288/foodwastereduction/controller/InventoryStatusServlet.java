@@ -44,7 +44,7 @@ public class InventoryStatusServlet extends HttpServlet {
         
         InventoryBusiness inventoryBusiness = new InventoryBusiness();
          // Update the surplus status of the inventory item
-         InventoryDTO inventory = inventoryBusiness.getInventoryById(inventoryId);
+         InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryId);
                
          inventory.setSurplusStatus(status);
          inventoryBusiness.updateInventory(inventory);

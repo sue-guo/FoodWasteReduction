@@ -16,5 +16,7 @@ public interface FoodItemDAO {
     void addFoodItem(FoodItemDTO foodItem);
  
     List<FoodItemDTO> getFoodItemsByRetailerId(int retailerId);
+    List<FoodItemDTO> getAllFoodItems();
+    FoodItemDTO getFoodItemById(int foodItemId);
     
 }

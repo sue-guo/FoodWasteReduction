@@ -42,7 +42,7 @@ public class InventoryUpdateServlet extends HttpServlet {
         int inventoryId = Integer.parseInt(request.getParameter("inventoryId").trim());
          
         InventoryBusiness inventoryBusiness = new InventoryBusiness();
-        InventoryDTO inventory = inventoryBusiness.getInventoryById(inventoryId);
+        InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryId);
         int retailerId = inventory.getRetailerId();
         
         FoodItemBusiness foodItemBusiness = new FoodItemBusiness();

@@ -160,4 +160,42 @@ public class InventoryDAOImpl implements InventoryDAO {
     }
 
 
+    @Override
+    public List<InventoryDTO> getAllInventories() {
+
+        List<InventoryDTO> inventories = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM Inventory";
+            pstmt = con.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                InventoryDTO inventory = new InventoryDTO();
+                inventory.setInventoryId(rs.getInt("InventoryID"));
+                inventory.setRetailerId(rs.getInt("RetailerID"));
+                inventory.setFoodItemId(rs.getInt("FoodItemID"));
+                inventory.setBatchNumber(rs.getString("BatchNumber"));
+                inventory.setQuantity(rs.getInt("Quantity"));
+                inventory.setRegularPrice(rs.getDouble("RegularPrice"));
+                inventory.setDiscountRate(rs.getDouble("DiscountRate"));
+                inventory.setExpirationDate(rs.getDate("ExpirationDate"));
+                inventory.setReceiveDate(rs.getDate("ReceiveDate"));
+                inventory.setIsSurplus(rs.getBoolean("IsSurplus"));
+                inventory.setSurplusStatus(SurplusStatusEnum.valueOf(rs.getString("SurplusStatus")));
+                inventory.setLastUpdated(rs.getTimestamp("LastUpdated"));
+                inventory.setIsActive(rs.getBoolean("IsActive"));
+                inventories.add(inventory);
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        return inventories;
+    }
+
+
 }

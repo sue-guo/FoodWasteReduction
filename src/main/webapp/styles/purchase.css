@@ -1,0 +1,100 @@
+@import url('common.css');
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 1rem;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li p {
+    display: inline;
+    color: #876969;
+    text-decoration: none;
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+form div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.details p {
+    margin: 5px 0;
+}
+
+#quantity {
+    width: 150px;
+    height: 20px;
+    padding: 5px;
+    font-size: 16px;
+    border: 0.1em solid grey;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+footer {
+    background-color: #876969;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}
