@@ -14,14 +14,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Implementation of the {@link TransactionDao} interface.
+ *
+ * <p>This class provides the actual data access logic for managing
+ * transactions in the database. It includes methods for adding new
+ * transactions and retrieving existing transactions by user ID or
+ * transaction ID.</p>
  *
  * @author yaoyi
  */
 public class TransactionDaoImpl implements TransactionDao{
 
     /**
-     * Add new transaction into database
-     * @param transaction the transaction to be inserted into the database
+     * Adds a new transaction to the database.
+     *
+     * <p>This method inserts a new {@link Transaction} record into
+     * the Transactions table in the database.</p>
+     *
+     * @param transaction the {@link Transaction} object to be added to the database
      */
     @Override
     public void addTransaction(Transaction transaction) {
@@ -43,9 +53,13 @@ public class TransactionDaoImpl implements TransactionDao{
     }
 
     /**
-     * Get transactions of a certain user by userID
+     * Retrieves a list of transactions for a specific user.
      *
-     * @return transactions made by certain user
+     * <p>This method queries the database to retrieve all transactions
+     * associated with the given user ID.</p>
+     *
+     * @param userID the ID of the user whose transactions are to be retrieved
+     * @return a {@link List} of {@link Transaction} objects associated with the specified user
      */
     @Override
     public List<Transaction> getTransactionByUser(int userID) {
@@ -77,9 +91,14 @@ public class TransactionDaoImpl implements TransactionDao{
     }
 
     /**
-     * Get transactions by transactionID
+     * Retrieves a transaction by its ID.
      *
-     * @return transaction of a certain transactionID
+     * <p>This method queries the database to retrieve the {@link Transaction}
+     * record with the specified transaction ID.</p>
+     *
+     * @param transactionID the ID of the transaction to be retrieved
+     * @return the {@link Transaction} object with the specified ID, or {@code null}
+     *         if no transaction with that ID exists
      */
     public Transaction getTransactionById(int transactionID) {
         Connection con;
