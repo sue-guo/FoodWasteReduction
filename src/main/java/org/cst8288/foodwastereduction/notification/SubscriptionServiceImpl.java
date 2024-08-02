@@ -6,7 +6,6 @@ package org.cst8288.foodwastereduction.notification;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,18 +19,38 @@ import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 
 /**
- *
- * @author ryany
+ * Implementation of interface for Subscription service
+ * @author Ryan Xu
+ * Created on 2024-07-27
  */
 public class SubscriptionServiceImpl implements SubscriptionService {
+    /**
+     * subscriptionDAO
+     */
     private final SubscriptionDAO subscriptionDAO;
+    
+    /**
+     * userDao
+     */
     private final UserDao userDao;
 
+    /**
+     * Constructor
+     * @param subscriptionDAO
+     * @param userDao 
+     */
     public SubscriptionServiceImpl(SubscriptionDAO subscriptionDAO, UserDao userDao) {
         this.subscriptionDAO = subscriptionDAO;
         this.userDao = userDao;
     }
 
+    /**
+     * Concrete method to add subscription
+     * @param userId
+     * @param retailerId
+     * @param communicationPreference
+     * @param foodPreferences 
+     */
     @Override
     public void addSubscription(Integer userId, Integer retailerId, CommunicationPreference communicationPreference, Set<String> foodPreferences) {
         Subscription subscription = new Subscription(0, userId, retailerId, communicationPreference, foodPreferences, 
@@ -40,6 +59,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionDAO.addSubscription(subscription);
     }
 
+    /**
+     * Concrete method to update subscription
+     * @param subscription 
+     */
     @Override
     public void updateSubscription(Subscription subscription) {
         subscriptionDAO.updateSubscription(subscription);
@@ -50,6 +73,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 //        return subscriptionDAO.getSubscriptionsByRetailer(retailerId);
 //    }
 
+    /**
+     * Concrete method to get subscription by userId
+     * @param userId
+     * @return 
+     */
     @Override
     public List<SubscriberDTO> getSubscriptionsByUser(Integer userId) {
         
@@ -65,22 +93,46 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscriptionsDTO;
     }
 
+    /**
+     * Concrete method to remove subscription
+     * @param userId
+     * @param retailerId 
+     */
     @Override
     public void removeSubscription(Integer userId, Integer retailerId) {
         subscriptionDAO.deleteSubscription(userId, retailerId);
     }
 
+    /**
+     * Concrete method to determine is retailer has subscriptions
+     * @param userId
+     * @param retailerId
+     * @return 
+     */
     @Override
     public boolean hasSubscription(Integer userId, Integer retailerId) {
         List<Subscription> userSubscriptions = subscriptionDAO.getSubscriptionsByUser(userId);
         return userSubscriptions.stream().anyMatch(sub -> sub.getRetailerId() == retailerId);
     }
     
+    /**
+     * Concrete method to determine if a consumer is a subscriber
+     * @param consumerId
+     * @param retailerId
+     * @return 
+     */
     @Override
     public boolean isSubscribed(Integer consumerId, Integer retailerId) {
         return hasSubscription(consumerId, retailerId);
     }
 
+    /**
+     * Concrete method to determine if a consumer has interested in a food category
+     * @param consumerId
+     * @param retailerId
+     * @param foodCategory
+     * @return 
+     */
     @Override
     public boolean isInterestedInCategory(Integer consumerId, Integer retailerId, CategoryEnum foodCategory) {
         Subscription subscription = subscriptionDAO.getSubscription(consumerId, retailerId);
@@ -129,7 +181,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscribers;
     }
     
-        @Override
+    /**
+     * Concrete method to get subscription user by retailerId
+     * @param retailerId
+     * @return 
+     */
+    @Override
     public List<User> getUserByRetailerId(Integer retailerId) {
         List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
         List<User> subscribers = new ArrayList<>();
@@ -143,6 +200,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscribers;
     } 
     
+    /**
+     * Concrete method to update subscription
+     * @param userId
+     * @param retailerId
+     * @param communicationPreference
+     * @param foodPreferences 
+     */
     @Override
     public void updateUserSubscriptions(int userId, int retailerId, CommunicationPreference communicationPreference, Set<String> foodPreferences) {
         // Get current user's all subscriptions

@@ -4,9 +4,6 @@
  */
 package org.cst8288.foodwastereduction.notification;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
@@ -15,28 +12,57 @@ import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 
 /**
- *
- * @author ryany
+ * Implementation of Notification message service
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public class NotificationMessageServiceImpl implements NotificationMessageService {
+    /**
+     * attribute foodItemDAO
+     */
     private final FoodItemDAO foodItemDAO;
+    
+    /**
+     * attribute userDao
+     */
     private final UserDao userDao;
     
+    /**
+     * constructor
+     * @param foodItemDAO
+     * @param userDao 
+     */
     public NotificationMessageServiceImpl(FoodItemDAO foodItemDAO, UserDao userDao) {
         this.foodItemDAO = foodItemDAO;
         this.userDao = userDao;
     }
 
+    /**
+     * method to create message for donation item
+     * @param item
+     * @return 
+     */
     @Override
     public String createDonationMessage(InventoryDTO item) {
         return createMessage(item, UserType.CHARITABLE_ORGANIZATION);
     }
 
+    /**
+     * method to create message for discount sale
+     * @param item
+     * @return 
+     */
     @Override
     public String createDiscountMessage(InventoryDTO item) {
         return createMessage(item, UserType.CONSUMER);
     }
 
+    /**
+     * private message to create detail message by message type
+     * @param item
+     * @param userType
+     * @return 
+     */
     private String createMessage(InventoryDTO item, UserType userType){
         FoodItemDTO foodItem;
         User retailer;

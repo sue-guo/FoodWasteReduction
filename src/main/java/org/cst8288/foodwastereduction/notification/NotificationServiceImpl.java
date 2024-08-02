@@ -14,13 +14,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.ServletContext;
 import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.model.Notification;
-import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
+
 
 /**
- *
- * @author ryany
+ * Implementation of interface NotificationService
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public class NotificationServiceImpl implements NotificationService {
     private NotificationDAO notificationDAO;
@@ -30,10 +30,11 @@ public class NotificationServiceImpl implements NotificationService {
     private ServletContext servletContext;
     
     /**
-     * 
+     * Constructor
      * @param notificationDAO
      * @param isTestMode
      * @param eamilconfig, the configuration used in real operation environment.
+     * @param servletContext
      */
     public NotificationServiceImpl(NotificationDAO notificationDAO, boolean isTestMode, EmailConfig eamilconfig, ServletContext servletContext) {
         this.notificationDAO = notificationDAO;
@@ -45,6 +46,12 @@ public class NotificationServiceImpl implements NotificationService {
         this.servletContext = servletContext;
     }
     
+    /**
+     * another constructor
+     * @param notificationDAO
+     * @param isTestMode
+     * @param eamilconfig 
+     */
     public NotificationServiceImpl(NotificationDAO notificationDAO, boolean isTestMode, EmailConfig eamilconfig) {
         this.notificationDAO = notificationDAO;
         this.isTestMode = isTestMode;
@@ -55,11 +62,24 @@ public class NotificationServiceImpl implements NotificationService {
     }
     
     
-    
+    /**
+     * Initialize a Notification dto
+     * @param userId
+     * @param inventoryId
+     * @param notificationType 
+     */
     private void initializeNotification(Integer userId, Integer inventoryId, String notificationType) {
         this.currentNotification = new Notification(0, userId, inventoryId, notificationType, new Timestamp(System.currentTimeMillis()));
     }
 
+    /**
+     * Send email
+     * @param userId
+     * @param inventoryId
+     * @param email
+     * @param subject
+     * @param content 
+     */
     @Override
     public void sendEmail(Integer userId, Integer inventoryId, String email, String subject, String content) {
         initializeNotification(userId, inventoryId, "SurplusAlert");
@@ -76,6 +96,13 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
+    /**
+     * Send SMS
+     * @param userId
+     * @param inventoryId
+     * @param phoneNumber
+     * @param message 
+     */
     @Override
     public void sendSMS(Integer userId, Integer inventoryId, String phoneNumber, String message) {
         initializeNotification(userId, inventoryId, "SurplusAlert");
@@ -83,6 +110,12 @@ public class NotificationServiceImpl implements NotificationService {
         saveNotification();
     }
 
+    /**
+     * log notification
+     * @param userId
+     * @param inventoryId
+     * @param notificationType 
+     */
     @Override
     public void logNotification(Integer userId, Integer inventoryId, String notificationType) {
         if (!notificationType.equals("SurplusAlert") && !notificationType.equals("Other")) {
@@ -92,16 +125,28 @@ public class NotificationServiceImpl implements NotificationService {
         saveNotification();
     }
 
+    /**
+     * get user notification
+     * @param userId
+     * @return 
+     */
     @Override
     public List<Notification> getUserNotifications(Integer userId) {
         return notificationDAO.getNotificationsByUserId(userId);
     }
 
+    /**
+     * delete notification
+     * @param notificationId 
+     */
     @Override
     public void deleteNotification(Integer notificationId) {
         notificationDAO.deleteNotification(notificationId);
     }
 
+    /**
+     * save notification to database
+     */
     private void saveNotification() {
         if (currentNotification != null) {
             notificationDAO.saveNotification(currentNotification);
@@ -109,6 +154,13 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
     
+    /**
+     * log notification to text file
+     * @param from
+     * @param to
+     * @param subject
+     * @param content 
+     */
     private void logTxtNotification(String from, String to, String subject, String content) {
         String logFilePath = servletContext.getRealPath("/WEB-INF/logs/notificationLog.txt");
         File logFile = new File(logFilePath);

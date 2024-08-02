@@ -3,26 +3,37 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package org.cst8288.foodwastereduction.notification;
-import org.cst8288.foodwastereduction.notification.EmailService;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 
 /**
- *
- * @author ryany
+ * This class is Implementation of email service
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public class EmailServiceImpl implements EmailService {
 
+    /**
+     * session
+     */
     private final Session session;
+    
+    /**
+     * from
+     */
     private final String from;
+    
+    /**
+     * is test mode or not
+     */
     private final boolean isTestMode;
     
-    
-    public EmailServiceImpl(EmailConfig config) {
-        this(config, false);
-    }
-
+    /**
+     * another Constructor used for test mode
+     * @param config
+     * @param isTestMode 
+     */
     public EmailServiceImpl(EmailConfig config, boolean isTestMode) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -41,6 +52,21 @@ public class EmailServiceImpl implements EmailService {
         });
     }
 
+    /**
+     * Constructor chaining after test mode
+     * @param config 
+     */
+    public EmailServiceImpl(EmailConfig config) {
+        this(config, false);
+    }
+    
+    /**
+     * over ride the method defined in interface
+     * @param to
+     * @param subject
+     * @param content
+     * @return 
+     */
     @Override
     public String sendEmail(String to, String subject, String content) {
         try {

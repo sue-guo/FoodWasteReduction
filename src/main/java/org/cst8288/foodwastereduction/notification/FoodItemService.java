@@ -8,12 +8,13 @@ import java.util.NoSuchElementException;
 import org.cst8288.foodwastereduction.model.CategoryEnum;
 
 /**
- *
- * @author ryany
+ * This interface is used for FoodItem service get FoodCategory from foodItem
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public interface FoodItemService {
     /**
-     * 
+     * Abstract method to get food category
      * @param foodItemId
      * @return
      * @throws NoSuchElementException 

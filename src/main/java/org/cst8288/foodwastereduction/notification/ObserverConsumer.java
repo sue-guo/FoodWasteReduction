@@ -13,8 +13,9 @@ import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.model.UserType;
 
 /**
- *
- * @author ryany
+ * Concrete observer for consumer
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public class ObserverConsumer implements Observer {
     private NotificationService notificationService;
@@ -24,6 +25,15 @@ public class ObserverConsumer implements Observer {
     private User consumer;
     private List<String> notifiedUsers;
 
+    /**
+     * constructor
+     * @param notificationService
+     * @param messageService
+     * @param subscriptionService
+     * @param foodItemService
+     * @param consumer
+     * @param notifiedUsers 
+     */
     public ObserverConsumer(NotificationService notificationService, 
                             NotificationMessageService messageService,
                             SubscriptionService subscriptionService,
@@ -37,8 +47,11 @@ public class ObserverConsumer implements Observer {
         this.notifiedUsers = notifiedUsers;
     }
 
-
-	@Override
+    /**
+     * update the inventory
+     * @param inventory 
+     */
+    @Override
     public void update(InventoryDTO inventory) {
         System.out.println("Updating observer for inventory: " + inventory.getInventoryId());
         if (consumer.getUserType() != UserType.CONSUMER) {
@@ -50,7 +63,11 @@ public class ObserverConsumer implements Observer {
         }
     }
     
-     private void processDiscountNotification(InventoryDTO inventory) {
+    /**
+     * private method to deal with discount notification
+     * @param inventory 
+     */
+    private void processDiscountNotification(InventoryDTO inventory) {
         System.out.println("Processing discount notification for consumer: " + consumer.getUserID());
         
         boolean isSubscribed = subscriptionService.isSubscribed(consumer.getUserID(), inventory.getRetailerId());

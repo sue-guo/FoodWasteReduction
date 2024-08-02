@@ -34,13 +34,29 @@ import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
  * doGet is used to get SubscriberDTO to create the form in subscribe page
  * doPost is used to submit users' update/delete/add operation to subscription table in database
  * @author Ryan Xu
+ * Created on 2024-07-31
  */
 @WebServlet(name = "SubscribeServlet", urlPatterns = {"/subscribe"})
 public class SubscribeServlet extends HttpServlet {
+    /**
+     * userDao
+     */
     private UserDao userDao;
+    
+    /**
+     * subsriptionDAO
+     */
     private SubscriptionDAO subscriptionDAO;
+    
+    /**
+     * subscriptionService
+     */
     private SubscriptionService subscriptionService;
     
+    /**
+     * Initialization the servlet
+     * @throws ServletException 
+     */
     @Override
     public void init() throws ServletException {
         userDao = new UserDaoImpl();

@@ -12,8 +12,9 @@ import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 
 /**
- *
- * @author ryany
+ * Concrete observer for charitable organization
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public class ObserverCharitableOrganization implements Observer {
     private NotificationService notificationService;
@@ -23,6 +24,15 @@ public class ObserverCharitableOrganization implements Observer {
     private User charitableOrganization;
     private List<String> notifiedUsers;
 
+    /**
+     * Constructor
+     * @param notificationService
+     * @param messageService
+     * @param subscriptionService
+     * @param foodItemService
+     * @param charitableOrganization
+     * @param notifiedUsers 
+     */
     public ObserverCharitableOrganization(NotificationService notificationService, 
                                           NotificationMessageService messageService, 
                                           SubscriptionService subscriptionService,
@@ -36,6 +46,10 @@ public class ObserverCharitableOrganization implements Observer {
         this.notifiedUsers = notifiedUsers;
     }
 
+    /**
+     * method to update inventory
+     * @param inventory 
+     */
     @Override
     public void update(InventoryDTO inventory) {
         if (inventory.getSurplusStatus() == SurplusStatusEnum.Donation) {

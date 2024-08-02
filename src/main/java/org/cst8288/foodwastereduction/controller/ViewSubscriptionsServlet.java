@@ -25,6 +25,7 @@ import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
  * This Servlet is used for retailer to view subscriptions
  * only doGet is used to get information from database.
  * @author Ryan Xu
+ * Created on 2024-07-31
  */
 @WebServlet(name = "ViewSubscriptionsServlet", urlPatterns = {"/viewSubscriptions"})
 public class ViewSubscriptionsServlet extends HttpServlet {

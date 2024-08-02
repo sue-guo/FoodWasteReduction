@@ -3,10 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package org.cst8288.foodwastereduction.controller;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,23 +39,57 @@ import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
 import org.cst8288.foodwastereduction.notification.ObserverCharitableOrganization;
 
 /**
- *
- * @author ryany
+ * Servlet to deal with notification called by InventoryStatusServlet
+ * @author Ryan Xu
+ * Created on 2024-07-31
  */
 @WebServlet(name = "NotificationServlet", urlPatterns = {"/NotificationServlet"})
 public class NotificationServlet extends HttpServlet {
-    
+    /**
+     * userDAO
+     */
     private UserDao userDAO;
+    
+    /**
+     * inventoryDAO
+     */
     private InventoryDAO inventoryDAO;
+    
+    /**
+     * subscriptionDAO
+     */
     private SubscriptionDAO subscriptionDAO;
+    
+    /**
+     * notificaitonService
+     */
     private NotificationService notificationService;
+    
+    /**
+     * messageService
+     */
     private NotificationMessageService messageService;
+    
+    /**
+     * subscriptionService
+     */
     private SubscriptionService subscriptionService;
+    
+    /**
+     * foodItemService
+     */
     private FoodItemService foodItemService;
 
+    /**
+     * Default constructor
+     */
     public NotificationServlet() {
         initializeServices();
     }
+    
+    /**
+     * Initialization the services
+     */
     private void initializeServices() {
         if (userDAO == null) userDAO = new UserDaoImpl();
         if (inventoryDAO == null) inventoryDAO = new InventoryDAOImpl();

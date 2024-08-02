@@ -7,9 +7,14 @@ package org.cst8288.foodwastereduction.notification;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**
- *
- * @author ryany
+ * Observer interface, Observer pattern
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public interface Observer {
+    
+    /**
+     * Abstract method to update inventory
+    */
     void update(InventoryDTO inventory);    
 }

@@ -9,21 +9,33 @@ import java.util.NoSuchElementException;
 import org.cst8288.foodwastereduction.model.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
-import org.cst8288.foodwastereduction.logger.LMSLogger;
-import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 /**
- *
- * @author ryany
+ * This class is implementation of interface FoodItemService
+ * @author Ryan Xu
+ * Created on 2024-07-27
  */
 public class FoodItemServiceImpl implements FoodItemService {
+    
+    /**
+     * foodItemDAO
+     */
     private final FoodItemDAO foodItemDAO;
 
+    /**
+     * default constructor which needed to initialize the attribute
+     */
     public FoodItemServiceImpl() {
         this.foodItemDAO = new FoodItemDAOImpl();
     }
 
+    /**
+     * override the method in interface to get food category from foodItem
+     * @param foodItemId
+     * @return
+     * @throws NoSuchElementException 
+     */
     @Override
     public CategoryEnum getFoodCategory(Integer foodItemId) throws NoSuchElementException {
         FoodItemDTO foodItem = null;

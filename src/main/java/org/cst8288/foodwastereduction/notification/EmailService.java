@@ -5,9 +5,18 @@
 package org.cst8288.foodwastereduction.notification;
 
 /**
- *
- * @author ryany
+ * This is interface of Email Service
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public interface EmailService {
+    
+    /**
+     * abstract method for send email
+     * @param to
+     * @param subject
+     * @param content
+     * @return 
+     */
     String sendEmail(String to, String subject, String content);    
 }

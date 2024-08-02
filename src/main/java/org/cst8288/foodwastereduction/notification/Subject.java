@@ -5,11 +5,25 @@
 package org.cst8288.foodwastereduction.notification;
 
 /**
- *
- * @author ryany
+ * Subject for Observer pattern
+ * @author Ryan Xu
+ * Created on 2024-07-28
  */
 public interface Subject {
+    /**
+     * Abstract method for registering Observer
+     * @param observer 
+     */
     void registerObserver(Observer observer);
+    
+    /**
+     * Abstract method for removing observer
+     * @param observer 
+     */
     void removeObserver(Observer observer);
+    
+    /**
+     * Abstract method for notify Observers
+     */
     void notifyObservers();    
 }
