@@ -85,6 +85,15 @@ CREATE TABLE Notifications (
     FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE Payments (
+    PaymentID INT AUTO_INCREMENT PRIMARY KEY,
+    TransactionID INT NOT NULL,
+    PaymentType ENUM('CHECK', 'CREDIT_CARD', 'APPLE_PAY', 'PAYPAL') NOT NULL,
+    Amount DECIMAL(10, 2),
+    Credential JSON,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (TransactionID) REFERENCES Transactions(TransactionID) ON UPDATE CASCADE ON DELETE CASCADE
+);
 -- ---------Test data----
 -- Test data for Users
 -- INSERT INTO Users (Name, Email, PasswordHash, UserType, PhoneNumber, Address, City) VALUES
