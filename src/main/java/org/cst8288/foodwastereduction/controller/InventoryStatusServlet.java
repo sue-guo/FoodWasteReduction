@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 
@@ -34,7 +36,7 @@ public class InventoryStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        try{
           // Get parameters from the request
         String inventoryIdParam = request.getParameter("inventoryId");
         String statusParam = request.getParameter("status");
@@ -49,9 +51,16 @@ public class InventoryStatusServlet extends HttpServlet {
          inventory.setSurplusStatus(status);
          inventoryBusiness.updateInventory(inventory);
 
+         
+         LMSLogger.getInstance().saveLogInformation("Updated inventory status for inventoryId = " + inventoryId, InventoryStatusServlet.class.getName(), LogLevel.INFO);
+          
           // Redirect back to the inventory page
          response.sendRedirect(request.getContextPath() + "/inventory?userId=" + inventory.getRetailerId());
-  
+       
+        } catch (Exception ex) {
+            LMSLogger.getInstance().saveLogInformation("Exception in InventoryStatusServlet doGet: " + ex.getMessage(), InventoryStatusServlet.class.getName(), LogLevel.ERROR);
+            throw new ServletException(ex);
+        }
     }
         
         

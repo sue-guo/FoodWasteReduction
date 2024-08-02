@@ -16,6 +16,8 @@ import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import java.util.ArrayList;
 import java.util.List;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.CategoryEnum;
 
 /**
@@ -36,7 +38,8 @@ public class FoodItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+       
+        try {
         int userId = Integer.parseInt(request.getParameter("userId").trim());
         
         FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
@@ -45,6 +48,12 @@ public class FoodItemServlet extends HttpServlet {
         request.setAttribute("foodItems", foodItems);
         RequestDispatcher dispatcher = request.getRequestDispatcher("views/foodItem.jsp");
         dispatcher.forward(request, response);
+              
+            LMSLogger.getInstance().saveLogInformation("Fetched food items for userId = " + userId, FoodItemServlet.class.getName(), LogLevel.INFO);
+        } catch (Exception ex) {
+            LMSLogger.getInstance().saveLogInformation("Exception in FoodItemServlet doGet: " + ex.getMessage(), FoodItemServlet.class.getName(), LogLevel.ERROR);
+            throw new ServletException(ex);
+        }
     }
 
     /**
@@ -59,6 +68,7 @@ public class FoodItemServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        try {
         int userId = Integer.parseInt(request.getParameter("userId").trim());
         String name = request.getParameter("name").trim();
         String description = request.getParameter("description").trim();
@@ -78,12 +88,15 @@ public class FoodItemServlet extends HttpServlet {
         foodItemBusiness.addFoodItem(foodItem);
         
    
+         LMSLogger.getInstance().saveLogInformation("Added food item for userId = " + userId, FoodItemServlet.class.getName(), LogLevel.INFO);
         // Redirect to list all current food items
         response.sendRedirect(request.getContextPath() + "/foodItem?userId=" + userId);
-        
-   
-    }
-    
 
+    } catch (Exception ex) {
+            LMSLogger.getInstance().saveLogInformation("Exception in FoodItemServlet doPost: " + ex.getMessage(), FoodItemServlet.class.getName(), LogLevel.ERROR);
+            throw new ServletException(ex);
+        }
+    
+    }
 
 }
