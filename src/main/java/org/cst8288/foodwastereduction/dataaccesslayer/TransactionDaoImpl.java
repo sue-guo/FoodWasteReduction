@@ -80,8 +80,8 @@ public class TransactionDaoImpl implements TransactionDao{
                     transaction.setInventoryID(rs.getInt("InventoryID"));
                     transaction.setUserID(rs.getInt("UserID"));
                     transaction.setQuantity(rs.getInt("Quantity"));
-                    transaction.setTransactionType(TransactionType.valueOf(rs.getString("TransactionType").toUpperCase()));
-                    transaction.setTransactionDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("TransactionDate"), "YYYY-MM-DD HH:ss") );
+                    transaction.setTransactionType(TransactionType.valueOf(rs.getString("TransactionType")));
+                    transaction.setTransactionDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("TransactionDate"), "yyyy-MM-dd HH:mm") );
                 transactionList.add(transaction);
             }
         } catch (SQLException ex) {
@@ -119,8 +119,8 @@ public class TransactionDaoImpl implements TransactionDao{
                 transaction.setInventoryID(rs.getInt("InventoryID"));
                 transaction.setUserID(rs.getInt("UserID"));
                 transaction.setQuantity(rs.getInt("Quantity"));
-                transaction.setTransactionType(TransactionType.valueOf(rs.getString("TransactionType").toUpperCase()));
-                transaction.setTransactionDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("TransactionDate"), "YYYY-MM-DD HH:ss"));
+                transaction.setTransactionType(TransactionType.valueOf(rs.getString("TransactionType")));
+                transaction.setTransactionDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("TransactionDate"), "yyyy-MM-dd HH:mm"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(TransactionDaoImpl.class.getName()).log(Level.SEVERE, null, ex);

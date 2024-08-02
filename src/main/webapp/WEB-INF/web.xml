@@ -55,6 +55,10 @@
         <servlet-name>PaymentServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.PaymentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TransactionListServlet</servlet-name>
+        <servlet-class>org.cst8288.foodwastereduction.controller.TransactionListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
@@ -106,6 +110,10 @@
     <servlet-mapping>
         <servlet-name>PaymentServlet</servlet-name>
         <url-pattern>/payment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransactionListServlet</servlet-name>
+        <url-pattern>/transactionList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

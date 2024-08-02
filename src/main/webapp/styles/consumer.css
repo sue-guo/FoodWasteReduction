@@ -31,34 +31,12 @@ button {
     cursor: pointer;
 }
 
+#order_history {
+    width: 200px;
+    margin-top: 20px;
+}
+
 button:hover {
     background-color: #45a049;
 }
 
-/*.window {*/
-/*    display: none;*/
-/*    position: fixed;*/
-/*    z-index: 1;*/
-/*    left: 50%;*/
-/*    top: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    width: 500px;*/
-/*    height: 260px;*/
-/*    overflow: auto;*/
-/*    background-color: white;*/
-/*    border: 0.5px solid black;*/
-/*}*/
-
-/*.close {*/
-/*    position: absolute;*/
-/*    top: 10px;*/
-/*    right: 15px;*/
-/*    font-size: 25px;*/
-/*    cursor: pointer;*/
-/*    color: #aaa;*/
-/*}*/
-
-/*#purchase-qty {*/
-/*    height: 28px;*/
-/*    font-size: 15px;*/
-/*}*/
