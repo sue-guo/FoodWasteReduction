@@ -38,6 +38,7 @@
 </header>
 
 <main>
+    <h2>Claim Details</h2>
     <%
         InventoryDTO inventory = (InventoryDTO) request.getAttribute("inventory");
         FoodItemDTO foodItem = (FoodItemDTO) request.getAttribute("foodItem");
@@ -46,6 +47,7 @@
     <form action="${pageContext.request.contextPath}/charitableOrganization/claim?userId=<%= user.getUserID() %>" method="post">
         <input type="hidden" name="inventoryId" value="<%= inventory.getInventoryId() %>">
         <p><strong>Item Name:</strong> <%= foodItem.getName() %></p>
+        <p><strong>Description:</strong> <%= foodItem.getDescription() %></p>
         <p><strong>Regular Price:</strong> <%= inventory.getRegularPrice() %></p>
         <p><strong>Quantity:</strong> <%= inventory.getQuantity() %></p>
         <br>

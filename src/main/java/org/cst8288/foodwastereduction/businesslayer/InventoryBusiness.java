@@ -29,7 +29,7 @@ public class InventoryBusiness {
         return inventoryDAO.getInventoriesByRetailerId(retailerId);
     }
 
-    public Object getInventoryById(int inventoryID) {
+    public InventoryDTO getInventoryById(int inventoryID) {
         return inventoryDAO.getInventoryById(inventoryID);
     }
 

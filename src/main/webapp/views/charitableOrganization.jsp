@@ -41,7 +41,7 @@
 </header>
 
 <main>
-    <h2>Discounted Food Items</h2>
+    <h2>Donated Food Items</h2>
     <%
         List<InventoryDTO> inventories = (List<InventoryDTO>) request.getAttribute("inventories");
         List<FoodItemDTO> foodItems = (List<FoodItemDTO>) request.getAttribute("foodItems");
