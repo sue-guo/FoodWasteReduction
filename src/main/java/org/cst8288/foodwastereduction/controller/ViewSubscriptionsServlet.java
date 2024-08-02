@@ -6,7 +6,6 @@ package org.cst8288.foodwastereduction.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,20 +17,31 @@ import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
-import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 
 /**
- *
- * @author ryany
+ * This Servlet is used for retailer to view subscriptions
+ * only doGet is used to get information from database.
+ * @author Ryan Xu
  */
 @WebServlet(name = "ViewSubscriptionsServlet", urlPatterns = {"/viewSubscriptions"})
 public class ViewSubscriptionsServlet extends HttpServlet {
+    /**
+     * private attribute subsriptionService
+     */
     private SubscriptionService subscriptionService;
+    
+    /**
+     * private attribute userDao
+     */
     private UserDao userDao;
 
+    /**
+     * initiation the servlet
+     * @throws ServletException 
+     */
     @Override
     public void init() throws ServletException {
         subscriptionService = new SubscriptionServiceImpl(new SubscriptionDAOImpl(), new UserDaoImpl());

@@ -41,56 +41,59 @@
 
         </nav>
     </header>
- 
-    <form id="subscribe-form">
-        <h3>Subscription Management for ${user.name}</h3>  
-        <input type="hidden" name="userId" value="${sessionScope.user.userID}">
+    <main>
+        <form id="subscribe-form">
+            <h3>Subscription Management for ${user.name}</h3>  
+            <input type="hidden" name="userId" value="${sessionScope.user.userID}">
 
-        <div class="form-row">
-            <label for="retailerId">Select Retailer:</label>
-            <select name="retailerId" id="retailerId">
-                <option value="">Choose a retailer</option>
-                <c:forEach var="retailer" items="${localRetailers}">
-                    <option value="${retailer.userID}">${retailer.name}</option>
-                </c:forEach>
-            </select>
-        </div>
-
-        <div id="subscription-details" style="display: none;">
             <div class="form-row">
-                <label>Communication Preference:</label>
-                <div class="radio-options">
-                    <div class="radio-element">
-                        <input type="radio" name="communicationPreference" id="email" value="EMAIL" checked>
-                        <label for="email">Email</label>
-                    </div>
-                    <div class="radio-element">
-                        <input type="radio" name="communicationPreference" id="sms" value="SMS">
-                        <label for="sms">SMS</label>
+                <label for="retailerId">Select Retailer:</label>
+                <select name="retailerId" id="retailerId">
+                    <option value="">Choose a retailer</option>
+                    <c:forEach var="retailer" items="${localRetailers}">
+                        <option value="${retailer.userID}">${retailer.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+
+            <div id="subscription-details" style="display: none;">
+                <div class="form-row">
+                    <label>Communication Preference:</label>
+                    <div class="radio-options">
+                        <div class="radio-element">
+                            <input type="radio" name="communicationPreference" id="email" value="EMAIL" checked>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="radio-element">
+                            <input type="radio" name="communicationPreference" id="sms" value="SMS">
+                            <label for="sms">SMS</label>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-row">
-                <label>Food Preferences:</label>
+                <div class="form-row">
+                    <label>Food Preferences:</label>
+                </div>
+                <div class="checkbox-container">
+                    <c:forEach var="preference" items="${foodCategories}">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="foodPreferences" value="${preference}" id="${preference}">
+                            <label for="${preference}">${preference}</label>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div>
+                    <button type="button" id="selectAll">Select All</button>
+                    <button type="button" id="invertSelection">Invert Selection</button>
+                    <input type="submit" id="submit-btn" value="Update Subscription" disabled>
+                </div>
+                <div id="message-container"></div>
             </div>
-            <div class="checkbox-container">
-                <c:forEach var="preference" items="${foodCategories}">
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="foodPreferences" value="${preference}" id="${preference}">
-                        <label for="${preference}">${preference}</label>
-                    </div>
-                </c:forEach>
-            </div>
-            <div>
-                <button type="button" id="selectAll">Select All</button>
-                <button type="button" id="invertSelection">Invert Selection</button>
-                <input type="submit" id="submit-btn" value="Update Subscription" disabled>
-            </div>
-            <div id="message-container"></div>
-        </div>
-    </form>
-
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Food Waste Reduction Platform</p>
+    </footer>
     <script>
     $(document).ready(function() {
         let initialFormState = getFormState();

@@ -30,8 +30,10 @@ import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 
 /**
- *
- * @author ryany
+ * This Servlet is used to subscription management for Consumers and Charitable_Organizations
+ * doGet is used to get SubscriberDTO to create the form in subscribe page
+ * doPost is used to submit users' update/delete/add operation to subscription table in database
+ * @author Ryan Xu
  */
 @WebServlet(name = "SubscribeServlet", urlPatterns = {"/subscribe"})
 public class SubscribeServlet extends HttpServlet {
