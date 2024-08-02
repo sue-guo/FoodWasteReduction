@@ -47,6 +47,7 @@
         %>
             <button onclick="loadInventory(<%= user.getUserID() %>)">Inventory Management</button>
             <button onclick="loadFoodItem(<%= user.getUserID() %>)"> Food Item Management</button>
+            <button onclick="viewSubscriptions(<%= user.getUserID() %>)">View Subscriptions</button>
         <%
             }
          %>
@@ -97,6 +98,9 @@
             // load the subscribe page
             window.location.href = "subscribe?userId="+userId;
         }
+        function viewSubscriptions(userId) {
+            window.location.href = "viewSubscriptions?userId=" + userId;
+        }        
     </script>
 </body>
 </html>

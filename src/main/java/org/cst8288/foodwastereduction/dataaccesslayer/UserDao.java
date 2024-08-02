@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+
 /* File: UserDao.java
  * Author: Hongxiu Guo
  * Course: CST8288
@@ -9,10 +13,10 @@
  */
 package org.cst8288.foodwastereduction.dataaccesslayer;
 
+import java.util.List;
 import org.cst8288.foodwastereduction.model.User;
 
-/**
- * This interface defines the methods for interacting with user data in the database. 
+/** 
  * 
  * It provides methods for retrieving a user by their email address and adding a new user.
  * Implementations of this interface should provide the actual logic for these operations.
@@ -34,5 +38,19 @@ public interface UserDao {
      * @param user the User object containing the information to be added to the database
      */
     void addUser(User user);
+    
+    /**
+     * 
+     * @param userId
+     * @return 
+     */
+    User getUserById(int userId);
+    
+    /**
+     * 
+     * @param city
+     * @return 
+     */
+    List<User> getRetailersByCity(String city);
     
 }

@@ -55,7 +55,6 @@
         <servlet-name>PaymentServlet</servlet-name>
         <servlet-class>org.cst8288.foodwastereduction.controller.PaymentServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
