@@ -31,7 +31,17 @@ import org.cst8288.foodwastereduction.model.User;
  */
 public class LoginServlet extends HttpServlet {
 
+    private   UserBusiness userBusiness;
+    
+    // Default constructor for servlet container
+    public LoginServlet() {
+        this(new UserBusiness());
+    }
 
+    // Constructor for dependency injection
+    public LoginServlet(UserBusiness userBusiness) {
+        this.userBusiness = userBusiness;
+    }
     /**
      * Handles HTTP POST requests for user login.
      * 
@@ -45,10 +55,8 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        UserBusiness userBusiness = new UserBusiness();
         
         String email = request.getParameter("email").trim();
         String password = request.getParameter("password").trim();

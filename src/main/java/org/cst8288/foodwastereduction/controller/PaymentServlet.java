@@ -141,7 +141,7 @@ public class PaymentServlet extends HttpServlet {
      * @param response the HttpServletResponse object used to send a response to the client
      * @throws Exception if an error occurs during payment processing
      */
-    private void addPayment(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void addPayment(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
         Payment payment = new Payment();
 

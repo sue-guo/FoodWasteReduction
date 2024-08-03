@@ -29,7 +29,17 @@ import org.cst8288.foodwastereduction.utility.PasswordUtil;
  * @author Hongxiu Guo
  */
 public class SignupServlet extends HttpServlet {
+    private   UserBusiness userBusiness;
+    
+    // Default constructor for servlet container
+    public SignupServlet() {
+        this(new UserBusiness());
+    }
 
+    // Constructor for dependency injection
+    public SignupServlet(UserBusiness userBusiness) {
+        this.userBusiness = userBusiness;
+    }
 
     /**
      * Handles HTTP POST requests for user registration.
@@ -45,9 +55,9 @@ public class SignupServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserBusiness userBusiness = new UserBusiness();
+        
         String email = request.getParameter("email");
         User user = userBusiness.getUserByEmail(email);
         
@@ -83,8 +93,6 @@ public class SignupServlet extends HttpServlet {
         user.setPhoneNumber(request.getParameter("phoneNumber").trim());
         user.setAddress(request.getParameter("address").trim());
         user.setCity(request.getParameter("city").trim());
-        
-        UserBusiness userBusiness = new UserBusiness();
         
         userBusiness.addUser(user);
     }
