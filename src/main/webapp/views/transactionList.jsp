@@ -41,19 +41,14 @@
 
 <main>
     <h2>Orders History</h2>
-    <%
-        List<InventoryDTO> inventories = (List<InventoryDTO>) request.getAttribute("inventories");
-        List<FoodItemDTO> foodItems = (List<FoodItemDTO>) request.getAttribute("foodItems");
-        List<Transaction> transactions = (List<Transaction>) request.getAttribute("transactions");
-    %>
-
     <table id="order-table">
         <thead>
         <%-- Table header row --%>
         <tr>
             <th>OrderID</th>
             <th>Item Name</th>
-            <th>Price</th>
+            <th>Retailer</th>
+            <th>Regular Price</th>
             <th>Quantity</th>
             <th>Total Amount</th>
             <th>Date</th>
@@ -64,39 +59,48 @@
         <%-- Table body --%>
         <tbody>
         <%
+            List<Transaction> transactions = (List<Transaction>) request.getAttribute("transactions");
             DecimalFormat df = new DecimalFormat("#.00");
-            for (Transaction transaction : transactions) {
-                InventoryDTO inventory = inventories.stream()
-                        .filter(inv -> inv.getInventoryId().equals(transaction.getInventoryID()))
-                        .findFirst()
-                        .orElse(null);
-
-                if (inventory != null) {
-                    FoodItemDTO foodItem = foodItems.stream()
-                            .filter(item -> item.getFoodItemId().equals(inventory.getFoodItemId()))
-                            .findFirst()
-                            .orElse(null);
-
+            if( transactions!=null && transactions.size() != 0 ){
+            
+                for (Transaction transaction : transactions) {
+               
                     if (transaction.getTransactionType() == TransactionType.Purchase) {
-                        assert foodItem != null;
-                        assert user != null;
-                        double price = inventory.getRegularPrice() * inventory.getDiscountRate();
-                        double totalAmount = price * transaction.getQuantity();
+
         %>
         <tr>
             <td><%= transaction.getTransactionID() %></td>
-            <td><%= foodItem.getName() %></td>
-            <td><%= price %></td>
+            <td><%= transaction.getFoodItem() %></td>
+            <td><%= transaction.getRetailer() %></td>
+            <td><%= transaction.getRegularPrice() %></td>
             <td><%= transaction.getQuantity() %></td>
-            <td><%= df.format(totalAmount) %></td>
+            <td><%= df.format(transaction.getTotalAmount()) %></td>
             <td><%= transaction.getTransactionDate() %></td>
             <td><%= transaction.getPayStatus() %></td>
             <td>
                 <% if(transaction.getPayStatus().equalsIgnoreCase("unpaid")){   %>
-                <button type="button" onclick="window.location.href= '${pageContext.request.contextPath}/payment?transactionId=<%= transaction.getTransactionID() %>&total=<%= totalAmount %>'">Pay</button>
+                <button type="button" onclick="window.location.href= '${pageContext.request.contextPath}/payment?transactionId=<%= transaction.getTransactionID() %>&total=<%= transaction.getTotalAmount() %>'">Pay</button>
                 <% } %>
             </td>
         </tr>
+        <%
+                    }else{                   
+         %>           
+        <tr>
+            <td><%= transaction.getTransactionID() %></td>
+            
+            <td><%= transaction.getFoodItem() %></td>
+            <td><%= transaction.getRetailer() %></td>
+            <td><%= transaction.getRegularPrice() %></td>
+            <td><%= transaction.getQuantity() %></td>
+            <td>None</td>
+            <td><%= transaction.getTransactionDate() %></td>
+            <td>No Need</td>
+            <td>
+                
+            </td>
+        </tr>
+
         <%
                     }
                 }

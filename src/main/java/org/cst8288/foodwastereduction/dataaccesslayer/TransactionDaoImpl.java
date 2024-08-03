@@ -71,7 +71,15 @@ public class TransactionDaoImpl implements TransactionDao{
         List<Transaction> transactionList = new ArrayList<>();
         try {
             con = DataSource.getConnection();
-            String sql = " SELECT * FROM Transactions WHERE UserID = ?";
+            String sql = " select t1.*, t3.Name as FoodItem, t4.Name as retailer, t2.regularPrice, t2.expirationDate,  " +
+                            "(CASE" +
+                            "        WHEN t1.TransactionType = 'Donation' THEN NULL  " +
+                            "        ELSE t1.Quantity * t2.RegularPrice * DiscountRate " +
+                            "  END) AS TotalAmount  " +
+                            "from transactions t1 " +
+                            "left join Inventory t2 on t1.InventoryID  = t2.InventoryID\n" +
+                            "left join FoodItems t3 on t2.FoodItemID = t3.FoodItemID \n" +
+                            "left join Users t4 on t3.RetailerID = t4.UserID WHERE t1.UserID = ? order by t1.TransactionID desc";
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, userID);
             rs = pstmt.executeQuery();
@@ -84,6 +92,11 @@ public class TransactionDaoImpl implements TransactionDao{
                     transaction.setTransactionType(TransactionType.valueOf(rs.getString("TransactionType")));
                     transaction.setTransactionDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("TransactionDate"), "yyyy-MM-dd HH:mm") );
                     transaction.setPayStatus(rs.getString("PayStatus"));
+                    transaction.setFoodItem(rs.getString("FoodItem"));                  
+                    transaction.setRetailer(rs.getString("retailer"));
+                    transaction.setRegularPrice(rs.getDouble("regularPrice"));
+                    transaction.setExpirationDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("expirationDate"), "yyyy-MM-dd") );
+                    transaction.setTotalAmount(rs.getDouble("TotalAmount"));
                 transactionList.add(transaction);
             }
         } catch (SQLException ex) {

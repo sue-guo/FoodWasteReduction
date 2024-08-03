@@ -3,8 +3,6 @@ package org.cst8288.foodwastereduction.controller;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
 import org.cst8288.foodwastereduction.businesslayer.TransactionBusiness;
-import org.cst8288.foodwastereduction.model.FoodItemDTO;
-import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.Transaction;
 import org.cst8288.foodwastereduction.model.User;
 
@@ -73,13 +71,13 @@ public class TransactionListServlet extends HttpServlet {
         String userIdStr = request.getParameter("userId");
         int userId = Integer.parseInt(userIdStr);
 
-        List<InventoryDTO> inventories = inventoryBusiness.getAllInventories();
-        List<FoodItemDTO> foodItems = foodItemBusiness.getAllFoodItems();
+//        List<InventoryDTO> inventories = inventoryBusiness.getAllInventories();
+//        List<FoodItemDTO> foodItems = foodItemBusiness.getAllFoodItems();
         List<Transaction> transactions = transactionBusiness.getTransactionByUser(userId);
 
-        // Set attributes for JSP
-        request.setAttribute("inventories", inventories);
-        request.setAttribute("foodItems", foodItems);
+//        // Set attributes for JSP
+//        request.setAttribute("inventories", inventories);
+//        request.setAttribute("foodItems", foodItems);
         request.setAttribute("transactions", transactions);
 
         // Forward to JSP page

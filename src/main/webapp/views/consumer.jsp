@@ -87,7 +87,7 @@
         </tbody>
     </table>
     <br>
-    <button id="order_history" onclick="window.location.href='transactionList?userId=<%= user.getUserID() %>'">View My Orders</button>
+    <button id="order_history" onclick="window.location.href='transactionList?userId=<%= user.getUserID() %>'">History Orders And Pay</button>
 </main>
 <footer>
     <p>&copy; 2024 Food Waste Reduction Platform</p>

@@ -1,5 +1,7 @@
 package org.cst8288.foodwastereduction.model;
 
+import java.sql.Date;
+
 
 /**
  * Represents a transaction in the system.
@@ -19,6 +21,13 @@ public class Transaction {
     private TransactionType transactionType;
     private String transactionDate;
     private String payStatus;
+    private String foodItem;
+    private String retailer;
+    private Double regularPrice;
+    private Double totalAmount;
+    private String expirationDate;
+    
+    
 
     /**
      * Gets the unique identifier of the transaction.
@@ -138,5 +147,45 @@ public class Transaction {
         this.payStatus = payStatus;
     }
 
+    public String getFoodItem() {
+        return foodItem;
+    }
+
+    public void setFoodItem(String foodItem) {
+        this.foodItem = foodItem;
+    }
+
+    public String getRetailer() {
+        return retailer;
+    }
+
+    public void setRetailer(String retailer) {
+        this.retailer = retailer;
+    }
+
+    public Double getRegularPrice() {
+        return regularPrice;
+    }
+
+    public void setRegularPrice(Double regularPrice) {
+        this.regularPrice = regularPrice;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+    
 
 }
