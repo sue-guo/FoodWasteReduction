@@ -3,7 +3,7 @@ package org.cst8288.foodwastereduction.notification;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.cst8288.foodwastereduction.constants.CategoryEnum;
-import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.constants.UserType;

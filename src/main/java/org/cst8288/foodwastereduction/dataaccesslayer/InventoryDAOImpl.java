@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
-import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 
 /**
  *

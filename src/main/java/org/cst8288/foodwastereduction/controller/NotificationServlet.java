@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;

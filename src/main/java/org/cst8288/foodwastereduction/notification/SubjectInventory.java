@@ -2,7 +2,7 @@ package org.cst8288.foodwastereduction.notification;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**

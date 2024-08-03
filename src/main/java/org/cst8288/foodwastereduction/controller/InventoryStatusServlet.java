@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
-import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 
 
 /**
