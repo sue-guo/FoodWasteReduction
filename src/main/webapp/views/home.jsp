@@ -4,7 +4,7 @@
     Author     : Hongxiu Guo
 --%>
 
-<%@page import="org.cst8288.foodwastereduction.model.UserType"%>
+<%@page import="org.cst8288.foodwastereduction.constants.UserType"%>
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
