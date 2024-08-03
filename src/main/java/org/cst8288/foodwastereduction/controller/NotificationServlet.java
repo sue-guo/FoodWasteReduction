@@ -28,7 +28,7 @@ import org.cst8288.foodwastereduction.notification.SubjectInventory;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
-import org.cst8288.foodwastereduction.model.UserType;
+import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
 import org.cst8288.foodwastereduction.notification.ObserverCharitableOrganization;
 

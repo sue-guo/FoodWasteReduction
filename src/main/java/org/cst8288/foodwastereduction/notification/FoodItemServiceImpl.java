@@ -1,7 +1,7 @@
 package org.cst8288.foodwastereduction.notification;
 
 import java.util.NoSuchElementException;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;

@@ -5,7 +5,7 @@
 package org.cst8288.foodwastereduction.notification;
 
 import java.util.NoSuchElementException;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 
 /**
  * File: FoodItemService.java

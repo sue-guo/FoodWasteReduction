@@ -3,7 +3,7 @@ package org.cst8288.foodwastereduction.notification;
 import java.util.List;
 import java.util.Set;
 import org.cst8288.foodwastereduction.constants.CommunicationPreference;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
