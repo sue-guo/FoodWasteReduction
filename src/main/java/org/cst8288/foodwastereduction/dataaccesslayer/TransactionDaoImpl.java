@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 
 /**
  * Implementation of the {@link TransactionDao} interface.
@@ -47,8 +47,9 @@ public class TransactionDaoImpl implements TransactionDao{
             pstmt.setInt(3, transaction.getQuantity());
             pstmt.setString(4, transaction.getTransactionType().toString());
             pstmt.executeUpdate();
+            LMSLogger.getInstance().saveLogInformation("Insert an transaction  successfully", TransactionDaoImpl.class.getName() , LogLevel.INFO);
         } catch (SQLException ex) {
-            Logger.getLogger(TransactionDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+             LMSLogger.getInstance().saveLogInformation("SQLException occur at addTransaction: "+ex.getMessage(), TransactionDaoImpl.class.getName() , LogLevel.ERROR);
         }
     }
 
@@ -82,10 +83,11 @@ public class TransactionDaoImpl implements TransactionDao{
                     transaction.setQuantity(rs.getInt("Quantity"));
                     transaction.setTransactionType(TransactionType.valueOf(rs.getString("TransactionType")));
                     transaction.setTransactionDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("TransactionDate"), "yyyy-MM-dd HH:mm") );
+                    transaction.setPayStatus(rs.getString("PayStatus"));
                 transactionList.add(transaction);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(TransactionDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+             LMSLogger.getInstance().saveLogInformation("SQLException occur at getTransactionByUser: "+ex.getMessage(), TransactionDaoImpl.class.getName() , LogLevel.ERROR);
         }
         return transactionList;
     }
@@ -122,10 +124,31 @@ public class TransactionDaoImpl implements TransactionDao{
                 transaction.setTransactionType(TransactionType.valueOf(rs.getString("TransactionType")));
                 transaction.setTransactionDate(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("TransactionDate"), "yyyy-MM-dd HH:mm"));
             }
+            
         } catch (SQLException ex) {
-            Logger.getLogger(TransactionDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+           LMSLogger.getInstance().saveLogInformation("SQLException occur at getTransactionById: "+ex.getMessage(), TransactionDaoImpl.class.getName() , LogLevel.ERROR);
         }
         return transaction;
+    }
+    /**
+     * Updates the payment status of a transaction to 'PAID' in the database.
+     *
+     * @param transactionID The ID of the transaction whose payment status is to be updated.
+     */
+    @Override
+    public void updateTransactionPayment(int transactionID) {
+        Connection con;
+        PreparedStatement pstmt;
+        try {
+            con = DataSource.getConnection();
+            String sql = " UPDATE Transactions SET payStatus = 'PAID' WHERE TransactionID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, transactionID);
+            pstmt.executeUpdate();
+            LMSLogger.getInstance().saveLogInformation("Update an payment status  successfully, TransactionID ="+transactionID, TransactionDaoImpl.class.getName() , LogLevel.INFO);
+        } catch (SQLException ex) {
+            LMSLogger.getInstance().saveLogInformation("SQLException occur at updateTransactionPayment: "+ex.getMessage(), TransactionDaoImpl.class.getName() , LogLevel.ERROR);
+        }
     }
 
 

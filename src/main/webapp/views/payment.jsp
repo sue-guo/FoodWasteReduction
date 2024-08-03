@@ -4,6 +4,7 @@
     Author     : Hongxiu Guo
 --%>
 
+<%@page import="org.cst8288.foodwastereduction.model.Transaction"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="org.cst8288.foodwastereduction.model.UserType"%>
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
@@ -42,9 +43,12 @@
         <h2>Payment</h2>
         <form action="payment" method="post">
             <div>
+               <%
+                Transaction transaction = (Transaction)request.getAttribute("transaction");
+              %>
                 <label for="amount">Amount:</label>
-                <input type="text" id="amount" name="amount" readonly value="222.33">
-                <input type="text" id="transactionId" name="transactionId" hidden value="1">
+                <input type="text" id="amount" name="amount" readonly value="<%= request.getParameter("total") %>">
+                <input type="text" id="transactionId" name="transactionId" hidden value="<%= transaction.getTransactionID() %>">
             </div>
             <div>
                 <label for="paymentType">Payment Method:</label>

@@ -57,6 +57,7 @@
             <th>Quantity</th>
             <th>Total Amount</th>
             <th>Date</th>
+            <th>Payment Status</th>
             <th>Operation</th>
         </tr>
         </thead>
@@ -89,8 +90,11 @@
             <td><%= transaction.getQuantity() %></td>
             <td><%= df.format(totalAmount) %></td>
             <td><%= transaction.getTransactionDate() %></td>
+            <td><%= transaction.getPayStatus() %></td>
             <td>
-                <button type="button" onclick=" ">Pay</button>
+                <% if(transaction.getPayStatus().equalsIgnoreCase("unpaid")){   %>
+                <button type="button" onclick="window.location.href= '${pageContext.request.contextPath}/payment?transactionId=<%= transaction.getTransactionID() %>&total=<%= totalAmount %>'">Pay</button>
+                <% } %>
             </td>
         </tr>
         <%

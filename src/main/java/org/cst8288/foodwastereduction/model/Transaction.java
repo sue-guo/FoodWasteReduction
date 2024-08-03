@@ -1,6 +1,5 @@
 package org.cst8288.foodwastereduction.model;
 
-import java.sql.Timestamp;
 
 /**
  * Represents a transaction in the system.
@@ -19,6 +18,7 @@ public class Transaction {
     private Integer quantity;
     private TransactionType transactionType;
     private String transactionDate;
+    private String payStatus;
 
     /**
      * Gets the unique identifier of the transaction.
@@ -120,6 +120,22 @@ public class Transaction {
      */
     public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
+    }
+    /**
+     * Retrieves the current payment status.
+     *
+     * @return The current payment status as a String.
+     */
+    public String getPayStatus() {
+        return payStatus;
+    }
+    /**
+     * Sets the payment status.
+     *
+     * @param payStatus The new payment status to be set.
+     */
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
     }
 
 

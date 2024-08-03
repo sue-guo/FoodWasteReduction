@@ -68,4 +68,13 @@ public class TransactionBusiness {
         return transactionDao.getTransactionById(transactionID);
     }
 
+    /**
+     * Update transaction payment status by its unique identifier.
+     * 
+     * @param transactionID the ID of the transaction to be updated
+     */
+    public void updateTransactionPayment(int transactionID) {
+        transactionDao.updateTransactionPayment(transactionID);
+    }
+
 }

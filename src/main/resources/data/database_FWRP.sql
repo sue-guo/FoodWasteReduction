@@ -4,6 +4,7 @@ CREATE DATABASE FWRP;
 USE FWRP;
 
 -- Create database user for this group assignment
+DROP USER IF EXISTS 'CST8288Group';
 CREATE USER 'CST8288Group' IDENTIFIED BY '12345678';
 GRANT ALL PRIVILEGES ON FWRP.* TO 'CST8288Group';
 FLUSH PRIVILEGES;
@@ -71,6 +72,7 @@ CREATE TABLE Transactions (
     Quantity INT NOT NULL,
     TransactionType ENUM('Purchase', 'Donation') NOT NULL,
     TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PayStatus ENUM('unpaid', 'paid') DEFAULT 'unpaid',
     FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE
 );

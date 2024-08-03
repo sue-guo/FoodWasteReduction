@@ -49,5 +49,12 @@ public interface TransactionDao {
      *         if no transaction with that ID exists
      */
     Transaction getTransactionById(int transactionID);
+
+    /**
+     * Update transaction payment status by its unique identifier.
+     * 
+     * @param transactionID the ID of the transaction to be updated
+     */
+    public void updateTransactionPayment(int transactionID);
 }
 
