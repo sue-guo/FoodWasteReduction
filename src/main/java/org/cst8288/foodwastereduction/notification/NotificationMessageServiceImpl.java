@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.cst8288.foodwastereduction.notification;
 
 import org.cst8288.foodwastereduction.model.UserType;
@@ -12,9 +8,13 @@ import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 
 /**
- * Implementation of Notification message service
+ * File: NotificationMessageServiceImpl.java
  * @author Ryan Xu
- * Created on 2024-07-28
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-28
+ * Modified: 2024-08-03 
+ * Description: Implementation of Notification message service
  */
 public class NotificationMessageServiceImpl implements NotificationMessageService {
     /**

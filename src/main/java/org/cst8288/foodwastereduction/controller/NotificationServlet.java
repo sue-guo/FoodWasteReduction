@@ -1,15 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.cst8288.foodwastereduction.controller;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
@@ -33,15 +28,18 @@ import org.cst8288.foodwastereduction.notification.SubjectInventory;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
-import org.cst8288.foodwastereduction.model.SubscriberDTO;
 import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
 import org.cst8288.foodwastereduction.notification.ObserverCharitableOrganization;
 
 /**
- * Servlet to deal with notification called by InventoryStatusServlet
+ * File: NotificationServlet.java
  * @author Ryan Xu
- * Created on 2024-07-31
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-31
+ * Modified: 2024-08-03 
+ * Description: Servlet to deal with notification called by InventoryStatusServlet
  */
 @WebServlet(name = "NotificationServlet", urlPatterns = {"/NotificationServlet"})
 public class NotificationServlet extends HttpServlet {
@@ -103,21 +101,6 @@ public class NotificationServlet extends HttpServlet {
         if (subscriptionService == null) subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, userDAO);
         if (foodItemService == null) foodItemService = new FoodItemServiceImpl();
     }
-        
-//    @Override
-//    public void init() throws ServletException {
-//        super.init();
-//        userDAO = new UserDaoImpl();
-//        inventoryDAO = new InventoryDAOImpl();
-//        subscriptionDAO = new SubscriptionDAOImpl();
-//        NotificationDAO notificationDAO = new NotificationDAOImpl();
-//        EmailConfig emailConfig = EmailConfig.getTestConfig();
-//        ServletContext servletContext = getServletContext(); 
-//        notificationService = new NotificationServiceImpl(notificationDAO, true, emailConfig, servletContext);
-//        messageService = new NotificationMessageServiceImpl(new FoodItemDAOImpl(), userDAO);
-//        subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, userDAO);
-//        foodItemService = new FoodItemServiceImpl(); 
-//    }
 
 //    @Override
 //    protected void doPost(HttpServletRequest request, HttpServletResponse response) 

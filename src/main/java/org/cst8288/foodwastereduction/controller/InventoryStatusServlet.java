@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package org.cst8288.foodwastereduction.controller;
 
 import com.google.gson.Gson;
@@ -21,7 +17,7 @@ import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 
 /**
  *
- * @author Carri
+ * @author Carri and Ryan Xu
  */
 public class InventoryStatusServlet extends HttpServlet {
     private InventoryDAO inventoryDAO;
