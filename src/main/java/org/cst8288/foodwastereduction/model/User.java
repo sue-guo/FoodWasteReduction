@@ -9,6 +9,8 @@
  */
 package org.cst8288.foodwastereduction.model;
 
+import org.cst8288.foodwastereduction.constants.UserType;
+
 /**
  * Represents a user entity in the Food Waste Reduction platform.
  * This class contains information about the user such as their ID, name, email,

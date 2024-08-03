@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 /**
@@ -57,20 +57,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
             rs = pstmt.executeQuery();
            
             while (rs.next()) {
-            FoodItemDTO foodItem = new FoodItemDTO();
-            
-            int foodItemId = rs.getInt("FoodItemID");
-            foodItem.setFoodItemId(rs.wasNull() ? null : foodItemId);
-            
-            int retailerIdValue = rs.getInt("RetailerID");
-            foodItem.setRetailerId(rs.wasNull() ? null : retailerIdValue);
-            
-            foodItem.setName(rs.getString("Name"));
-            foodItem.setDescription(rs.getString("Description"));
-            foodItem.setCategory(CategoryEnum.valueOf(rs.getString("Category")));
-            foodItem.setBrand(rs.getString("Brand"));
-            foodItem.setUnit(rs.getString("Unit"));
-            foodItems.add(foodItem);
+                foodItems.add(mapResultSetToFoodItem(rs));
             }
  
         } catch (SQLException ex) {
@@ -91,20 +78,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                FoodItemDTO foodItem = new FoodItemDTO();
-
-                int foodItemId = rs.getInt("FoodItemID");
-                foodItem.setFoodItemId(rs.wasNull() ? null : foodItemId);
-
-                int retailerIdValue = rs.getInt("RetailerID");
-                foodItem.setRetailerId(rs.wasNull() ? null : retailerIdValue);
-
-                foodItem.setName(rs.getString("Name"));
-                foodItem.setDescription(rs.getString("Description"));
-                foodItem.setCategory(CategoryEnum.valueOf(rs.getString("Category")));
-                foodItem.setBrand(rs.getString("Brand"));
-                foodItem.setUnit(rs.getString("Unit"));
-                foodItems.add(foodItem);
+                foodItems.add(mapResultSetToFoodItem(rs));
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
@@ -126,19 +100,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                foodItem = new FoodItemDTO();
-
-                int id = rs.getInt("FoodItemID");
-                foodItem.setFoodItemId(rs.wasNull() ? null : id);
-
-                int retailerIdValue = rs.getInt("RetailerID");
-                foodItem.setRetailerId(rs.wasNull() ? null : retailerIdValue);
-
-                foodItem.setName(rs.getString("Name"));
-                foodItem.setDescription(rs.getString("Description"));
-                foodItem.setCategory(CategoryEnum.valueOf(rs.getString("Category")));
-                foodItem.setBrand(rs.getString("Brand"));
-                foodItem.setUnit(rs.getString("Unit"));
+                foodItem = mapResultSetToFoodItem(rs);
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

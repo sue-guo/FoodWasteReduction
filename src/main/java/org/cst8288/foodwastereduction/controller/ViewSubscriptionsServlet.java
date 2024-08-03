@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package org.cst8288.foodwastereduction.controller;
 
 import java.io.IOException;
@@ -12,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.cst8288.foodwastereduction.model.UserType;
+import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
@@ -22,10 +18,14 @@ import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 
 /**
- * This Servlet is used for retailer to view subscriptions
- * only doGet is used to get information from database.
+ * File: ViewSubscriptionsServlet.java
  * @author Ryan Xu
- * Created on 2024-07-31
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-31
+ * Modified: 2024-08-03 
+ * Description: This Servlet is used for retailer to view subscriptions
+ * only doGet is used to get information from database.
  */
 @WebServlet(name = "ViewSubscriptionsServlet", urlPatterns = {"/viewSubscriptions"})
 public class ViewSubscriptionsServlet extends HttpServlet {

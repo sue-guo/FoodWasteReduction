@@ -1,21 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package org.cst8288.foodwastereduction.notification;
 
 import java.util.List;
 import java.util.Set;
 import org.cst8288.foodwastereduction.constants.CommunicationPreference;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
 
 /**
- * Interface for Subscription service
+ * File: SubscriptionService.java
  * @author Ryan Xu
- * Created on 2024-07-27
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-27
+ * Modified: 2024-08-03 
+ * Description: Interface for Subscription service
  */
 public interface SubscriptionService {
     /**

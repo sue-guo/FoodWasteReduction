@@ -7,7 +7,7 @@
 <%@page import="org.cst8288.foodwastereduction.model.FoodItemDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
-<%@page import="org.cst8288.foodwastereduction.model.UserType"%>
+<%@page import="org.cst8288.foodwastereduction.constants.UserType"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

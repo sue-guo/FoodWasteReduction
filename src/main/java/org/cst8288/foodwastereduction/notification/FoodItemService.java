@@ -5,12 +5,16 @@
 package org.cst8288.foodwastereduction.notification;
 
 import java.util.NoSuchElementException;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 
 /**
- * This interface is used for FoodItem service get FoodCategory from foodItem
+ * File: FoodItemService.java
  * @author Ryan Xu
- * Created on 2024-07-28
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-28
+ * Modified: 2024-08-03
+ * Description: This interface is used for FoodItem service get FoodCategory from foodItem
  */
 public interface FoodItemService {
     /**

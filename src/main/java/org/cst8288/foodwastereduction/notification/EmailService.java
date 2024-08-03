@@ -1,13 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package org.cst8288.foodwastereduction.notification;
 
 /**
- * This is interface of Email Service
+ * File: EmailService.java
  * @author Ryan Xu
- * Created on 2024-07-28
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-28
+ * Modified: 2024-08-03
+ * Description: The interface of Email Service
  */
 public interface EmailService {
     
@@ -16,7 +16,7 @@ public interface EmailService {
      * @param to
      * @param subject
      * @param content
-     * @return 
+     * @return string type
      */
     String sendEmail(String to, String subject, String content);    
 }

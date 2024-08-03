@@ -1,7 +1,7 @@
 <%@ page import="org.cst8288.foodwastereduction.model.User" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.cst8288.foodwastereduction.model.InventoryDTO" %>
-<%@ page import="org.cst8288.foodwastereduction.model.SurplusStatusEnum" %>
+<%@ page import="org.cst8288.foodwastereduction.constants.SurplusStatusEnum" %>
 <%@ page import="org.cst8288.foodwastereduction.model.FoodItemDTO" %>
 <%--
   Created by IntelliJ IDEA.

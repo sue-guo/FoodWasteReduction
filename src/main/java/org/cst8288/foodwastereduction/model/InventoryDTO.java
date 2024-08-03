@@ -8,6 +8,7 @@ package org.cst8288.foodwastereduction.model;
  *
  * @author ryany
  */
+import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 import java.sql.Date;
 import java.sql.Timestamp;
 

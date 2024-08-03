@@ -1,15 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package org.cst8288.foodwastereduction.notification;
 
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**
- * Observer interface, Observer pattern
+ * File: Observer.java
  * @author Ryan Xu
- * Created on 2024-07-28
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-28
+ * Modified: 2024-08-03 
+ * Description: Observer interface, Observer pattern
  */
 public interface Observer {
     

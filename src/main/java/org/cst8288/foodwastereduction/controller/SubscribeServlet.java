@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package org.cst8288.foodwastereduction.controller;
 
 import com.google.gson.Gson;
@@ -22,19 +18,23 @@ import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 import org.cst8288.foodwastereduction.model.User;
-import org.cst8288.foodwastereduction.model.UserType;
+import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 
 /**
- * This Servlet is used to subscription management for Consumers and Charitable_Organizations
- * doGet is used to get SubscriberDTO to create the form in subscribe page
- * doPost is used to submit users' update/delete/add operation to subscription table in database
+ * File: SubscribeServlet.java
  * @author Ryan Xu
- * Created on 2024-07-31
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-31
+ * Modified: 2024-08-03 
+ * Description: This Servlet is used to subscription management for Consumers and Charitable_Organizations
+ * doGet is used to get SubscriberDTO to create the form in subscribe page
+ * doPost is used to submit users update/delete/add operation to subscription table in database
  */
 @WebServlet(name = "SubscribeServlet", urlPatterns = {"/subscribe"})
 public class SubscribeServlet extends HttpServlet {
@@ -67,7 +67,6 @@ public class SubscribeServlet extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -145,8 +144,6 @@ public class SubscribeServlet extends HttpServlet {
 
             request.getRequestDispatcher("views/subscriptionManagement.jsp").forward(request, response);
         }
-
-//        request.getRequestDispatcher("views/subscribe.jsp").forward(request, response);
 
     }
 

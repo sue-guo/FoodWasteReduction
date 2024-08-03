@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.cst8288.foodwastereduction.notification;
 
 import java.sql.Timestamp;
@@ -10,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.cst8288.foodwastereduction.constants.CommunicationPreference;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
 import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
@@ -19,9 +15,13 @@ import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 
 /**
- * Implementation of interface for Subscription service
+ * File: SubscriptionServiceImpl.java
  * @author Ryan Xu
- * Created on 2024-07-27
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-27
+ * Modified: 2024-08-03 
+ * Description: Implementation of interface for Subscription service
  */
 public class SubscriptionServiceImpl implements SubscriptionService {
     /**

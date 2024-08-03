@@ -6,7 +6,7 @@
 
 <%@page import="org.cst8288.foodwastereduction.model.Transaction"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="org.cst8288.foodwastereduction.model.UserType"%>
+<%@page import="org.cst8288.foodwastereduction.constants.UserType"%>
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
 <!DOCTYPE html>
 <html lang="en">

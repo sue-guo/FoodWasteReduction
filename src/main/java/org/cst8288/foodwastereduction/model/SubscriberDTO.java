@@ -4,6 +4,7 @@
  */
 package org.cst8288.foodwastereduction.model;
 
+import org.cst8288.foodwastereduction.constants.UserType;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;

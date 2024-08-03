@@ -7,7 +7,7 @@
  * Description: This Enum representing the different types of users in the Food Waste Reduction platform.
  *
  */
-package org.cst8288.foodwastereduction.model;
+package org.cst8288.foodwastereduction.constants;
 
 /**
  * Enum representing the different types of users in the Food Waste Reduction platform.
