@@ -17,7 +17,7 @@ import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 /**
  *
- * @author WANG JIAYUN
+ * @author WNAG JIAYUN & Ryan Xu
  */
 public class FoodItemDAOImpl implements FoodItemDAO {
     
@@ -42,10 +42,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
             LOGGER.log(Level.SEVERE, null, ex);
         } 
     }
-
-   
-
-
+    
     @Override
     public List<FoodItemDTO> getFoodItemsByRetailerId(int retailerId) {
         Connection con = null;
@@ -74,7 +71,7 @@ public class FoodItemDAOImpl implements FoodItemDAO {
             foodItem.setBrand(rs.getString("Brand"));
             foodItem.setUnit(rs.getString("Unit"));
             foodItems.add(foodItem);
-        }
+            }
  
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
@@ -150,6 +147,69 @@ public class FoodItemDAOImpl implements FoodItemDAO {
     }
 
   
+    @Override
+    public void updateFoodItem(FoodItemDTO foodItem) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
 
-    
+        try {
+            con = DataSource.getConnection();
+            String sql = "UPDATE FoodItems SET RetailerID = ?, Name = ?, Description = ?, Category = ?, Brand = ?, Unit = ? WHERE FoodItemID = ?";
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setInt(1, foodItem.getRetailerId());
+            pstmt.setString(2, foodItem.getName());
+            pstmt.setString(3, foodItem.getDescription());
+            pstmt.setString(4, foodItem.getCategory().name());
+            pstmt.setString(5, foodItem.getBrand());
+            pstmt.setString(6, foodItem.getUnit());
+            pstmt.setInt(7, foodItem.getFoodItemId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public void deleteFoodItem(Integer foodItemID) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = DataSource.getConnection();
+            String sql = "DELETE FROM FoodItems WHERE FoodItemID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, foodItemID);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private FoodItemDTO mapResultSetToFoodItem(ResultSet resultSet) throws SQLException {
+        FoodItemDTO foodItem = new FoodItemDTO();
+        foodItem.setFoodItemId(resultSet.getInt("FoodItemID"));
+        foodItem.setRetailerId(resultSet.getInt("RetailerID"));
+        foodItem.setName(resultSet.getString("Name"));
+        foodItem.setDescription(resultSet.getString("Description"));
+        foodItem.setCategory(CategoryEnum.valueOf(resultSet.getString("Category")));
+        foodItem.setBrand(resultSet.getString("Brand"));
+        foodItem.setUnit(resultSet.getString("Unit"));
+        return foodItem;
+    }
 }

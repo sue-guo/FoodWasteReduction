@@ -17,11 +17,11 @@ import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
 
 /**
  *
- * @author WANG JIAYUN
+ * @author WANG JIAYUN & Ryan Xu
  */
 public class InventoryDAOImpl implements InventoryDAO {
-    
-     private static final Logger LOGGER = Logger.getLogger(InventoryDAOImpl.class.getName());
+	
+    private static final Logger LOGGER = Logger.getLogger(InventoryDAOImpl.class.getName());
      
    
     @Override
@@ -62,13 +62,8 @@ public class InventoryDAOImpl implements InventoryDAO {
 
         return inventories;
     }
-
-    
-    
-    
-    
-    
-     @Override
+	
+    @Override
      public InventoryDTO getInventoryById(int inventoryID) {
         InventoryDTO inventory = null;
         String sql = "SELECT * FROM Inventory WHERE InventoryID = ?";
@@ -103,14 +98,9 @@ public class InventoryDAOImpl implements InventoryDAO {
         } 
         return inventory;
     }
-    
-     
-     
-     
-     
-     
-      @Override
-      public void addInventory(InventoryDTO inventory) {
+
+    @Override
+    public void addInventory(InventoryDTO inventory) {
         String sql = "INSERT INTO Inventory (RetailerID, FoodItemID, BatchNumber, Quantity, RegularPrice, DiscountRate, ExpirationDate, ReceiveDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -130,10 +120,9 @@ public class InventoryDAOImpl implements InventoryDAO {
             LOGGER.log(Level.SEVERE, null, ex);
         } 
     }
-      
-      
-       @Override
-       public void updateInventory(InventoryDTO inventory) {
+
+    @Override
+    public void updateInventory(InventoryDTO inventory) {
         String sql = "UPDATE Inventory SET RetailerID = ?, FoodItemID = ?, BatchNumber = ?, Quantity = ?, RegularPrice = ?, DiscountRate = ?, ExpirationDate = ?, ReceiveDate = ?, IsSurplus = ?, SurplusStatus = ?, IsActive = ? WHERE InventoryID = ?";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -159,6 +148,24 @@ public class InventoryDAOImpl implements InventoryDAO {
         } 
     }
 
+
+    private InventoryDTO mapResultSetToInventory(ResultSet resultSet) throws SQLException {
+        InventoryDTO inventory = new InventoryDTO();
+        inventory.setInventoryId(resultSet.getInt("InventoryId"));
+        inventory.setRetailerId(resultSet.getInt("RetailerId"));
+        inventory.setFoodItemId(resultSet.getInt("FoodItemId"));
+        inventory.setBatchNumber(resultSet.getString("BatchNumber"));
+        inventory.setQuantity(resultSet.getInt("Quantity"));
+        inventory.setRegularPrice(resultSet.getDouble("RegularPrice"));
+        inventory.setDiscountRate(resultSet.getDouble("DiscountRate"));
+        inventory.setExpirationDate(resultSet.getDate("ExpirationDate"));
+        inventory.setReceiveDate(resultSet.getDate("ReceiveDate"));
+        inventory.setIsSurplus(resultSet.getBoolean("IsSurplus"));
+        inventory.setSurplusStatus(SurplusStatusEnum.valueOf(resultSet.getString("SurplusStatus").toUpperCase()));
+        inventory.setLastUpdated(resultSet.getTimestamp("LastUpdated"));
+        inventory.setIsActive(resultSet.getBoolean("IsActive"));
+        return inventory;
+    }
 
     @Override
     public List<InventoryDTO> getAllInventories() {
@@ -196,6 +203,5 @@ public class InventoryDAOImpl implements InventoryDAO {
         }
         return inventories;
     }
-
 
 }

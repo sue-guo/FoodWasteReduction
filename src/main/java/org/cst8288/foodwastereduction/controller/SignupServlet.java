@@ -20,7 +20,6 @@ import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.utility.PasswordUtil;
 
 /**
- * Servlet for handling user registration (signup) requests.
  * 
  * This servlet processes HTTP POST requests to register new users. It checks
  * if the user already exists based on the provided email, and if not, it adds

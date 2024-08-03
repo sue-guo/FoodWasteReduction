@@ -3,6 +3,12 @@ package org.cst8288.foodwastereduction.model;
 import java.sql.Timestamp;
 
 /**
+ * Represents a transaction in the system.
+ *
+ * <p>This class encapsulates the details of a transaction, including
+ * information about the transaction ID, inventory item, user, quantity,
+ * type of transaction, and date. It is used to track and manage
+ * transactions within the system.</p>
  *
  * @author yaoyi
  */
@@ -15,46 +21,103 @@ public class Transaction {
     private String transactionDate;
 
     /**
-     * Getters and Setters
+     * Gets the unique identifier of the transaction.
+     *
+     * @return the transaction ID
      */
     public Integer getTransactionID() {
         return transactionID;
     }
+    /**
+     * Sets the unique identifier of the transaction.
+     *
+     * @param transactionID the transaction ID to set
+     */
     public void setTransactionID(Integer transactionID) {
         this.transactionID = transactionID;
     }
 
+    /**
+     * Gets the identifier of the inventory item associated with the transaction.
+     *
+     * @return the inventory ID
+     */
     public Integer getInventoryID() {
         return inventoryID;
     }
+    /**
+     * Sets the identifier of the inventory item associated with the transaction.
+     *
+     * @param inventoryID the inventory ID to set
+     */
     public void setInventoryID(Integer inventoryID) {
         this.inventoryID = inventoryID;
     }
 
+    /**
+     * Gets the identifier of the user associated with the transaction.
+     *
+     * @return the user ID
+     */
     public Integer getUserID() {
         return userID;
     }
+    /**
+     * Sets the identifier of the user associated with the transaction.
+     *
+     * @param userID the user ID to set
+     */
     public void setUserID(Integer userID) {
         this.userID = userID;
     }
 
+    /**
+     * Gets the quantity of items involved in the transaction.
+     *
+     * @return the quantity of items
+     */
     public Integer getQuantity() {
         return quantity;
     }
+    /**
+     * Sets the quantity of items involved in the transaction.
+     *
+     * @param quantity the quantity of items to set
+     */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     * Gets the type of transaction (e.g., Purchase or Donation).
+     *
+     * @return the transaction type
+     */
     public TransactionType getTransactionType() {
         return transactionType;
     }
+    /**
+     * Sets the type of transaction (e.g., Purchase or Donation).
+     *
+     * @param transactionType the transaction type to set
+     */
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
     }
 
+    /**
+     * Gets the date and time when the transaction occurred.
+     *
+     * @return the transaction date as a {@code String}
+     */
     public String getTransactionDate() {
         return transactionDate;
     }
+    /**
+     * Sets the date and time when the transaction occurred.
+     *
+     * @param transactionDate the transaction date to set, formatted as a {@code String}
+     */
     public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }

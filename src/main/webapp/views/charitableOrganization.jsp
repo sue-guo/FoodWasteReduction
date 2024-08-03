@@ -47,7 +47,7 @@
         List<FoodItemDTO> foodItems = (List<FoodItemDTO>) request.getAttribute("foodItems");
     %>
 
-    <table id="purchase-table">
+    <table id="claim-table">
         <thead>
         <%-- Table header row --%>
         <tr>

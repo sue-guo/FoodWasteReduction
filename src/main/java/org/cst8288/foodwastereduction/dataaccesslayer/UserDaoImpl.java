@@ -13,13 +13,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.logger.LMSLogger;
 import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.User;
-import org.cst8288.foodwastereduction.model.UserType;
 import org.cst8288.foodwastereduction.utility.DatetimeUtil;
 
 /**
+ *
  * Implementation of the UserDao interface for accessing and manipulating user data in the database.
  * 
  * This class provides concrete methods for interacting with the `users` table in the database. 
@@ -36,7 +39,7 @@ public class UserDaoImpl implements UserDao{
      * @param email the email address of the user to retrieve
      * @return the User object with the specified email, or null if no user is found
      */
-    @Override
+   @Override
     public User getUserByEmail(String email) {
         
         Connection con = null;
@@ -102,5 +105,94 @@ public class UserDaoImpl implements UserDao{
     }
     
     
+    @Override
+    public User getUserById(int userId) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        User user = null;
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM Users WHERE UserID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            
+            rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setName(rs.getString("Name"));
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("PasswordHash"));
+                user.setUserType(UserType.valueOf(rs.getString("UserType").toUpperCase()));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                user.setAddress(rs.getString("Address"));
+                user.setCity(rs.getString("City"));
+                user.setCreateAt(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("CreatedAt"), "YYYY-MM-DD HH:mm"));
+            } else {
+                LMSLogger.getInstance().saveLogInformation("No user found with UserID: " + userId, UserDaoImpl.class.getName(), LogLevel.INFO);
+            }
+             
+        } catch (SQLException ex) {
+            LMSLogger.getInstance().saveLogInformation("SQLException occur at getUserById: "+ex.getMessage(), UserDaoImpl.class.getName() , LogLevel.ERROR);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                LMSLogger.getInstance().saveLogInformation("SQLException occur at getUserById: "+ex.getMessage(), UserDaoImpl.class.getName() , LogLevel.ERROR);
+            }
+        }
+        return user;
+    }
     
+    @Override
+    public List<User> getRetailersByCity(String city){
+        List<User> retailers = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM Users WHERE City = ? AND UserType = ?";
+            pstmt = con.prepareStatement(sql);
+            
+            pstmt.setString(1, city);
+            pstmt.setString(2, UserType.RETAILER.toString());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setName(rs.getString("Name"));
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("PasswordHash"));
+                user.setUserType(UserType.valueOf(rs.getString("UserType").toUpperCase()));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                user.setAddress(rs.getString("Address"));
+                user.setCity(rs.getString("City"));
+                user.setCreateAt(DatetimeUtil.formatTimestampAsString(rs.getTimestamp("CreatedAt"), "YYYY-MM-DD HH:mm"));
+
+                retailers.add(user);
+            }
+
+        } catch (SQLException ex) {
+            LMSLogger.getInstance().saveLogInformation("SQLException occur at getRetailersByCity: " + ex.getMessage(), UserDaoImpl.class.getName(), LogLevel.ERROR);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                LMSLogger.getInstance().saveLogInformation("SQLException occur at getRetailersByCity: " + ex.getMessage(), UserDaoImpl.class.getName(), LogLevel.ERROR);
+            }
+        }
+
+        return retailers;
+    
+    }    
 }

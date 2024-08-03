@@ -1,0 +1,132 @@
+@import url('common.css');
+
+/* Additional CSS for Add Page */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*justify-content: center;*/
+    /*min-height: 100vh;*/
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    /*box-sizing: border-box;*/
+    background-color: #f9f9f9;
+}
+.form-row {
+    text-align: left;
+    margin-bottom: 15px;
+}
+.form-row label {
+    display: inline-block;
+    width: 200px;
+}
+.radio-options {
+    display: inline-block;
+}
+.radio-element {
+    display: inline-block;
+    margin-right: 20px;
+}
+.checkbox-container {
+    margin-left: 50px;
+}
+.checkbox-item {
+    display: inline-flex;
+    align-items: center;
+    width: 22%;
+    margin-bottom: 10px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 8px; /* Space between checkbox and label */
+    vertical-align: middle; /* Ensure checkbox aligns with text */
+}
+
+.checkbox-item label {
+    vertical-align: middle; /* Ensure label aligns with checkbox */
+}
+
+input[type="submit"] {
+    align-self: center;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+} 
+
+#submit-btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: 1px solid transparent;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, cursor 0.3s;
+    margin-left: 50px;
+}
+
+#submit-btn:disabled {
+    background-color: #ccc;
+    border-color: #aaa;
+    cursor: not-allowed;
+    margin-left: 50px;
+}
+
+/* Default info message style */
+.info-message {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Highlight style for important messages */
+.info-message.highlight {
+    background-color: #ffeb3b; /* Yellow background for high visibility */
+    color: #000; /* Black text for contrast */
+    border-color: #ffeb3b; /* Match border with background */
+}
+
+button#selectAll, button#invertSelection {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #2E8B57;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button#selectAll:hover, button#invertSelection:hover {
+    background-color: #4CAF50;
+}
+
+footer {
+    background-color: #876969;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}

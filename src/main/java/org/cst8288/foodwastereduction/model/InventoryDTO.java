@@ -4,14 +4,15 @@
  */
 package org.cst8288.foodwastereduction.model;
 
+/**
+ *
+ * @author ryany
+ */
 import java.sql.Date;
 import java.sql.Timestamp;
 
-/**
- *
- * @author WANG JIAYUN
- */
 public class InventoryDTO {
+   
     private Integer inventoryId;
     private Integer retailerId;
     private Integer foodItemId;
@@ -130,8 +131,38 @@ public class InventoryDTO {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
+
+    public InventoryDTO(){}
     
-    
-    
-    
+    /**
+     * 
+     * @param inventoryId
+     * @param retailerId
+     * @param foodItemId
+     * @param batchNumber
+     * @param quantity
+     * @param regularPrice
+     * @param discountRate
+     * @param expirationDate
+     * @param receiveDate
+     * @param isSurplus
+     * @param surplusStatus
+     * @param isActive 
+     */
+    public InventoryDTO(Integer inventoryId, Integer retailerId, Integer foodItemId, String batchNumber,
+            Integer quantity, double regularPrice, double discountRate, Date expirationDate, 
+            Date receiveDate, boolean isSurplus, SurplusStatusEnum surplusStatus, boolean isActive) {
+        this.inventoryId = inventoryId;
+        this.retailerId = retailerId;
+        this.foodItemId = foodItemId;
+        this.batchNumber = batchNumber;
+        this.quantity = quantity;
+        this.regularPrice = regularPrice;
+        this.discountRate = discountRate;
+        this.expirationDate = expirationDate;
+        this.receiveDate = receiveDate;
+        this.isSurplus = isSurplus;
+        this.surplusStatus = surplusStatus;
+        this.isActive = isActive;
+    }
 }
