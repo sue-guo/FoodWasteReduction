@@ -1,12 +1,11 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
+
 /* 
+    Stylesheet for foodItem.jsp and inventory.jsp
     Created on : Jul. 27, 2024, 5:42:11 PM
     Author     : WANG JIAYUN
 */
 
+/* General body styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -15,14 +14,14 @@ body {
     display: flex;
     flex-direction: column;
 }
-
+/* Header styling */
 header {
     background-color: #4CAF50;
     color: white;
     text-align: center;
     padding: 1rem 0;
 }
-
+/* Navigation styling */
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -45,13 +44,13 @@ nav ul li p {
     color: #876969;
     text-decoration: none;
 }
-
+/* Main content styling */
 main {
     flex: 1;
     padding: 2rem;
     text-align: center;
 }
-
+/* Table styling */
 table {
     margin: 0 auto;
     border-collapse: collapse;
@@ -77,7 +76,7 @@ table tr:nth-child(even) {
 table tr:hover {
     background-color: #ddd;
 }
-
+/* Button styling */
 button {
     background-color: #4CAF50;
     color: white;
@@ -91,7 +90,7 @@ button {
 button:hover {
     background-color: #45a049;
 }
-
+/* Footer styling */
 footer {
     background-color: #876969;
     color: white;

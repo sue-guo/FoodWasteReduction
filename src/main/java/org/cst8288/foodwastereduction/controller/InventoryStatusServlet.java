@@ -17,7 +17,7 @@ import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 
 /**
  *
- * @author Carri and Ryan Xu
+ * @author WANG JIAYUN and Ryan Xu
  */
 public class InventoryStatusServlet extends HttpServlet {
     private InventoryDAO inventoryDAO;

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : addFoodItem
+    Document   : addFoodItem.jsp
     Created on : Jul 27, 2024, 10:42:57 PM
-    Author     : Carri
+    Author     : WANG JIAYUN
 --%>
 
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
@@ -27,6 +27,7 @@
                             // Get the session attribute
                             User user = (User) session.getAttribute("user");
                             if (user != null) {
+                                // Display welcome message and logout link if user is logged in
                                 out.print("<p>Welcome, " + user.getName() + "! </p>" + 
                                 "<a href=\"logout\" class=\"logout\">[ Logout ]</a>");
                             }
@@ -36,19 +37,21 @@
             </nav>
         </header>
                     
-                    
   <main>
     <form action="foodItem" method="post">
+        <!-- Input field for food item name -->
         <div>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" value="${param.name}" required>
         </div>
         
+        <!-- Input field for food item description -->
         <div>
             <label for="description">Description:</label>
             <input type="text" id="description" name="description" value="${param.description}" required>
         </div>
         
+        <!-- Dropdown for food item category -->
         <div>
           <label for="category">Category:</label>
           <select id="category" name="category" required>
@@ -68,14 +71,16 @@
              <option value="Snack" ${param.category == 'Snack' ? 'selected' : ''}>Snack</option>
              <option value="Condiment" ${param.category == 'Condiment' ? 'selected' : ''}>Condiment</option>
              <option value="Other" ${param.category == 'Other' ? 'selected' : ''}>Other</option>
-        </select>
+          </select>
        </div>
         
+        <!-- Input field for food item brand -->
         <div>
             <label for="brand">Brand:</label>
             <input type="text" id="brand" name="brand" value="${param.brand}" required>
         </div>
         
+        <!-- Dropdown for food item unit -->
         <div>
             <label for="unit">Unit:</label>
             <select id="unit" name="unit" required>
@@ -88,11 +93,13 @@
             </select>
         </div>
 
+        <!-- Hidden input field for user ID -->
         <input type="hidden" name="userId" value="<%= user != null ? user.getUserID() : "" %>">
         
+        <!-- Submit button -->
         <button type="submit">Add Food Item</button>
     </form>
-</main>
+  </main>
         
 </body>
 </html>

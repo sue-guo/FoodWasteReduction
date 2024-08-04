@@ -1,7 +1,7 @@
 <%-- 
     Document   : inventory
-    Created on : [Current Date]
-    Author     : [Your Name]
+    Created on : Jul 27, 2024, 5:42:11 PM
+    Author     : WANG JIAYUN
 --%>
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
 <%@page import="org.cst8288.foodwastereduction.model.InventoryDTO"%>
@@ -26,8 +26,10 @@
                 <li><a href="views/home.jsp">Home</a></li>
                 <li>
                     <%
+                        // Get the session attribute
                         User user = (User) session.getAttribute("user");
                         if (user != null) {
+                            // Display welcome message and logout link if user is logged in
                             out.print("<p>Welcome, " + user.getName() + "! </p>" + 
                             "<a href=\"logout\" class=\"logout\">[ Logout ]</a>");
                         }
@@ -40,8 +42,10 @@
     <main>
         <h2>Current Inventory</h2>
         <%
+            // Get the list of inventories and food items from the request attribute
             List<InventoryDTO> inventories = (List<InventoryDTO>) request.getAttribute("inventories");
             List<FoodItemDTO> foodItems = (List<FoodItemDTO>) request.getAttribute("foodItems");
+            // Check if the inventory list is empty or null
             if (inventories == null || inventories.isEmpty()) {
         %>
             <p>No Inventory Items Now!</p>
@@ -64,7 +68,9 @@
             </thead>
             <tbody>
                 <%
+                    // Loop through each inventory item
                     for (InventoryDTO inventory : inventories) {
+                        // Find the corresponding food item for the inventory
                         FoodItemDTO foodItem = foodItems.stream()
                             .filter(item -> item.getFoodItemId().equals(inventory.getFoodItemId()))
                             .findFirst()
@@ -79,45 +85,43 @@
                     <td><%= inventory.getExpirationDate() %></td>
                     <td><%= inventory.getIsActive() ? "Yes" : "No" %></td>
                 
-                     
-                     <%
-                           if (inventory.getIsActive()) {
-                     %>
-                     
+                    <%
+                        // Check if the inventory is active
+                        if (inventory.getIsActive()) {
+                    %>
                     <td><%= inventory.getIsSurplus() ? inventory.getSurplusStatus() : "N/A" %></td>
-
                     <td>
-                       <%
-                          if (inventory.getIsSurplus()) {
-                             if (inventory.getSurplusStatus().name().equals("None")) {
+                        <%
+                            // Check if the inventory is surplus and its status
+                            if (inventory.getIsSurplus()) {
+                                if (inventory.getSurplusStatus().name().equals("None")) {
                         %>
-                               <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Donation')">Donation</button>
-                               <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Discount')">Sale</button>
-                       <%
-                             } else {
-                       %>
-                                <span>Actions Already Made</span>
-                       <%
-                             }
-                         } else {
-                       %>
-                           <span>No Action Need Now</span>
-                       <%
-                         }
-                       %>
+                            <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Donation')">Donation</button>
+                            <button onclick="updateSurplusStatus(<%= inventory.getInventoryId() %>, 'Discount')">Sale</button>
+                        <%
+                                } else {
+                        %>
+                            <span>Actions Already Made</span>
+                        <%
+                                }
+                            } else {
+                        %>
+                            <span>No Action Need Now</span>
+                        <%
+                            }
+                        %>
                     </td>
                     <td>
                         <button onclick="editInventory(<%= inventory.getInventoryId() %>)">Edit</button>
                     </td>
                     <%
-                            }else{
+                        } else {
                     %>
-                    
                     <td></td>
                     <td></td>
                     <td></td>
                     <%
-                               }
+                        }
                     %>
                 </tr>
                 <%
@@ -129,6 +133,7 @@
         <%
             }
         %>
+        <!-- Button to navigate to the add inventory page -->
         <button onclick="addInventory(<%= user.getUserID() %>)">Add Inventory</button>
     </main>
     <footer>
@@ -136,20 +141,17 @@
     </footer>
    
     <script>
+        // Function to navigate to the add inventory page
         function addInventory(userId) {
-            // load the food item management page
-            window.location.href = "inventoryAdd?userId="+userId;
+            window.location.href = "inventoryAdd?userId=" + userId;
         }
-          function editInventory(inventoryId) {
-            // redirect to the InventoryUpdateServlet with the inventoryId
+
+        // Function to navigate to the edit inventory page
+        function editInventory(inventoryId) {
             window.location.href = "inventoryUpdate?inventoryId=" + inventoryId;
         }
 
-//        function updateSurplusStatus(inventoryId, status) {
-//        // redirect to the InventoryStatusServlet with the inventoryId and status
-//            window.location.href = "inventoryStatus?inventoryId=" + inventoryId + "&status=" + status;
-//        }
-        
+        // Function to update the surplus status of an inventory item
         function updateSurplusStatus(inventoryId, status) {
             $.ajax({
                 url: 'inventoryStatus',
