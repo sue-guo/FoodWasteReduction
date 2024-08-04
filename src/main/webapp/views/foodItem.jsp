@@ -3,6 +3,7 @@
     Created on : Jul 27, 2024, 5:42:11 PM
     Author     : WANG JIAYUN
 --%>
+
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
 <%@page import="org.cst8288.foodwastereduction.model.FoodItemDTO"%>
 <%@page import="java.util.List"%>
@@ -24,8 +25,10 @@
                 <li><a href="views/home.jsp">Home</a></li>
                 <li>
                     <%
+                        // Get the session attribute
                         User user = (User) session.getAttribute("user");
                         if (user != null) {
+                            // Display welcome message and logout link if user is logged in
                             out.print("<p>Welcome, " + user.getName() + "! </p>" + 
                             "<a href=\"logout\" class=\"logout\">[ Logout ]</a>");
                         }
@@ -38,7 +41,9 @@
     <main>
         <h2>Current Food Items</h2>
         <%
+            // Get the list of food items from the request attribute
             List<FoodItemDTO> foodItems = (List<FoodItemDTO>) request.getAttribute("foodItems");
+            // Check if the list is empty or null
             if (foodItems == null || foodItems.isEmpty()) {
         %>
             <p>No Food Items Now!</p>
@@ -57,6 +62,7 @@
             </thead>
             <tbody>
                 <%
+                    // Loop through each food item and create a table row
                     for (FoodItemDTO foodItem : foodItems) {
                 %>
                 <tr>
@@ -74,6 +80,7 @@
         <%
             }
         %>
+        <!-- Button to navigate to the add food item page -->
         <button onclick="window.location.href='views/addFoodItem.jsp'">Add Food Item</button>
     </main>
     <footer>
