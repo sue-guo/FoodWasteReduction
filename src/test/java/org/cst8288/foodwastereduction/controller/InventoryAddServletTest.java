@@ -1,7 +1,6 @@
 package org.cst8288.foodwastereduction.controller;
 
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +16,11 @@ import java.io.IOException;
 import java.sql.Date;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
-import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.logger.LMSLogger;
-import org.cst8288.foodwastereduction.logger.LogLevel;
-
+/**
+ * Unit tests for the InventoryAddServlet class.
+ * @author  WANG JIAYUN
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class InventoryAddServletTest {
 
@@ -45,6 +45,10 @@ public class InventoryAddServletTest {
     @Mock
     private LMSLogger logger;
 
+    /**
+     * Sets up the test environment before each test.
+     * Initializes mocks and injects them into the servlet.
+     */
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -57,6 +61,13 @@ public class InventoryAddServletTest {
         logger = mock(LMSLogger.class);
     }
 
+    /**
+     * Tests the doGet method of InventoryAddServlet.
+     * Verifies that the request is forwarded to the correct JSP page.
+     * 
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Test
     public void testDoGet() throws ServletException, IOException {
         int userId = 1;
@@ -67,6 +78,13 @@ public class InventoryAddServletTest {
         verify(dispatcher).forward(request, response);
     }
 
+    /**
+     * Tests the doPost method of InventoryAddServlet.
+     * Verifies that the inventory is added and the user is redirected correctly.
+     * 
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Test
     public void testDoPost() throws ServletException, IOException {
         int userId = 1;
@@ -78,6 +96,7 @@ public class InventoryAddServletTest {
         Date expirationDate = Date.valueOf("2024-12-31");
         Date receiveDate = Date.valueOf("2024-07-01");
 
+        // Mocking request parameters
         when(request.getParameter("userId")).thenReturn(String.valueOf(userId));
         when(request.getParameter("foodItemId")).thenReturn(String.valueOf(foodItemId));
         when(request.getParameter("batchNumber")).thenReturn(batchNumber);
@@ -87,7 +106,10 @@ public class InventoryAddServletTest {
         when(request.getParameter("expirationDate")).thenReturn(expirationDate.toString());
         when(request.getParameter("receiveDate")).thenReturn(receiveDate.toString());
 
+        // Calling the doPost method
         inventoryAddServlet.doPost(request, response);
+
+        // Verifying the interactions and behavior
         verify(response).sendRedirect(request.getContextPath() + "/inventory?userId=" + userId);
     }
 }
