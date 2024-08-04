@@ -1,3 +1,5 @@
 # Maven and Gradle build directories
 /target/
 /build/
+/nbproject/
+/src/main/java/org/cst8288/foodwastereduction/businesslayer/notificationDemo.java

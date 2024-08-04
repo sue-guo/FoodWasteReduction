@@ -21,6 +21,7 @@ public interface InventoryDAO {
     void addInventory(InventoryDTO inventory);
     
     void updateInventory(InventoryDTO inventory);
-    
+
+    List<InventoryDTO> getAllInventories();
     
 }

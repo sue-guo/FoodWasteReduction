@@ -9,6 +9,8 @@
  */
 package org.cst8288.foodwastereduction.model;
 
+import org.cst8288.foodwastereduction.constants.UserType;
+
 /**
  * Represents a user entity in the Food Waste Reduction platform.
  * This class contains information about the user such as their ID, name, email,
@@ -55,9 +57,32 @@ public class User {
      * The date and time when the user account was created.
      */
     private String createAt;
+    
+    public User(){};
+    
+    /**
+     * Constructor
+     * @param userId
+     * @param name
+     * @param email
+     * @param password
+     * @param userType
+     * @param phoneNumber
+     * @param address
+     * @param city 
+     */
+    public User(Integer userId, String name, String email, String password, UserType userType, String phoneNumber, String address, String city) {
+        this.userID = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.city = city;
+    }
     /**
      * Gets the user ID.
-     * 
      * @return the user ID.
      */
     public Integer getUserID() {

@@ -4,13 +4,13 @@
  */
 package org.cst8288.foodwastereduction.model;
 
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
+
 /**
  *
- * @author Carri
+ * @author ryany
  */
 public class FoodItemDTO {
-    
-    
     private Integer foodItemId;
     private Integer retailerId;
     private String name;
@@ -19,7 +19,21 @@ public class FoodItemDTO {
     private String brand;
     private String unit;
 
-    
+    // Default constructor
+    public FoodItemDTO() {}
+
+    // Parameterized constructor
+    public FoodItemDTO(Integer foodItemId, Integer retailerId, String name, String description, CategoryEnum category, String brand, String unit) {
+        this.foodItemId = foodItemId;
+        this.retailerId = retailerId;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.brand = brand;
+        this.unit = unit;
+    }
+
+    // Getters and Setters
     public Integer getFoodItemId() {
         return foodItemId;
     }
@@ -75,9 +89,4 @@ public class FoodItemDTO {
     public void setUnit(String unit) {
         this.unit = unit;
     }
-    
-    
-    
-    
-    
 }

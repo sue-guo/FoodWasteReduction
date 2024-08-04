@@ -4,7 +4,7 @@
     Author     : Hongxiu Guo
 --%>
 
-<%@page import="org.cst8288.foodwastereduction.model.UserType"%>
+<%@page import="org.cst8288.foodwastereduction.constants.UserType"%>
 <%@page import="org.cst8288.foodwastereduction.model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -47,6 +47,7 @@
         %>
             <button onclick="loadInventory(<%= user.getUserID() %>)">Inventory Management</button>
             <button onclick="loadFoodItem(<%= user.getUserID() %>)"> Food Item Management</button>
+            <button onclick="viewSubscriptions(<%= user.getUserID() %>)">View Subscriptions</button>
         <%
             }
          %>
@@ -54,11 +55,20 @@
         <% 
             if (user != null && user.getUserType() == UserType.CHARITABLE_ORGANIZATION) {
         %>
-            <button onclick="loadClaimFood(<%= user.getUserID() %>)">Claim Food Management</button>
-            <button onclick="loadFoodItem(<%= user.getUserID() %>)"> Food Item Management</button>
+            <button onclick="loadClaimFoodItem(<%= user.getUserID() %>)">Claim Food</button>
+            <button onclick="openSubscribe(<%= user.getUserID() %>)">Subscribe</button>
         <%
             }
          %>
+
+        <%
+            if (user != null && user.getUserType() == UserType.CONSUMER) {
+        %>
+        <button onclick="loadPurchaseFoodItem(<%= user.getUserID() %>)">Purchase Food</button>
+        <button onclick="openSubscribe(<%= user.getUserID() %>)">Subscribe</button>
+        <%
+            }
+        %>
     </main>
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>
@@ -73,10 +83,24 @@
             // load the food item management page
             window.location.href = "foodItem?userId="+userId;
         }
-        function loadClaimFood(userId) {
-            // load the food item management page
-            window.location.href = "claimFood?userId="+userId;
+
+        function loadClaimFoodItem(userId) {
+            // load the claim food item page
+            window.location.href = "charitableOrganization?userId="+userId;
         }
+
+        function loadPurchaseFoodItem(userId) {
+            // load the purchase food item page
+            window.location.href = "consumer?userId="+userId;
+        }
+
+        function openSubscribe(userId) {
+            // load the subscribe page
+            window.location.href = "subscribe?userId="+userId;
+        }
+        function viewSubscriptions(userId) {
+            window.location.href = "viewSubscriptions?userId=" + userId;
+        }        
     </script>
 </body>
 </html>

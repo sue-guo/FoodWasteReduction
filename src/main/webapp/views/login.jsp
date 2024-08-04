@@ -40,6 +40,7 @@
                 }
             %>
             <button type="submit">Log In</button>
+<!--            <a href="views/payment.jsp">Payment</a>-->
         </form>
 
         <p>Don't have an account? <a href="views/signup.jsp">Sign up here</a>.</p>

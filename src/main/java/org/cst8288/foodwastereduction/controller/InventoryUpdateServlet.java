@@ -19,7 +19,7 @@ import org.cst8288.foodwastereduction.logger.LMSLogger;
 import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
-import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 
 /**
  *
@@ -44,7 +44,7 @@ public class InventoryUpdateServlet extends HttpServlet {
         int inventoryId = Integer.parseInt(request.getParameter("inventoryId").trim());
          
         InventoryBusiness inventoryBusiness = new InventoryBusiness();
-        InventoryDTO inventory = inventoryBusiness.getInventoryById(inventoryId);
+        InventoryDTO inventory = (InventoryDTO) inventoryBusiness.getInventoryById(inventoryId);
         int retailerId = inventory.getRetailerId();
         
         FoodItemBusiness foodItemBusiness = new FoodItemBusiness();

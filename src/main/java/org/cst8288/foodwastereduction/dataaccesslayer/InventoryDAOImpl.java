@@ -13,14 +13,14 @@ import java.util.List;
 import org.cst8288.foodwastereduction.logger.LMSLogger;
 import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
-import org.cst8288.foodwastereduction.model.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 
 /**
  *
- * @author WANG JIAYUN
+ * @author WANG JIAYUN & Ryan Xu
  */
 public class InventoryDAOImpl implements InventoryDAO {
-    
+
      
    
     @Override
@@ -63,13 +63,8 @@ public class InventoryDAOImpl implements InventoryDAO {
 
         return inventories;
     }
-
-    
-    
-    
-    
-    
-     @Override
+	
+    @Override
      public InventoryDTO getInventoryById(int inventoryID) {
         InventoryDTO inventory = null;
         String sql = "SELECT * FROM Inventory WHERE InventoryID = ?";
@@ -106,14 +101,9 @@ public class InventoryDAOImpl implements InventoryDAO {
         } 
         return inventory;
     }
-    
-     
-     
-     
-     
-     
-      @Override
-      public void addInventory(InventoryDTO inventory) {
+
+    @Override
+    public void addInventory(InventoryDTO inventory) {
         String sql = "INSERT INTO Inventory (RetailerID, FoodItemID, BatchNumber, Quantity, RegularPrice, DiscountRate, ExpirationDate, ReceiveDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -135,10 +125,9 @@ public class InventoryDAOImpl implements InventoryDAO {
               LMSLogger.getInstance().saveLogInformation("SQLException occur at addInventory method: "+ex.getMessage(), InventoryDAOImpl.class.getName() , LogLevel.ERROR);
         } 
     }
-      
-      
-       @Override
-       public void updateInventory(InventoryDTO inventory) {
+
+    @Override
+    public void updateInventory(InventoryDTO inventory) {
         String sql = "UPDATE Inventory SET RetailerID = ?, FoodItemID = ?, BatchNumber = ?, Quantity = ?, RegularPrice = ?, DiscountRate = ?, ExpirationDate = ?, ReceiveDate = ?, IsSurplus = ?, SurplusStatus = ?, IsActive = ? WHERE InventoryID = ?";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -166,5 +155,60 @@ public class InventoryDAOImpl implements InventoryDAO {
         } 
     }
 
+
+    private InventoryDTO mapResultSetToInventory(ResultSet resultSet) throws SQLException {
+        InventoryDTO inventory = new InventoryDTO();
+        inventory.setInventoryId(resultSet.getInt("InventoryId"));
+        inventory.setRetailerId(resultSet.getInt("RetailerId"));
+        inventory.setFoodItemId(resultSet.getInt("FoodItemId"));
+        inventory.setBatchNumber(resultSet.getString("BatchNumber"));
+        inventory.setQuantity(resultSet.getInt("Quantity"));
+        inventory.setRegularPrice(resultSet.getDouble("RegularPrice"));
+        inventory.setDiscountRate(resultSet.getDouble("DiscountRate"));
+        inventory.setExpirationDate(resultSet.getDate("ExpirationDate"));
+        inventory.setReceiveDate(resultSet.getDate("ReceiveDate"));
+        inventory.setIsSurplus(resultSet.getBoolean("IsSurplus"));
+        inventory.setSurplusStatus(SurplusStatusEnum.valueOf(resultSet.getString("SurplusStatus").toUpperCase()));
+        inventory.setLastUpdated(resultSet.getTimestamp("LastUpdated"));
+        inventory.setIsActive(resultSet.getBoolean("IsActive"));
+        return inventory;
+    }
+
+    @Override
+    public List<InventoryDTO> getAllInventories() {
+
+        List<InventoryDTO> inventories = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DataSource.getConnection();
+            String sql = "SELECT * FROM Inventory";
+            pstmt = con.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                InventoryDTO inventory = new InventoryDTO();
+                inventory.setInventoryId(rs.getInt("InventoryID"));
+                inventory.setRetailerId(rs.getInt("RetailerID"));
+                inventory.setFoodItemId(rs.getInt("FoodItemID"));
+                inventory.setBatchNumber(rs.getString("BatchNumber"));
+                inventory.setQuantity(rs.getInt("Quantity"));
+                inventory.setRegularPrice(rs.getDouble("RegularPrice"));
+                inventory.setDiscountRate(rs.getDouble("DiscountRate"));
+                inventory.setExpirationDate(rs.getDate("ExpirationDate"));
+                inventory.setReceiveDate(rs.getDate("ReceiveDate"));
+                inventory.setIsSurplus(rs.getBoolean("IsSurplus"));
+                inventory.setSurplusStatus(SurplusStatusEnum.valueOf(rs.getString("SurplusStatus")));
+                inventory.setLastUpdated(rs.getTimestamp("LastUpdated"));
+                inventory.setIsActive(rs.getBoolean("IsActive"));
+                inventories.add(inventory);
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        return inventories;
+    }
 
 }

@@ -9,12 +9,15 @@ import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 /**
  *
- * @author WANG JIAYUN
+ * @author WANG JIAYUN & Ryan Xu
  */
 public interface FoodItemDAO {
     
     void addFoodItem(FoodItemDTO foodItem);
- 
+
     List<FoodItemDTO> getFoodItemsByRetailerId(int retailerId);
-    
+    List<FoodItemDTO> getAllFoodItems();
+    FoodItemDTO getFoodItemById(int foodItemId);
+    void updateFoodItem(FoodItemDTO foodItem);
+    void deleteFoodItem(Integer foodItemId);
 }

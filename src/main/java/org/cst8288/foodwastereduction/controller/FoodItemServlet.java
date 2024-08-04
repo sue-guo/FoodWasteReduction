@@ -16,9 +16,11 @@ import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import java.util.ArrayList;
 import java.util.List;
+import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.logger.LMSLogger;
 import org.cst8288.foodwastereduction.logger.LogLevel;
-import org.cst8288.foodwastereduction.model.CategoryEnum;
+
+
 
 /**
  *

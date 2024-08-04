@@ -28,8 +28,9 @@ import org.cst8288.foodwastereduction.logger.LogLevel;
  * @author Hongxiu Guo
  */
 public class DataSource {
-    
+
     private static Connection connection = null;
+    
     /**
      * Private constructor to prevent instantiation
      */
@@ -54,7 +55,7 @@ public class DataSource {
      */
     public static Connection getConnection() {
         try {
-            if (connection == null) {
+            if (connection == null || connection.isClosed()) {
                 // get connection information 
                 String[] connectionInfo = openPropsFile();
                 // connect to database
@@ -93,6 +94,7 @@ public class DataSource {
         String username = props.getProperty("jdbc.username");//CST8288Group
         String password = props.getProperty("jdbc.password"); // 12345678
        
+//        System.out.printf("DataSource:\nurl:%s\nusername:%s\npassword:%s\n", connectionString, username, password);
 
         String[] info = new String[3];
         info[0] = connectionString;

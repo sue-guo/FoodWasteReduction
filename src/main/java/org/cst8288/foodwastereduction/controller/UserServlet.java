@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cst8288.foodwastereduction.businesslayer.UserBusiness;
 import org.cst8288.foodwastereduction.model.User;
-import org.cst8288.foodwastereduction.model.UserType;
+import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.utility.PasswordUtil;
 
 /**

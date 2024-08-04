@@ -1,0 +1,42 @@
+/*
+    Stylesheet for consumer.jsp and charitableOrganization.jsp
+    Author: Yao Yi
+*/
+@import url('common.css');
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    width: 100px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#order_history {
+    width: 200px;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
