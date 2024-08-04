@@ -4,6 +4,8 @@ import java.util.NoSuchElementException;
 import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAO;
 import org.cst8288.foodwastereduction.dataaccesslayer.FoodItemDAOImpl;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 /**
@@ -37,9 +39,13 @@ public class FoodItemServiceImpl implements FoodItemService {
      */
     @Override
     public CategoryEnum getFoodCategory(Integer foodItemId) throws NoSuchElementException {
+        String logMessage;
         FoodItemDTO foodItem = null;
         foodItem = foodItemDAO.getFoodItemById(foodItemId);
         if (foodItem == null) {
+            logMessage = "Food item not found for id: " + foodItemId;
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
+
             throw new NoSuchElementException("Food item not found for id: " + foodItemId);
         }
         return foodItem.getCategory();

@@ -2,6 +2,8 @@ package org.cst8288.foodwastereduction.notification;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 
 /**
  * File: EmailServiceImpl.java
@@ -35,6 +37,7 @@ public class EmailServiceImpl implements EmailService {
      * @param isTestMode 
      */
     public EmailServiceImpl(EmailConfig config, boolean isTestMode) {
+        String logMessage;
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -44,12 +47,20 @@ public class EmailServiceImpl implements EmailService {
         this.from = config.getUsername();
         this.isTestMode = isTestMode;
 
-        this.session = Session.getInstance(props, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(config.getUsername(), config.getPassword());
-            }
-        });
+        try {
+            this.session = Session.getInstance(props, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(config.getUsername(), config.getPassword());
+                }
+            });
+            logMessage = "Email session created successfully";
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
+        } catch (Exception e) {
+            logMessage = "Error creating email session: " + e.getMessage();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+            throw new RuntimeException("Failed to initialize email service", e);
+        }
     }
 
     /**
@@ -69,18 +80,30 @@ public class EmailServiceImpl implements EmailService {
      */
     @Override
     public String sendEmail(String to, String subject, String content) {
+        String logMessage;
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(isTestMode ? from : to));
             message.setSubject(subject);
             message.setText(content);
-
+            String actualRecipient = isTestMode ? from : to;
             Transport.send(message);
+			logMessage = "Email sent successfully" + 
+			 " | From: " + from + 
+			 " | To: " + actualRecipient + 
+			 " | Subject: " + subject;
+			LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
+          
             return from;
         } catch (MessagingException e) {
-            e.printStackTrace();
-            // Logger??
+            logMessage = "Error sending email" + 
+                         " | From: " + from + 
+                         " | To: " + (isTestMode ? from : to) + 
+                         " | Subject: " + subject + 
+                         " | Error: " + e.getMessage();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+
             return "Error";
         }
     }

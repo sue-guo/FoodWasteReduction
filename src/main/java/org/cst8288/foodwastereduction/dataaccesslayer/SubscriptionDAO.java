@@ -1,15 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package org.cst8288.foodwastereduction.dataaccesslayer;
 
 import java.util.List;
 import org.cst8288.foodwastereduction.model.Subscription;
 
 /**
- * DAO of Subscription
- * @author ryany
+ * File: SubscriptionDAO.java
+ * @author Ryan Xu
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-31
+ * Modified: 2024-08-03 
+ * Description: DAO of Subscription.
  */
 public interface SubscriptionDAO {
     void addSubscription(Subscription subscription);

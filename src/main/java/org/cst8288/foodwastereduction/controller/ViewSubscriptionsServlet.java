@@ -12,6 +12,8 @@ import org.cst8288.foodwastereduction.constants.UserType;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAOImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
@@ -59,12 +61,15 @@ public class ViewSubscriptionsServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
+        String logMessage;
         Integer userId = Integer.valueOf(request.getParameter("userId"));
         User user = userDao.getUserById(userId);
 
         if (user == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+            logMessage = "User not found for userId: " + userId;
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, logMessage);
             return;
         }
         

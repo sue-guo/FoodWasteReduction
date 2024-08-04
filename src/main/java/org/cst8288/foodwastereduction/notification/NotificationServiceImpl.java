@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.ServletContext;
 import org.cst8288.foodwastereduction.dataaccesslayer.NotificationDAO;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.Notification;
 
 /**
@@ -22,10 +24,10 @@ import org.cst8288.foodwastereduction.model.Notification;
  * Description: Implementation of interface NotificationService
  */
 public class NotificationServiceImpl implements NotificationService {
-    private NotificationDAO notificationDAO;
+    private final NotificationDAO notificationDAO;
     private Notification currentNotification;
-    private EmailService emailService;
-    private boolean isTestMode;
+    private final EmailService emailService;
+    private final boolean isTestMode;
     private ServletContext servletContext;
     
     /**
@@ -81,17 +83,21 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public void sendEmail(Integer userId, Integer inventoryId, String email, String subject, String content) {
+        String logMessage;
         initializeNotification(userId, inventoryId, "SurplusAlert");
         try {
             String from = emailService.sendEmail(email, subject, content);
 //            logTxtNotification(from, email, subject, content);
             saveNotification();
             if (isTestMode) {
-                System.out.println("Test mode: Email sent to test account. Original recipient: " + email);
+                logMessage = "Test mode: Email sent to test account. Original recipient: " + email;
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
+
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            // logger?
+            logMessage = "Error sending email | UserId: " + userId + " | InventoryId: " + inventoryId + 
+                         " | Recipient: " + email + " | Error: " + e.getMessage();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
         }
     }
 
@@ -117,11 +123,25 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public void logNotification(Integer userId, Integer inventoryId, String notificationType) {
-        if (!notificationType.equals("SurplusAlert") && !notificationType.equals("Other")) {
-            throw new IllegalArgumentException("Invalid notification type");
+        String logMessage;
+        try {
+            if (!notificationType.equals("SurplusAlert") && !notificationType.equals("Other")) {
+                logMessage = "Invalid notification type: " + notificationType;
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+                throw new IllegalArgumentException("Invalid notification type");
+            }
+            initializeNotification(userId, inventoryId, notificationType);
+            saveNotification();
+        
+        }catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            logMessage = "Error logging notification | UserId: " + userId + " | InventoryId: " + inventoryId + 
+                         " | NotificationType: " + notificationType + " | Error: " + e.getMessage();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+            throw new RuntimeException("Failed to log notification", e);
         }
-        initializeNotification(userId, inventoryId, notificationType);
-        saveNotification();
+
     }
 
     /**
@@ -161,6 +181,7 @@ public class NotificationServiceImpl implements NotificationService {
      * @param content 
      */
     private void logTxtNotification(String from, String to, String subject, String content) {
+        String logMessage;
         String logFilePath = servletContext.getRealPath("/WEB-INF/logs/notificationLog.txt");
         File logFile = new File(logFilePath);
         logFile.getParentFile().mkdirs(); 
@@ -170,8 +191,12 @@ public class NotificationServiceImpl implements NotificationService {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             pw.printf("Date: %s\nFrom: %s\nTo: %s\nSubject: %s\nContent: %s\n\n", 
                       timestamp, from, to, subject, content);
+            
+            logMessage = "Successfully logged notification to file";
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
         } catch (IOException e) {
-            e.printStackTrace();
+            logMessage = "Error logging notification to file: " + e.getMessage();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
         }
     }
 }

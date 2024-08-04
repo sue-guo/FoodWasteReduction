@@ -6,6 +6,8 @@ import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 
 /**
  * File: NotificationMessageServiceImpl.java
@@ -64,17 +66,50 @@ public class NotificationMessageServiceImpl implements NotificationMessageServic
      * @return 
      */
     private String createMessage(InventoryDTO item, UserType userType){
+        String logMessage;
         FoodItemDTO foodItem;
         User retailer;
-        foodItem = foodItemDAO.getFoodItemById(item.getFoodItemId());
-        retailer = userDao.getUserById(item.getRetailerId());
-        if (userType.equals(UserType.CONSUMER)){
-            return "Discount available for " + foodItem.getName() + " at retailer " + retailer.getName() +
-                    ": Regular price: $" + item.getRegularPrice()  + ", Discount: " + item.getDiscountRate();
-        } else if (userType.equals(UserType.CHARITABLE_ORGANIZATION)){
-            return "Donation available for " + foodItem.getName() + " at retailer " + retailer.getName();
-        } else {
-            return "Unknown user type";
+
+        try {
+            foodItem = foodItemDAO.getFoodItemById(item.getFoodItemId());
+            if (foodItem == null) {
+                logMessage = "Food item not found for FoodItemID: " + item.getFoodItemId();
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+                return "Error: Food item not found";
+            }
+
+            retailer = userDao.getUserById(item.getRetailerId());
+            if (retailer == null) {
+                logMessage = "Retailer not found for RetailerID: " + item.getRetailerId();
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+                return "Error: Retailer not found";
+            }
+
+            String message;
+            switch (userType) {
+                case CONSUMER:
+                    message = "Discount available for " + foodItem.getName() + " at retailer " + retailer.getName() +
+                            ": Regular price: $" + item.getRegularPrice() + ", Discount: " + item.getDiscountRate();
+                    break;
+                case CHARITABLE_ORGANIZATION:
+                    message = "Donation available for " + foodItem.getName() + " at retailer " + retailer.getName();
+                    break;
+                default:
+                    logMessage = "Unknown user type: " + userType;
+                    LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
+                    message = "Unknown user type";
+                    break;
+            }
+
+            logMessage = "Message created successfully for InventoryID: " + item.getInventoryId();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+
+            return message;
+        } catch (Exception e) {
+            logMessage = "Error creating message for InventoryID: " + item.getInventoryId() + 
+                         " | Error: " + e.getMessage();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+            return "Error creating message";
         }
     }
 }
