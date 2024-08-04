@@ -58,6 +58,15 @@ public class AuthFilter implements Filter {
          // Get the current session if it exists; otherwise, return null.
         HttpSession session = httpRequest.getSession(false);
         
+        // Check if the request is for a static resource
+        String requestURI = httpRequest.getRequestURI();
+        if (requestURI.endsWith(".css") || requestURI.endsWith(".js") || 
+            requestURI.endsWith(".jpg") || requestURI.endsWith(".png") || 
+            requestURI.endsWith(".gif")) {
+            chain.doFilter(request, response);
+            return;
+        }
+        
         // Define URIs to be excluded from authentication checks
         String loginURI = httpRequest.getContextPath() + "/views/login.jsp";
         String signupURI = httpRequest.getContextPath() + "/views/signup.jsp";
