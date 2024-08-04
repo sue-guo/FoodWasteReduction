@@ -9,6 +9,8 @@
  */
 package org.cst8288.foodwastereduction.model;
 
+import org.cst8288.foodwastereduction.constants.PaymentType;
+
 /**
  * Represents a payment record in the system.
  * This class encapsulates the details of a payment including the payment ID, transaction ID, payment type, amount,

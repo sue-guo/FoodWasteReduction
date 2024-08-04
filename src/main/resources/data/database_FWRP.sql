@@ -34,7 +34,6 @@ UPDATE Users SET UserType = 'Charitable_Organization' WHERE UserType = 'Charitab
 ALTER TABLE Users MODIFY UserType ENUM('Retailer', 'Consumer', 'Charitable_Organization') NOT NULL;
 
 
-
 CREATE TABLE FoodItems (
     FoodItemID INT AUTO_INCREMENT PRIMARY KEY,
     RetailerID INT NOT NULL,
@@ -77,6 +76,10 @@ CREATE TABLE Transactions (
     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+-- If alter existed Transaction table
+-- ALTER TABLE Transactions
+-- ADD COLUMN PayStatus ENUM('unpaid', 'paid') DEFAULT 'unpaid';
+
 CREATE TABLE Subscriptions (
     SubscriptionID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
@@ -108,6 +111,8 @@ CREATE TABLE Payments (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (TransactionID) REFERENCES Transactions(TransactionID) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+
 -- ---------Test data----
 -- Test data for Users
 -- INSERT INTO Users (Name, Email, PasswordHash, UserType, PhoneNumber, Address, City) VALUES

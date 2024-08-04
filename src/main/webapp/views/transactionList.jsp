@@ -1,3 +1,4 @@
+<%@page import="org.cst8288.foodwastereduction.constants.TransactionType"%>
 <%@ page import="java.util.List" %>
 <%@ page import="org.cst8288.foodwastereduction.model.*" %>
 <%@ page import="java.text.DecimalFormat" %>

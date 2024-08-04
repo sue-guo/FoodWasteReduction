@@ -7,7 +7,7 @@
  * Description: This enum representing the various types of payment methods.
  *
  */
-package org.cst8288.foodwastereduction.model;
+package org.cst8288.foodwastereduction.constants;
 
 /**
  * Enum representing the various types of payment methods.
