@@ -202,41 +202,6 @@ public class FoodItemDAOImpl implements FoodItemDAO {
     }
 
     /**
-     * Deletes a food item from the database.
-     * 
-     * @param foodItemID the ID of the food item to be deleted
-     */
-    @Override
-    public void deleteFoodItem(Integer foodItemID) {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            // Get a connection to the database
-            con = DataSource.getConnection();
-            // SQL query to delete a food item by its ID
-            String sql = "DELETE FROM FoodItems WHERE FoodItemID = ?";
-            pstmt = con.prepareStatement(sql);
-            // Set the food item ID parameter
-            pstmt.setInt(1, foodItemID);
-            // Execute the update
-            pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            // Log any SQL exceptions that occur
-            LMSLogger.getInstance().saveLogInformation("SQLException occur at deleteFoodItem method: " + ex.getMessage(), FoodItemDAOImpl.class.getName(), LogLevel.ERROR);
-        } finally {
-            // Close the resources
-            try {
-                if (pstmt != null) pstmt.close();
-                if (con != null) con.close();
-            } catch (SQLException ex) {
-                // Log any SQL exceptions that occur during resource closing
-                LMSLogger.getInstance().saveLogInformation("SQLException occur at deleteFoodItem method during closing resources: " + ex.getMessage(), FoodItemDAOImpl.class.getName(), LogLevel.ERROR);
-            }
-        }
-    }
-
-    /**
      * Maps a ResultSet row to a FoodItemDTO object.
      * 
      * @param resultSet the ResultSet object
@@ -246,14 +211,21 @@ public class FoodItemDAOImpl implements FoodItemDAO {
     private FoodItemDTO mapResultSetToFoodItem(ResultSet resultSet) throws SQLException {
         // Create a new FoodItemDTO object
         FoodItemDTO foodItem = new FoodItemDTO();
-        // Set the properties of the FoodItemDTO object from the ResultSet
-        foodItem.setFoodItemId(resultSet.getInt("FoodItemID"));
-        foodItem.setRetailerId(resultSet.getInt("RetailerID"));
-        foodItem.setName(resultSet.getString("Name"));
-        foodItem.setDescription(resultSet.getString("Description"));
-        foodItem.setCategory(CategoryEnum.valueOf(resultSet.getString("Category")));
-        foodItem.setBrand(resultSet.getString("Brand"));
-        foodItem.setUnit(resultSet.getString("Unit"));
+        try{
+            // Set the properties of the FoodItemDTO object from the ResultSet
+            foodItem.setFoodItemId(resultSet.getInt("FoodItemID"));
+            foodItem.setRetailerId(resultSet.getInt("RetailerID"));
+            foodItem.setName(resultSet.getString("Name"));
+            foodItem.setDescription(resultSet.getString("Description"));
+            foodItem.setCategory(CategoryEnum.valueOf(resultSet.getString("Category")));
+            foodItem.setBrand(resultSet.getString("Brand"));
+            foodItem.setUnit(resultSet.getString("Unit"));
+            
+            LMSLogger.getInstance().saveLogInformation("Successfully mapped ResultSet to FoodItemDTO: ", FoodItemDAOImpl.class.getName(), LogLevel.INFO);
+        } catch (SQLException e) {
+            LMSLogger.getInstance().saveLogInformation("Error mapping ResultSet to FoodItemDTO: ", FoodItemDAOImpl.class.getName(), LogLevel.ERROR);
+        throw e;
+    }
         // Return the FoodItemDTO object
         return foodItem;
     }

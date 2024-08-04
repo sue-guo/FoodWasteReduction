@@ -176,12 +176,18 @@
         // Handle retailer selection change
         $('#retailerId').change(function() {
             var retailerId = $(this).val();
+            clearMessages();
             if (retailerId) {
                 loadSubscription(retailerId);
             } else {
                 $('#subscription-details').hide();
             }
         });
+        
+        // Function to clear messages
+        function clearMessages() {
+            $('#message-container').empty();
+        }
 
         // Load subscription details based on selected retailer
         function loadSubscription(retailerId) {
@@ -311,7 +317,7 @@
                 type: 'POST',
                 data: formData,
                 success: function(response) {
-                    $('#message-container').html('<div class="alert alert-success">Subscription updated successfully.</div>');
+                    $('#message-container').html('<div class="alert alert-success">Subscription updated successfully for ' + retailerName + '.</div>');
                     $('#submit-btn').prop('disabled', true);
                     initialFormState = getFormState(); // Reset the initial state after a successful submission
                 },

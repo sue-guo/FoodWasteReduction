@@ -29,6 +29,8 @@ import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.constants.UserType;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.notification.FoodItemServiceImpl;
 import org.cst8288.foodwastereduction.notification.ObserverCharitableOrganization;
 
@@ -161,39 +163,55 @@ public class NotificationServlet extends HttpServlet {
      */
     public List<String> processNotification(int inventoryId, SurplusStatusEnum newStatus) throws Exception {
         List<String> notifiedUsers = new ArrayList<>();
+        String LogMessage;
         
         if (foodItemService == null) {
+            LogMessage = "Service initialization error";
+            LMSLogger.getInstance().saveLogInformation(LogMessage, this.getClass().getName(), LogLevel.ERROR);
             throw new ServletException("FoodItemService is not initialized");
         }
         
         if (subscriptionService == null) {
-                throw new ServletException("SubscriptionService is not initialized");
+            LogMessage = "SubscriptionService is not initialized";
+            LMSLogger.getInstance().saveLogInformation(LogMessage, this.getClass().getName(), LogLevel.ERROR);
+            throw new ServletException("SubscriptionService is not initialized");
         }
 		
         InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
         if (inventory != null) {
+            LogMessage = "Inventory found for inventoryId: " + inventoryId;
+            LMSLogger.getInstance().saveLogInformation(LogMessage, this.getClass().getName(), LogLevel.INFO);
+
             SubjectInventory subject = new SubjectInventory(inventory);
             List<User> subscribers = subscriptionService.getUserByRetailerId(inventory.getRetailerId());           
-//            System.out.println("Found " + subscribers.size() + " subscribers for retailer: " + inventory.getRetailerId());
             
+            int consumerCount = 0, charityCount = 0;
             for (User subscriber : subscribers) {
                 Observer observer;
                 if (subscriber.getUserType() == UserType.CONSUMER && newStatus == SurplusStatusEnum.Discount) {
                     observer = new ObserverConsumer(notificationService, messageService, subscriptionService, foodItemService, subscriber, notifiedUsers);
-                    subject.registerObserver(observer);
+                    subject.registerObserver(observer);    
+                    consumerCount++;  
                 } else if (subscriber.getUserType() == UserType.CHARITABLE_ORGANIZATION && newStatus == SurplusStatusEnum.Donation) {
                     observer = new ObserverCharitableOrganization(notificationService, messageService, subscriptionService, foodItemService, subscriber, notifiedUsers);
                     subject.registerObserver(observer);
-                }
+                    charityCount++;
+                 }
             }
             subject.setSurplusStatus(newStatus);
+            
+            LogMessage = "Notification processed. Consumers: " + consumerCount + ", Charities: " + charityCount + ", Total notified: " + notifiedUsers.size();
+            LMSLogger.getInstance().saveLogInformation(LogMessage, this.getClass().getName(), LogLevel.INFO);
             // Update the database completed in InventoryStatusServLet, no need to do here again
 //            inventory.setSurplusStatus(newStatus);
 //            inventoryDAO.updateInventory(inventory);
         } else {
+            LMSLogger.getInstance().saveLogInformation("Inventory not found for inventoryId: " + inventoryId, this.getClass().getName(), LogLevel.ERROR);
             throw new Exception("Inventory not found.");
         }
         
+        LogMessage = "Completed processNotification. Notified users count: " + notifiedUsers.size();
+        LMSLogger.getInstance().saveLogInformation(LogMessage, this.getClass().getName(), LogLevel.INFO);
         return notifiedUsers;
     }  
 }

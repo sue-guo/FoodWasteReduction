@@ -22,6 +22,8 @@ import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.constants.UserType;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.notification.SubscriptionService;
 import org.cst8288.foodwastereduction.notification.SubscriptionServiceImpl;
 
@@ -100,16 +102,23 @@ public class SubscribeServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String logMessage;
         int userId = Integer.parseInt(request.getParameter("userId"));
         User user = userDao.getUserById(userId);
 
         if (user == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+            logMessage = "User not found.";
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, logMessage);
             return;
         }
 
         if (user.getUserType() != UserType.CONSUMER && user.getUserType() != UserType.CHARITABLE_ORGANIZATION) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+            logMessage = "Access denied for user: " + userId + ", UserType: " + user.getUserType();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
+
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, logMessage);
             return;
         }
 
@@ -157,13 +166,22 @@ public class SubscribeServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String logMessage;
         int userId = Integer.parseInt(request.getParameter("userId"));
         int retailerId = Integer.parseInt(request.getParameter("retailerId"));
         String communicationPrefString = request.getParameter("communicationPreference");
         String[] selectedFoodPreferences = request.getParameterValues("foodPreferences");
         boolean noFoodPreference = Boolean.parseBoolean(request.getParameter("noFoodPreference"));
 
-        CommunicationPreference communicationPreference = CommunicationPreference.valueOf(communicationPrefString);
+        CommunicationPreference communicationPreference;
+        try {
+            communicationPreference = CommunicationPreference.valueOf(communicationPrefString);
+        } catch (IllegalArgumentException e) {
+            logMessage = "Invalid communication preference: " + communicationPrefString;
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid communication preference");
+            return;
+        }
         
         Set<String> foodPreferences = new HashSet<>();
         if (selectedFoodPreferences != null && !noFoodPreference) {
@@ -171,7 +189,8 @@ public class SubscribeServlet extends HttpServlet {
                 try {
                     foodPreferences.add(CategoryEnum.valueOf(pref).toString());
                 } catch (IllegalArgumentException e) {
-//                logger?
+                    logMessage = "Invalid food preference: " + pref;
+                    LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
                 }
             }
         }
@@ -179,12 +198,17 @@ public class SubscribeServlet extends HttpServlet {
         try {
             if (noFoodPreference) {
                 subscriptionService.removeSubscription(userId, retailerId);
+                logMessage = "Removed subscription for userId: " + userId + ", retailerId: " + retailerId;
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
             } else {
                 subscriptionService.updateUserSubscriptions(userId, retailerId, communicationPreference, foodPreferences);
             }
             request.getSession(false).setAttribute("successMessage", "Subscription updated successfully.");
             response.sendRedirect(request.getContextPath() + "/subscribe?userId=" + userId);
         } catch (Exception e) {
+            logMessage = "Error updating subscriptions: " + e.getMessage();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
+
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating subscriptions: " + e.getMessage());
         }
     }

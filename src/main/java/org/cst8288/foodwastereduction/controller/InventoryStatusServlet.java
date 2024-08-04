@@ -16,32 +16,26 @@ import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 
 
 /**
- *
- * @author WANG JIAYUN and Ryan Xu
+ * File: InventoryStatusServlet.java
+ * @author WANG JIAYUN & Xu Ryan
+ * Course: CST8288
+ * Assignment: Final project (Food Waste Reduction)
+ * Created: 2024-07-31
+ * Modified: 2024-08-03 
+ * Description: This servlet is used to respond to the Donation / Sale buttons in Inventory page.
+ * Two events will triggered by the buttons: Inventory update and Notification
+ * Inventory part: Wang, Notification part: Xu
  */
 public class InventoryStatusServlet extends HttpServlet {
     private InventoryDAO inventoryDAO;
     private NotificationServlet notificationServlet;
-//    private NotificationService notificationService;
-//    private FoodItemService foodItemService;
     private Gson gson = new Gson();
 
     @Override
     public void init() throws ServletException {
         super.init();
-        inventoryDAO = new InventoryDAOImpl();
-        notificationServlet = new NotificationServlet();
-//        foodItemService = new FoodItemServiceImpl();
-//        notificationService = (NotificationService) servletContext.getAttribute("notificationService");
-//        
-//        if (notificationService == null) {
-//            NotificationDAO notificationDAO = new NotificationDAOImpl();
-//            boolean isTestMode = true; 
-//            EmailConfig emailConfig = EmailConfig.getTestConfig();
-//            
-//            notificationService = new NotificationServiceImpl(notificationDAO, isTestMode, emailConfig, servletContext);
-//            servletContext.setAttribute("notificationService", notificationService);
-//        }
+        inventoryDAO = new InventoryDAOImpl();   // Inventory part
+        notificationServlet = new NotificationServlet(); // Notification part
     }    
   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -77,8 +71,12 @@ public class InventoryStatusServlet extends HttpServlet {
                 // Call notificationServlet to deal with notification
                 List<String> notifiedUsers = notificationServlet.processNotification(inventoryId, status);
                 String userTypeNotified = (status == SurplusStatusEnum.Discount) ? "CONSUMER" : "CHARITABLE_ORGANIZATION";
+                
+                // If only update inventory, redirect is enough
+                // But for Notification part, the notifiedUsers List need to pass by JSON
+                // So comment redirect instead of JSON
                 sendSuccessResponse(response, notifiedUsers, userTypeNotified);
-                // Redirect back to the inventory page
+                // Redirect back to the inventory page, or by JSON, because need NotifiedUsers
 //                response.sendRedirect(request.getContextPath() + "/inventory?userId=" + inventory.getRetailerId());
             } else {
                 sendErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, "Inventory not found.");

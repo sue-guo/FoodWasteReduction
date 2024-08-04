@@ -50,10 +50,4 @@ public interface FoodItemDAO {
      */
     void updateFoodItem(FoodItemDTO foodItem);
 
-    /**
-     * Deletes a food item from the database.
-     * 
-     * @param foodItemId the ID of the food item to be deleted
-     */
-    void deleteFoodItem(Integer foodItemId);
 }
