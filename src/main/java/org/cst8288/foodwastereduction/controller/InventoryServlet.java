@@ -17,6 +17,8 @@ import java.util.Calendar;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 
@@ -39,7 +41,8 @@ public class InventoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-     
+       
+        try {
    
        int userId = Integer.parseInt(request.getParameter("userId").trim());
        InventoryBusiness inventoryBusiness = new InventoryBusiness();
@@ -84,11 +87,15 @@ public class InventoryServlet extends HttpServlet {
        List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
        request.setAttribute("foodItems", foodItems);
        
-   
+       LMSLogger.getInstance().saveLogInformation("Fetched inventories and food items for userId=" + userId, InventoryServlet.class.getName(), LogLevel.INFO);
+         
        RequestDispatcher dispatcher = request.getRequestDispatcher("views/inventory.jsp");
        dispatcher.forward(request, response);
         
-       
+        } catch (Exception ex) {
+            LMSLogger.getInstance().saveLogInformation("Exception in InventoryServlet doGet: " + ex.getMessage(), InventoryServlet.class.getName(), LogLevel.ERROR);
+            throw new ServletException(ex);
+        }
     }
 
     

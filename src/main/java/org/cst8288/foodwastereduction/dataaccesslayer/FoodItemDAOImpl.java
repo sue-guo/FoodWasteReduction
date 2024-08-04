@@ -10,9 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.cst8288.foodwastereduction.constants.CategoryEnum;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 
 /**
@@ -21,7 +21,6 @@ import org.cst8288.foodwastereduction.model.FoodItemDTO;
  */
 public class FoodItemDAOImpl implements FoodItemDAO {
     
-    private static final Logger LOGGER = Logger.getLogger(FoodItemDAOImpl.class.getName());
 
     @Override
     public void addFoodItem(FoodItemDTO foodItem) {
@@ -38,8 +37,10 @@ public class FoodItemDAOImpl implements FoodItemDAO {
             pstmt.setString(5, foodItem.getBrand());
             pstmt.setString(6, foodItem.getUnit());
             pstmt.executeUpdate();
+            
+            LMSLogger.getInstance().saveLogInformation("Insert a food item into database successfully!", FoodItemDAOImpl.class.getName() , LogLevel.INFO);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            LMSLogger.getInstance().saveLogInformation("SQLException occur at addFoodItem method: "+ex.getMessage(), FoodItemDAOImpl.class.getName() , LogLevel.ERROR);
         } 
     }
     
@@ -60,9 +61,11 @@ public class FoodItemDAOImpl implements FoodItemDAO {
                 foodItems.add(mapResultSetToFoodItem(rs));
             }
  
+            LMSLogger.getInstance().saveLogInformation("Get food items successfully by retailerId = "+retailerId, FoodItemDAOImpl.class.getName() , LogLevel.INFO);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            LMSLogger.getInstance().saveLogInformation("SQLException occur at getFoodItemsByRetailerId method: "+ex.getMessage(), FoodItemDAOImpl.class.getName() , LogLevel.ERROR);
         } 
+
         return foodItems;
     }
 

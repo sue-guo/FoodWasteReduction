@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 
@@ -20,8 +20,7 @@ import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
  * @author WANG JIAYUN & Ryan Xu
  */
 public class InventoryDAOImpl implements InventoryDAO {
-	
-    private static final Logger LOGGER = Logger.getLogger(InventoryDAOImpl.class.getName());
+
      
    
     @Override
@@ -56,8 +55,10 @@ public class InventoryDAOImpl implements InventoryDAO {
                 inventory.setIsActive(rs.getBoolean("IsActive"));
                 inventories.add(inventory);
             }
+            
+               LMSLogger.getInstance().saveLogInformation("Get inventory successfully by retailerId = "+retailerId, InventoryDAOImpl.class.getName() , LogLevel.INFO);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+              LMSLogger.getInstance().saveLogInformation("SQLException occur at getInventoriesByRetailerId method: "+ex.getMessage(), InventoryDAOImpl.class.getName() , LogLevel.ERROR);
         } 
 
         return inventories;
@@ -93,8 +94,10 @@ public class InventoryDAOImpl implements InventoryDAO {
                 inventory.setLastUpdated(rs.getTimestamp("LastUpdated"));
                 inventory.setIsActive(rs.getBoolean("IsActive"));
             }
+            
+                LMSLogger.getInstance().saveLogInformation("Get inventory successfully by inventoryId = "+inventoryID, InventoryDAOImpl.class.getName() , LogLevel.INFO);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+              LMSLogger.getInstance().saveLogInformation("SQLException occur at getInventoryById method: "+ex.getMessage(), InventoryDAOImpl.class.getName() , LogLevel.ERROR);
         } 
         return inventory;
     }
@@ -116,8 +119,10 @@ public class InventoryDAOImpl implements InventoryDAO {
             pstmt.setDate(7, inventory.getExpirationDate());
             pstmt.setDate(8, inventory.getReceiveDate());
             pstmt.executeUpdate();
+            
+            LMSLogger.getInstance().saveLogInformation("Insert an inventory into database successfully!", InventoryDAOImpl.class.getName() , LogLevel.INFO);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+              LMSLogger.getInstance().saveLogInformation("SQLException occur at addInventory method: "+ex.getMessage(), InventoryDAOImpl.class.getName() , LogLevel.ERROR);
         } 
     }
 
@@ -143,8 +148,10 @@ public class InventoryDAOImpl implements InventoryDAO {
             pstmt.setBoolean(11, inventory.getIsActive());
             pstmt.setInt(12, inventory.getInventoryId());
             pstmt.executeUpdate();
+            
+            LMSLogger.getInstance().saveLogInformation("Update an inventory in database successfully, inventory ID = "+ inventory.getInventoryId(), InventoryDAOImpl.class.getName() , LogLevel.INFO);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+              LMSLogger.getInstance().saveLogInformation("SQLException occur at updateInventory method: "+ex.getMessage(), InventoryDAOImpl.class.getName() , LogLevel.ERROR);
         } 
     }
 

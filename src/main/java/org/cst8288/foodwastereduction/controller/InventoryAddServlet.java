@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.FoodItemDTO;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 
@@ -38,15 +40,24 @@ public class InventoryAddServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         
+       try{  
        int userId = Integer.parseInt(request.getParameter("userId").trim());
       
        FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
        List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
        request.setAttribute("foodItems", foodItems);
        
+       LMSLogger.getInstance().saveLogInformation("Fetched food items for userId = " + userId, InventoryAddServlet.class.getName(), LogLevel.INFO);
+       
        RequestDispatcher dispatcher = request.getRequestDispatcher("views/addInventory.jsp");
        dispatcher.forward(request, response);
+            
+      
+        } catch (Exception ex) {
+            LMSLogger.getInstance().saveLogInformation("Exception in InventoryAddServlet doGet: " + ex.getMessage(), InventoryAddServlet.class.getName(), LogLevel.ERROR);
+            throw new ServletException(ex);
+        }
+       
     }
 
     
@@ -63,7 +74,7 @@ public class InventoryAddServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+       try {
          // Retrieve form parameters
         int userId = Integer.parseInt(request.getParameter("userId").trim());
         int foodItemId = Integer.parseInt(request.getParameter("foodItemId"));
@@ -91,10 +102,16 @@ public class InventoryAddServlet extends HttpServlet {
         InventoryBusiness inventoryBusiness = new InventoryBusiness();
         inventoryBusiness.addInventory(inventory);
         
+         LMSLogger.getInstance().saveLogInformation("Added inventory for userId = " + userId, InventoryAddServlet.class.getName(), LogLevel.INFO);
+        
         // Redirect to list all current inventory
         // Redirect to InventoryServlet
         response.sendRedirect(request.getContextPath() + "/inventory?userId=" + userId);
-        
+                
+        } catch (Exception ex) {
+            LMSLogger.getInstance().saveLogInformation("Exception in InventoryAddServlet doPost: " + ex.getMessage(), InventoryAddServlet.class.getName(), LogLevel.ERROR);
+            throw new ServletException(ex);
+        }
     }
 
    

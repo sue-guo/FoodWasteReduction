@@ -9,8 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAO;
-import org.cst8288.foodwastereduction.dataaccesslayer.InventoryDAOImpl;
+import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 
@@ -20,7 +21,7 @@ import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
  * @author Carri and Ryan Xu
  */
 public class InventoryStatusServlet extends HttpServlet {
-    private InventoryDAO inventoryDAO;
+   private  InventoryBusiness inventoryBusiness;
     private NotificationServlet notificationServlet;
 //    private NotificationService notificationService;
 //    private FoodItemService foodItemService;
@@ -29,7 +30,8 @@ public class InventoryStatusServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        inventoryDAO = new InventoryDAOImpl();
+       inventoryBusiness = new InventoryBusiness();
+//         inventoryDAO = new InventoryDAOImpl();
         notificationServlet = new NotificationServlet();
 //        foodItemService = new FoodItemServiceImpl();
 //        notificationService = (NotificationService) servletContext.getAttribute("notificationService");
@@ -56,24 +58,26 @@ public class InventoryStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+       
+      try{
           // Get parameters from the request
         String inventoryIdParam = request.getParameter("inventoryId");
         String statusParam = request.getParameter("status");
         
-//        InventoryBusiness inventoryBusiness = new InventoryBusiness();
          // Update the surplus status of the inventory item
-//        InventoryDTO inventory = inventoryBusiness.getInventoryById(inventoryId);
-        try {
             int inventoryId = Integer.parseInt(inventoryIdParam);
             SurplusStatusEnum status = SurplusStatusEnum.valueOf(statusParam);
-            
-            InventoryDTO inventory = inventoryDAO.getInventoryById(inventoryId);
+            InventoryDTO inventory = inventoryBusiness.getInventoryById(inventoryId);
+        
+        try {
             if (inventory != null) {
-                // Update the inventory
+               
+              // Update the inventory
                 inventory.setSurplusStatus(status);
                 inventoryDAO.updateInventory(inventory);
 
+              
+              
                 // Call notificationServlet to deal with notification
                 List<String> notifiedUsers = notificationServlet.processNotification(inventoryId, status);
                 String userTypeNotified = (status == SurplusStatusEnum.Discount) ? "CONSUMER" : "CHARITABLE_ORGANIZATION";
@@ -88,8 +92,22 @@ public class InventoryStatusServlet extends HttpServlet {
             sendErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating inventory: " + e.getMessage());
         }
   
+
+        
+         
+         LMSLogger.getInstance().saveLogInformation("Updated inventory status for inventoryId = " + inventoryId, InventoryStatusServlet.class.getName(), LogLevel.INFO);
+          
+          // Redirect back to the inventory page
+         response.sendRedirect(request.getContextPath() + "/inventory?userId=" + inventory.getRetailerId());
+       
+        } catch (Exception ex) {
+            LMSLogger.getInstance().saveLogInformation("Exception in InventoryStatusServlet doGet: " + ex.getMessage(), InventoryStatusServlet.class.getName(), LogLevel.ERROR);
+            throw new ServletException(ex);
+        }
     }
     
+  
+  
     private void sendSuccessResponse(HttpServletResponse response, List<String> notifiedUsers, String userTypeNotified) throws IOException {
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("success", true);
