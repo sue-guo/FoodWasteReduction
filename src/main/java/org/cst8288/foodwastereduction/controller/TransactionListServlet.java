@@ -3,6 +3,8 @@ package org.cst8288.foodwastereduction.controller;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
 import org.cst8288.foodwastereduction.businesslayer.TransactionBusiness;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.Transaction;
 import org.cst8288.foodwastereduction.model.User;
 
@@ -65,6 +67,7 @@ public class TransactionListServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.sendRedirect("login.jsp");
+            LMSLogger.getInstance().saveLogInformation("User not found", this.getClass().getName(), LogLevel.ERROR);
             return;
         }
 

@@ -3,6 +3,8 @@ package org.cst8288.foodwastereduction.controller;
 import org.cst8288.foodwastereduction.businesslayer.FoodItemBusiness;
 import org.cst8288.foodwastereduction.businesslayer.InventoryBusiness;
 import org.cst8288.foodwastereduction.businesslayer.TransactionBusiness;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.*;
 
 import java.io.IOException;
@@ -83,8 +85,10 @@ public class ClaimServlet extends HttpServlet {
                 request.getRequestDispatcher("/views/claim.jsp").forward(request, response);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Inventory not found");
+                LMSLogger.getInstance().saveLogInformation("Inventory not with ID: " + inventoryId, this.getClass().getName(), LogLevel.ERROR);
             }
         } catch (Exception e) {
+            LMSLogger.getInstance().saveLogInformation("Exception in doGet method: " + e.getMessage(), this.getClass().getName(), LogLevel.ERROR);
             throw new ServletException(e);
         }
     }
@@ -133,15 +137,17 @@ public class ClaimServlet extends HttpServlet {
             transaction.setQuantity(inventory.getQuantity());
             transaction.setTransactionType(TransactionType.Donation);
             transactionBusiness.addTransaction(transaction);
+            LMSLogger.getInstance().saveLogInformation("Created a new transaction for inventory ID: " + inventoryId, this.getClass().getName(), LogLevel.INFO);
 
             // Update inventory to reflect the claimed quantity
             inventory.setQuantity(0);
             inventoryBusiness.updateInventory(inventory);
+            LMSLogger.getInstance().saveLogInformation("Updated quantity of inventory with ID " + inventoryId, this.getClass().getName(), LogLevel.INFO);
 
             // Redirect to charitable organization page
             response.sendRedirect(request.getContextPath() + "/charitableOrganization?userId=" + user.getUserID());
         } catch (NumberFormatException e) {
-            Logger.getLogger(PurchaseServlet.class.getName()).log(Level.SEVERE, "Invalid inventoryId or quantity format", e);
+            LMSLogger.getInstance().saveLogInformation("Invalid inventoryId or quantity format: " + e.getMessage(), this.getClass().getName(), LogLevel.ERROR);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid inventory ID or quantity");
         }
     }
