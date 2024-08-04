@@ -3,6 +3,8 @@ package org.cst8288.foodwastereduction.notification;
 import java.util.ArrayList;
 import java.util.List;
 import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 
 /**
@@ -56,8 +58,12 @@ public class SubjectInventory implements Subject {
      */
     @Override
     public void notifyObservers() {
+        String logMessage = "Notifying " + observers.size() + " observers for inventory " + inventory.getInventoryId();
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+
         for (Observer observer : observers) {
-            System.out.print(observer); // for testing
+            logMessage = "Notifying observer: " + observer.getClass().getSimpleName();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
             observer.update(inventory);
         }
     }
@@ -67,11 +73,22 @@ public class SubjectInventory implements Subject {
      * @param status 
      */
     public void setSurplusStatus(SurplusStatusEnum status) {
+        String logMessage = "Attempting to set surplus status to " + status + " for inventory " + inventory.getInventoryId();
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+
         if (inventory.getIsSurplus()) {
             inventory.setSurplusStatus(status);
+            logMessage = "Surplus status set to " + status + " for inventory " + inventory.getInventoryId();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
+
             if (status != SurplusStatusEnum.None) {
+                logMessage = "Initiating observer notification for inventory " + inventory.getInventoryId();
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
                 notifyObservers();
             }
+        }else {
+            logMessage = "Failed to set surplus status: inventory " + inventory.getInventoryId() + " is not marked as surplus";
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
         }
     }
 }

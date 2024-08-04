@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.cst8288.foodwastereduction.constants.CommunicationPreference;
 import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.dataaccesslayer.SubscriptionDAO;
@@ -12,6 +11,8 @@ import org.cst8288.foodwastereduction.model.Subscription;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDao;
 import org.cst8288.foodwastereduction.dataaccesslayer.UserDaoImpl;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.SubscriberDTO;
 
 /**
@@ -68,11 +69,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionDAO.updateSubscription(subscription);
     }
 
-//    @Override
-//    public List<Subscription> getSubscriptionsByRetailer(Integer retailerId) {
-//        return subscriptionDAO.getSubscriptionsByRetailer(retailerId);
-//    }
-
     /**
      * Concrete method to get subscription by userId
      * @param userId
@@ -80,15 +76,27 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      */
     @Override
     public List<SubscriberDTO> getSubscriptionsByUser(Integer userId) {
+        String logMessage;
         
         List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByUser(userId);
         List<SubscriberDTO> subscriptionsDTO = new ArrayList<>();
-        User user = new User();
+        
+        logMessage = "Found " + subscriptions.size() + " subscriptions for UserID: " + userId;
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+
+        UserDao userDao = new UserDaoImpl();
         for (Subscription subscription : subscriptions) {
-            UserDao userDao = new UserDaoImpl();
-            user = userDao.getUserById(subscription.getRetailerId());
-            SubscriberDTO subscriberDTO = new SubscriberDTO(user, subscription);
-            subscriptionsDTO.add(subscriberDTO);
+            User retailer = userDao.getUserById(subscription.getRetailerId());
+            if (retailer != null) {
+                SubscriberDTO subscriberDTO = new SubscriberDTO(retailer, subscription);
+                subscriptionsDTO.add(subscriberDTO);
+
+                logMessage = "Added subscription for RetailerID: " + retailer.getUserID() + ", RetailerName: " + retailer.getName();
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+            } else {
+                logMessage = "Retailer not found for RetailerID: " + subscription.getRetailerId() + ", subscription skipped";
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
+            }
         }
         return subscriptionsDTO;
     }
@@ -135,26 +143,25 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      */
     @Override
     public boolean isInterestedInCategory(Integer consumerId, Integer retailerId, CategoryEnum foodCategory) {
+        String logMessage;
         Subscription subscription = subscriptionDAO.getSubscription(consumerId, retailerId);
         if (subscription == null) {
+            logMessage = "No subscription found for ConsumerID: " + consumerId + ", RetailerID: " + retailerId;
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
             return false;
         }
-        // Debugging output
-        System.out.println("Checking food preferences: " + subscription.getFoodPreferences());
-        System.out.println("Looking for category: " + foodCategory.name());
-        return subscription.getFoodPreferences().contains(foodCategory.name().toUpperCase());
-    }
+        
+        Set<String> foodPreferences = subscription.getFoodPreferences();
+        
+        logMessage = "Food preferences for ConsumerID " + consumerId + ": " + foodPreferences;
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
 
-    /**
-     * Used to get Food Preferences of a consumer
-     * @param consumerId
-     * @return 
-     */
-    private Set<String> getFoodPreferences(Integer consumerId) {
-        List<Subscription> userSubscriptions = subscriptionDAO.getSubscriptionsByUser(consumerId);
-        return userSubscriptions.stream()
-            .flatMap(sub -> sub.getFoodPreferences().stream())
-            .collect(Collectors.toSet());
+        boolean isInterested = foodPreferences.contains(foodCategory.name().toUpperCase());
+
+        logMessage = "Interest check result for category " + foodCategory + ": " + isInterested;
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+
+        return isInterested;
     }
     
     /**
@@ -164,20 +171,30 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      */
     @Override
     public List<SubscriberDTO> getSubscribersByRetailerId(Integer retailerId) {
+        String logMessage;
         List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
         List<SubscriberDTO> subscribers = new ArrayList<>();
-//        System.out.println("Found " + subscriptions.size() + " subscriptions for retailer " + retailerId);
         
+        logMessage = "Found " + subscriptions.size() + " subscriptions for RetailerID: " + retailerId;
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+ 
         for (Subscription subscription : subscriptions) {
             User user = userDao.getUserById(subscription.getUserId());
             if (user != null) {
                 SubscriberDTO dto = new SubscriberDTO(user, subscription);
                 subscribers.add(new SubscriberDTO(user, subscription));
-//                System.out.println("Added subscriber: " + dto.getUserName() + ", Type: " + dto.getUserType());
+                
+                logMessage = "Added subscriber: UserID " + user.getUserID() + ", Name: " + dto.getUserName() + ", Type: " + dto.getUserType();
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+            } else {
+                logMessage = "User not found for UserID: " + subscription.getUserId() + ", subscription skipped";
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
             }
         } 
         
-//        System.out.println("Returning " + subscribers.size() + " SubscriberDTOs");
+        logMessage = "Returning " + subscribers.size() + " SubscriberDTOs for RetailerID: " + retailerId;
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
+
         return subscribers;
     }
     
@@ -188,15 +205,28 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      */
     @Override
     public List<User> getUserByRetailerId(Integer retailerId) {
+        String logMessage;
         List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByRetailer(retailerId);
         List<User> subscribers = new ArrayList<>();
         
+        logMessage = "Found " + subscriptions.size() + " subscriptions for RetailerID: " + retailerId;
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+
         for (Subscription subscription : subscriptions) {
             User user = userDao.getUserById(subscription.getUserId());
             if (user != null) {
                 subscribers.add(user);
+                logMessage = "Added user: UserID " + user.getUserID() + ", Type: " + user.getUserType();
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+            } else {
+                logMessage = "User not found for UserID: " + subscription.getUserId() + ", subscription skipped";
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
             }
         } 
+        
+        logMessage = "Returning " + subscribers.size() + " Users for RetailerID: " + retailerId;
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
+
         return subscribers;
     } 
     
@@ -209,6 +239,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      */
     @Override
     public void updateUserSubscriptions(int userId, int retailerId, CommunicationPreference communicationPreference, Set<String> foodPreferences) {
+        String logMessage;
         // Get current user's all subscriptions
         Subscription existingSubscription = subscriptionDAO.getSubscription(userId, retailerId);
         
@@ -217,13 +248,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             existingSubscription.setCommunicationPreference(communicationPreference);
             existingSubscription.setFoodPreferences(foodPreferences);
             subscriptionDAO.updateSubscription(existingSubscription);
+            logMessage = "Subscription updated successfully for UserID: " + userId + ", RetailerID: " + retailerId;
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
         } else if (!foodPreferences.isEmpty()) {
             // New subscription
             Subscription newSubscription = new Subscription(userId, retailerId, communicationPreference, foodPreferences);
             subscriptionDAO.addSubscription(newSubscription);
+            logMessage = "New subscription created successfully for UserID: " + userId + ", RetailerID: " + retailerId;
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
         } else {
-            // If no selection, there would be no operation
-            System.out.println("No categories selected for new subscription. Skipping.");
+            logMessage = "No categories selected for new subscription. Skipping operation for UserID: " + userId + ", RetailerID: " + retailerId;
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.WARN);
         }
     }
 }

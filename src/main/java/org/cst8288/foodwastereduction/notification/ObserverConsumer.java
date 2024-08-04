@@ -7,6 +7,8 @@ import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.constants.UserType;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 
 /**
  * File: ObserverConsumer.java
@@ -53,14 +55,23 @@ public class ObserverConsumer implements Observer {
      */
     @Override
     public void update(InventoryDTO inventory) {
-        System.out.println("Updating observer for inventory: " + inventory.getInventoryId());
+        String logMessage;
+        
+        logMessage = "Updating observer for inventory: " + inventory.getInventoryId();
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
+
         if (consumer.getUserType() != UserType.CONSUMER) {
-            System.out.println("Not a consumer. Skipping discount notification.");
+            logMessage = "Not a consumer. Skipping discount notification. UserType: " + consumer.getUserType();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.INFO);
             return; 
         }
         if (inventory.getSurplusStatus() == SurplusStatusEnum.Discount) {
+            logMessage = "Processing discount notification for inventory: " + inventory.getInventoryId();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
             processDiscountNotification(inventory);
         }
+        logMessage = "Update completed for inventory: " + inventory.getInventoryId();
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
     }
     
     /**
@@ -68,6 +79,7 @@ public class ObserverConsumer implements Observer {
      * @param inventory 
      */
     private void processDiscountNotification(InventoryDTO inventory) {
+        String logMessage;
         System.out.println("Processing discount notification for consumer: " + consumer.getUserID());
         
         boolean isSubscribed = subscriptionService.isSubscribed(consumer.getUserID(), inventory.getRetailerId());
@@ -96,7 +108,9 @@ public class ObserverConsumer implements Observer {
                 notifiedUsers.add(consumer.getName());
             }
         } catch (NoSuchElementException e) {
-            System.err.println("Failed to get food category for inventory: " + inventory.getInventoryId() + ". " + e.getMessage());
+            logMessage = "Failed to get food category for inventory: " + inventory.getInventoryId() + 
+                             ". Error: " + e.getMessage();
+            LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
         }
-    } 
+    }
 }

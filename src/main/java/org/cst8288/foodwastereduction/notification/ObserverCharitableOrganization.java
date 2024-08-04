@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import org.cst8288.foodwastereduction.constants.CategoryEnum;
 import org.cst8288.foodwastereduction.constants.SurplusStatusEnum;
+import org.cst8288.foodwastereduction.logger.LMSLogger;
+import org.cst8288.foodwastereduction.logger.LogLevel;
 import org.cst8288.foodwastereduction.model.InventoryDTO;
 import org.cst8288.foodwastereduction.model.User;
 
@@ -52,6 +54,7 @@ public class ObserverCharitableOrganization implements Observer {
      */
     @Override
     public void update(InventoryDTO inventory) {
+        String logMessage;
         if (inventory.getSurplusStatus() == SurplusStatusEnum.Donation) {
             boolean isSubscribed = subscriptionService.isSubscribed(charitableOrganization.getUserID(), inventory.getRetailerId());
             
@@ -74,9 +77,12 @@ public class ObserverCharitableOrganization implements Observer {
                     notifiedUsers.add(charitableOrganization.getName());
                 }
             } catch (NoSuchElementException e) {
-                // logger??
-                System.err.println("Failed to get food category for inventory: " + inventory.getInventoryId() + ". " + e.getMessage());
+                logMessage = "Failed to get food category for inventory: " + inventory.getInventoryId() + 
+                             ". Error: " + e.getMessage();
+                LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.ERROR);
             }
         }
+        logMessage = "Update completed for inventory: " + inventory.getInventoryId();
+        LMSLogger.getInstance().saveLogInformation(logMessage, this.getClass().getName(), LogLevel.DEBUG);
     }
 }
