@@ -63,7 +63,7 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.sendRedirect("login.jsp");
@@ -105,7 +105,7 @@ public class PaymentServlet extends HttpServlet {
             LMSLogger.getInstance().saveLogInformation("Exception occur at PaymentServlet class doPost method: "+ex.getMessage(), PaymentServlet.class.getName() , LogLevel.ERROR);
         }
         
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.sendRedirect("login.jsp");

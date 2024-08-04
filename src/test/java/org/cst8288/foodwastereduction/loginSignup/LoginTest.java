@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
+import org.mockito.MockitoAnnotations;
 
 /**
  * Unit tests for the LoginServlet class.
@@ -75,13 +76,15 @@ public class LoginTest {
      */    
     @Before
     public void setUp() {
-        userBusiness = mock(UserBusiness.class);
-        loginServlet = new LoginServlet(userBusiness);  // Use constructor injection
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        session = mock(HttpSession.class);
-        dispatcher = mock(RequestDispatcher.class);
-        user = mock(User.class);
+        // Initialize the mocks
+        MockitoAnnotations.initMocks(this);
+        
+        // Create an instance of LoginServlet with the mock UserBusiness
+        loginServlet = new LoginServlet(userBusiness);
+        
+        // Ensure getSession(false) returns the mock HttpSession
+        when(request.getSession(false)).thenReturn(session);   
+
     }
      /**
      * Cleans up the test environment after each test method is run.
@@ -131,6 +134,7 @@ public class LoginTest {
         when(request.getParameter("password")).thenReturn("correctpassword");
         when(userBusiness.getUserByEmail("test@example.com")).thenReturn(user);
         when(userBusiness.authenticateUser("test@example.com", "correctpassword")).thenReturn(true);
+        // Ensure that getSession() returns a non-null mock session
         when(request.getSession()).thenReturn(session);
         when(request.getRequestDispatcher("views/home.jsp")).thenReturn(dispatcher);
 

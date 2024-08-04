@@ -182,7 +182,7 @@ public class SubscribeServlet extends HttpServlet {
             } else {
                 subscriptionService.updateUserSubscriptions(userId, retailerId, communicationPreference, foodPreferences);
             }
-            request.getSession().setAttribute("successMessage", "Subscription updated successfully.");
+            request.getSession(false).setAttribute("successMessage", "Subscription updated successfully.");
             response.sendRedirect(request.getContextPath() + "/subscribe?userId=" + userId);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating subscriptions: " + e.getMessage());

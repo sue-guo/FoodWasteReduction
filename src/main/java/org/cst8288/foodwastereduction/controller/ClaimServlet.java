@@ -115,7 +115,7 @@ public class ClaimServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
 
         try {

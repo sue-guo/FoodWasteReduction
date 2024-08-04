@@ -71,9 +71,9 @@ public class LoginServlet extends HttpServlet {
             dispatcher.forward(request, response);
         } else {
             // Forward to home.jsp if user is found, and set user in session
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(false);
             session.setAttribute("user", user);
-            
+             
             request.setAttribute("user", user);
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/home.jsp");
             dispatcher.forward(request, response);

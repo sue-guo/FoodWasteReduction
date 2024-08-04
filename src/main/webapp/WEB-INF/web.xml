@@ -123,4 +123,14 @@
     <listener>
         <listener-class>org.cst8288.foodwastereduction.utility.MyAppContextListener</listener-class>
     </listener>
+    
+     <!-- filtter for URL -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>org.cst8288.foodwastereduction.utility.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>
