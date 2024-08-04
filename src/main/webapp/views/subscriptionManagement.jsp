@@ -165,12 +165,32 @@
             updateSubmitButtonState();
         });
 
+
+        // Check if retailer list is empty
+        function checkRetailerList() {
+            if ($('#retailerId option').length <= 1) {
+                $('#subscription-details').hide();
+                $('#retailer-list-empty').remove();
+                $('<div id="retailer-list-empty" class="alert alert-warning">' +
+                  'There are currently no retailers available in your location. ' +
+                  'Please check back later or contact support for assistance.</div>')
+                  .insertBefore('#subscription-details');
+                $('#submit-btn').prop('disabled', true);
+            } else {
+                $('#retailer-list-empty').remove();
+            }
+        }
+        
+        // check when page loading
+        checkRetailerList();
         
         // Automatically load the first retailer's subscription if available
         var firstRetailerId = $('#retailerId option:eq(1)').val();
         if (firstRetailerId) {
             $('#retailerId').val(firstRetailerId);
             loadSubscription(firstRetailerId);
+        } else {
+            checkRetailerList(); // When the Retailer list is empty
         }
         
         // Handle retailer selection change
@@ -179,8 +199,10 @@
             clearMessages();
             if (retailerId) {
                 loadSubscription(retailerId);
+                $('#retailer-list-empty').remove(); 
             } else {
                 $('#subscription-details').hide();
+                checkRetailerList();
             }
         });
         

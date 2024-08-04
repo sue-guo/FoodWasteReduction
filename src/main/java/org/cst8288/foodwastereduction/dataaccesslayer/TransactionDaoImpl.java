@@ -1,7 +1,7 @@
 package org.cst8288.foodwastereduction.dataaccesslayer;
 
 import org.cst8288.foodwastereduction.model.Transaction;
-import org.cst8288.foodwastereduction.model.TransactionType;
+import org.cst8288.foodwastereduction.constants.TransactionType;
 import org.cst8288.foodwastereduction.utility.DatetimeUtil;
 
 import java.sql.Connection;

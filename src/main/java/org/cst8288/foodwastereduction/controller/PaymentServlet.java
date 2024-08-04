@@ -30,7 +30,7 @@ import org.cst8288.foodwastereduction.payment.CreditCardPaymentStrategy;
 import org.cst8288.foodwastereduction.model.Payment;
 import org.cst8288.foodwastereduction.payment.PaymentContext;
 import org.cst8288.foodwastereduction.payment.PaymentStrategy;
-import org.cst8288.foodwastereduction.model.PaymentType;
+import org.cst8288.foodwastereduction.constants.PaymentType;
 import org.cst8288.foodwastereduction.model.Transaction;
 import org.cst8288.foodwastereduction.model.User;
 import org.cst8288.foodwastereduction.payment.PaypalPaymentStrategy;
