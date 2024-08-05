@@ -66,7 +66,7 @@ public class PurchaseServlet extends HttpServlet {
      *                           an input or output error is detected
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         try {
@@ -120,7 +120,7 @@ public class PurchaseServlet extends HttpServlet {
      * @throws ServletException if an error occurs while processing the request
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
         HttpSession session = request.getSession(false);
