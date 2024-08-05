@@ -24,6 +24,29 @@ import org.cst8288.foodwastereduction.logger.LogLevel;
  */
 public class FoodItemServlet extends HttpServlet {
 
+    
+    private FoodItemBusiness foodItemBusiness;
+
+    /**
+     * Default constructor.
+     * Initializes the FoodItemBusiness instance.
+     */
+    public FoodItemServlet() {
+        this.foodItemBusiness = new FoodItemBusiness();
+    }
+
+    /**
+     * Constructor for dependency injection.
+     * Allows injecting a custom FoodItemBusiness instance.
+     *
+     * @param foodItemBusiness the FoodItemBusiness instance to be injected
+     */
+    public FoodItemServlet(FoodItemBusiness foodItemBusiness) {
+        this.foodItemBusiness = foodItemBusiness;
+    }
+
+   
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      * Retrieves food items for a specific retailer and forwards the request to the view.
@@ -40,8 +63,6 @@ public class FoodItemServlet extends HttpServlet {
             // Parse userId from request parameters
             int userId = Integer.parseInt(request.getParameter("userId").trim());
             
-            // Create an instance of FoodItemBusiness to interact with the business layer
-            FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
             // Retrieve the list of food items for the given retailer ID
             List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
             
@@ -91,8 +112,7 @@ public class FoodItemServlet extends HttpServlet {
             foodItem.setBrand(brand);
             foodItem.setUnit(unit);
             
-            // Create an instance of FoodItemBusiness to interact with the business layer
-            FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
+          
             // Add the new food item to the database
             foodItemBusiness.addFoodItem(foodItem);
             

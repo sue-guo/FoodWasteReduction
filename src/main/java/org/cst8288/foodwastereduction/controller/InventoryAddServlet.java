@@ -25,6 +25,33 @@ import org.cst8288.foodwastereduction.model.InventoryDTO;
  */
 public class InventoryAddServlet extends HttpServlet {
 
+    private FoodItemBusiness foodItemBusiness;
+    private InventoryBusiness inventoryBusiness;
+
+    /**
+     * Default constructor.
+     * Initializes the business layer instances.
+     */
+    public InventoryAddServlet() {
+        this.foodItemBusiness = new FoodItemBusiness();
+        this.inventoryBusiness = new InventoryBusiness();
+    }
+    
+    
+    /**
+     * Constructor for dependency injection.
+     * Allows injecting custom business layer instances.
+     *
+     * @param foodItemBusiness the FoodItemBusiness instance to be injected
+     * @param inventoryBusiness the InventoryBusiness instance to be injected
+     */
+    public InventoryAddServlet(FoodItemBusiness foodItemBusiness, InventoryBusiness inventoryBusiness) {
+        this.foodItemBusiness = foodItemBusiness;
+        this.inventoryBusiness = inventoryBusiness;
+    }
+    
+    
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      * Retrieves food items for a specific retailer and forwards the request to the add inventory view.
@@ -41,8 +68,6 @@ public class InventoryAddServlet extends HttpServlet {
             // Parse userId from request parameters
             int userId = Integer.parseInt(request.getParameter("userId").trim());
 
-            // Create an instance of FoodItemBusiness to interact with the business layer
-            FoodItemBusiness foodItemBusiness = new FoodItemBusiness();
             // Retrieve the list of food items for the given retailer ID
             List<FoodItemDTO> foodItems = foodItemBusiness.getFoodItemsByRetailerID(userId);
             // Set the food items as a request attribute to be accessed in the JSP
@@ -97,8 +122,7 @@ public class InventoryAddServlet extends HttpServlet {
             inventory.setExpirationDate(expirationDate);
             inventory.setReceiveDate(receiveDate);
 
-            // Business logic to add the inventory
-            InventoryBusiness inventoryBusiness = new InventoryBusiness();
+           
             inventoryBusiness.addInventory(inventory);
 
             // Log the successful addition of inventory
