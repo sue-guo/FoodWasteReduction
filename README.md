@@ -127,6 +127,7 @@ Allow consumers to choose their preferred method of payment and pay for their or
 
 ### Data Architecture
 **The Entity-Relationship Diagram (ERD)**<br>
+![image](https://github.com/user-attachments/assets/e093b9c6-d144-4983-b0ee-1a5b76160885)
 
 ----------------------
 
