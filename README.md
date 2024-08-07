@@ -11,10 +11,6 @@
 | 2.3     | Yi Yao       | Add consumer and charitable organization related functions | 2024-07-31 |
 | 2.4     | Ryan Xu      | Add subscribe function                            | 2024-08-01 |
 | 2.5     | Hongxiu Guo  | Add bonus function - payment                      | 2024-08-02 |
-| 3.0     | Hongxiu Guo  | Add JUnit test for login/signup and payment functions | 2024-08-03 |
-| 3.1     | | | |
-| 3.2     | | | |
-| 3.3     | | | |
 
 --------------------------------
 
@@ -184,11 +180,10 @@ We will use JUnit to test our Java program since it provides a simple and effect
 
 The classes in our program that have been tested are: 
 - Database Connection class
--	FoodItem class
--	Login class 
--	Inventory class
--	Subscription service class
--	DAO classes
+- FoodItem class
+- Login class 
+- Inventory class
+- Subscription service class
 
 -----------------------------
 
