@@ -41,7 +41,7 @@ This document outlines the high-level design of the platform, covering the appli
 - Surplus Food Listing and Management: Functionality for retailers to list surplus food items for donation or sale at a discounted price. Mechanisms for charitable organizations to claim surplus food for distribution.
 - Consumer Purchases of Discounted Food: Enabling consumers to browse, select, and "purchase" discounted food items listed by retailers.
 - Surplus Food Alerts Subscription: Allowing users to subscribe to alerts for surplus food based on their preferences and location.
-- Making payment: Allow consumers to pay for their orders using their preferred payment methods.
+- Simulated Payment: Enable consumers to use their preferred payment methods, including check, credit card, PayPal, and Apple Pay, to make simulated payments for their orders.
 - Database Design and Management: Development of a relational database schema to support user data, inventory management, transactions, and suscriptions.
 
 #### Out of Scope
