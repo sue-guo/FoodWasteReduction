@@ -170,20 +170,18 @@ GitHub Actions for automation. A workflow is defined in the `.github/workflows` 
 **4. Build on Apache Tomcat Server**<br>
 A server running Apache Tomcat, which can be a virtual machine or a physical server, located on-premises or in the cloud. The GitHub Actions workflow includes steps to build the project (e.g., using Maven or Gradle for Java projects) and deploy the built artifacts (e.g., WAR files) to the Tomcat server. This might involve SSH to transfer files and commands to restart the Tomcat service.
 
-**5. Deployment to Workstation or AWS/Azure**<br>
-Another developer's or user's computer where the application might be deployed for testing or development purposes. The GitHub Actions workflow can include steps to deploy the application to cloud services. For AWS, this might involve using the AWS CLI to deploy to services like Elastic Beanstalk, EC2, or S3. For Azure, it might involve deploying to App Services, VMs, or Azure Kubernetes Service (AKS) using the Azure CLI or ARM templates.
-
 -------------------------------
 
 ### Testing Model
 We will use JUnit to test our Java program since it provides a simple and effective way to write and run automated tests.
 
 The classes in our program that have been tested are: 
-- Database Connection class
+- Login class
+- Signup class
 - FoodItem class
-- Login class 
 - Inventory class
 - Subscription service class
+- Payment class
 
 -----------------------------
 
