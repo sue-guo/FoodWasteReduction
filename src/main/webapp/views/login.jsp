@@ -48,6 +48,5 @@
     <footer>
         <p>&copy; 2024 Food Waste Reduction Platform</p>
     </footer>
-    <script src="scripts.js"></script>
 </body>
 </html>

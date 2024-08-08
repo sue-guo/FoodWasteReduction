@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package org.cst8288.foodwastereduction.model;
 
 import org.cst8288.foodwastereduction.constants.UserType;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import org.cst8288.foodwastereduction.constants.CommunicationPreference;
 

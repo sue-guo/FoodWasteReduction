@@ -1,7 +1,6 @@
 package org.cst8288.foodwastereduction.model;
 
 import org.cst8288.foodwastereduction.constants.TransactionType;
-import java.sql.Date;
 
 
 /**
