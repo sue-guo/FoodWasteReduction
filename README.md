@@ -118,7 +118,7 @@ Allow consumers to choose their preferred method of payment and pay for their or
 
 ### Detailed Design 
 **The UML Class Diagram**<br>
-![image](https://github.com/user-attachments/assets/d50c9453-6f6c-45df-8a4e-ab959523c418)
+![image](https://github.com/user-attachments/assets/3ecd96b6-28f8-4aed-848e-c8c017b85efb)
 
 ----------------------
 
